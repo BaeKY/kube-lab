@@ -1,0 +1,5 @@
+language: typescript
+app: ts-node -r tsconfig-paths/register .
+output: manifest
+imports:
+  - k8s

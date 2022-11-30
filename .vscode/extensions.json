@@ -1,0 +1,20 @@
+{
+  "recommendations": [
+    "aaron-bond.better-comments",
+    "bufbuild.vscode-buf",
+    "codeandstuff.package-json-upgrade",
+    "eamodio.gitlens",
+    "graphql.vscode-graphql",
+    "gruntfuggly.todo-tree",
+    "jebbs.plantuml",
+    "ms-azuretools.vscode-docker",
+    "ms-vscode.vscode-typescript-next",
+    "mhutchie.git-graph",
+    "pkief.material-icon-theme",
+    "redhat.vscode-yaml",
+    "stackbreak.comment-divider",
+    "yzhang.markdown-all-in-one",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "project": ["./tsconfig.json"]
+  },
+  "extends": [
+    "prettier"
+  ],
+  "rules": {
+    "eqeqeq": ["error", "always",{"null": "ignore"}],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "accessor-pairs": "error",
+    "semi": "off",
+    "semi-style": "error",
+    "no-caller": "error",
+    "no-unused-vars": [
+      "error",
+      { "args": "none"}
+    ],
+    "no-extra-bind": "error",
+    "no-extra-boolean-cast": "error",
+    "no-fallthrough": "error",
+    "no-tabs": "error",
+    "no-throw-literal": "error",
+    "no-trailing-spaces": "error",
+    "comma-dangle": "error",
+    "@typescript-eslint/no-floating-promises": "error"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "@kube-lab/chart",
+  "license": "MIT",
+  "private": true,
+  "main": "src/",
+  "version": "1.0.0",
+  "scripts": {
+    "synth": "cdk8s synth"
+  }
+}
