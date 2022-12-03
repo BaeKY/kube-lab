@@ -1,0 +1,11 @@
+{
+  "name": "@package/common",
+  "version": "0.0.1",
+  "main": "src",
+  "repository": "https://github.com/BaeKY/k8s-lab.git",
+  "author": {
+    "name": "Bob",
+    "email": "baeky.dev@gmail.com"
+  },
+  "license": "MIT"
+}
