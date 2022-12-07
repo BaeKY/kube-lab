@@ -50,7 +50,7 @@ describe('Scope', () => {
     }
     {
       const scopeContainer_0 = Scope.init<KubeDeploymentProps>().f('spec').f('template').f('spec').f('containers').f(0)
-      console.log(scopeContainer_0.path)
+      // console.log(scopeContainer_0.path)
 
       const actual = scopeContainer_0.get()(sample)
 
@@ -72,7 +72,8 @@ describe('Scope', () => {
     }
   })
 
-  test('set', () => {
+  test('merge', () => {
+    const scope = Scope.init<KubeDeploymentProps>()
     {
       let deeplyCopiedSample = _.cloneDeep(sample)
       const props = {
@@ -80,7 +81,8 @@ describe('Scope', () => {
           'kubernetes.io/component': 'app'
         }
       }
-      Scope.init<KubeDeploymentProps>().f('metadata').set(props)(deeplyCopiedSample)
+
+      scope.f('metadata').merge(props)(deeplyCopiedSample)
       const expected = {
         ...sample,
         metadata: {
@@ -100,7 +102,8 @@ describe('Scope', () => {
       const props = {
         'kubernetes.io/component': 'app'
       }
-      Scope.init<KubeDeploymentProps>().f('metadata').f('annotations').set(props)(deeplyCopiedSample)
+
+      scope.f('metadata').f('annotations').merge(props)(deeplyCopiedSample)
       const expected = {
         ...sample,
         metadata: {
@@ -114,6 +117,38 @@ describe('Scope', () => {
       // console.log(JSON.stringify({ set2: deeplyCopiedSample }, null, 2))
       expect(deeplyCopiedSample).toMatchObject(expected)
       expect(deeplyCopiedSample.metadata?.annotations).toMatchObject(props)
+    }
+
+    {
+      let deeplyCopiedSample = _.cloneDeep(sample)
+      const props = {
+        name: 'database',
+        image: 'postgresql:15.0.1'
+      }
+
+      scope.f('spec').f('template').f('spec').f('containers').f(1).merge(props)(deeplyCopiedSample)
+      const expected = {
+        ...sample,
+        spec: {
+          ...sample.spec,
+          template: {
+            ...sample.spec?.template,
+            spec: {
+              ...sample.spec?.template?.spec,
+              containers: [
+                {
+                  name: 'redis',
+                  image: 'redis:6.2.6'
+                },
+                props
+              ]
+            }
+          }
+        }
+      }
+      // console.log(JSON.stringify({ set2: deeplyCopiedSample }, null, 2))
+      expect(deeplyCopiedSample).toMatchObject(expected)
+      expect(deeplyCopiedSample.spec?.template.spec?.containers[1]).toMatchObject(props)
     }
   })
 })

@@ -7,14 +7,14 @@ export interface IScope<T, O = T> {
   f<K extends keyof T>(
     key: T extends Array<any> ? number : K
   ): T[K] extends object | undefined ? IScope<NonNullable<T[K]>, O> : ILeafScope<T[K], O>
-  set(props?: T): UnaryFunc<O, T>
+  merge(props?: T): UnaryFunc<O, T>
   get(): UnaryFunc<O, T>
 }
 
 interface ILeafScope<T, O = T> extends Omit<IScope<T, O>, 'find'> {}
 
 export class Scope<T, O = T> implements IScope<T, O> {
-  public static init<T, O = T>(): Omit<IScope<T, O>, 'set'> {
+  public static init<T, O = T>(): Omit<IScope<T, O>, 'merge'> {
     return {
       f(key) {
         return new Scope(this as any, key) as any
@@ -38,7 +38,7 @@ export class Scope<T, O = T> implements IScope<T, O> {
     return child as any
   }
 
-  public set(data: T): UnaryFunc<O, T> {
+  public merge(data: T): UnaryFunc<O, T> {
     return (props) => {
       const oldOrigin = this.get()(props)
       const path = this.path
