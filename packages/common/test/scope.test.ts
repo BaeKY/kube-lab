@@ -150,5 +150,39 @@ describe('Scope', () => {
       expect(deeplyCopiedSample).toMatchObject(expected)
       expect(deeplyCopiedSample.spec?.template.spec?.containers[1]).toMatchObject(props)
     }
+
+    {
+      let deeplyCopiedSample = {
+        metadata: {
+          annotations: {
+            'kubernetes.io/test': 'hello'
+          },
+          creationTimestamp: now
+        }
+      }
+      const props = {
+        name: 'database',
+        image: 'postgresql:15.0.1'
+      }
+
+      scope.f('spec').f('template').f('spec').f('containers').f(0).merge(props)(deeplyCopiedSample)
+      const expected = {
+        metadata: {
+          annotations: {
+            'kubernetes.io/test': 'hello'
+          },
+          creationTimestamp: now
+        },
+        spec: {
+          template: {
+            spec: {
+              containers: [props]
+            }
+          }
+        }
+      }
+      // console.log(JSON.stringify({ set2: deeplyCopiedSample }, null, 2))
+      expect(deeplyCopiedSample).toMatchObject(expected)
+    }
   })
 })
