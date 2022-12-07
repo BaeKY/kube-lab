@@ -16,15 +16,17 @@
   "packageManager": "pnpm@7.17.0^",
   "dependencies": {
     "@types/jest": "^29.2.4",
-    "@types/node": "^18.11.10",
+    "@types/lodash": "^4.14.191",
+    "@types/node": "^18.11.11",
     "@types/yamljs": "^0.2.31",
-    "cdk8s": "^2.5.65",
-    "cdk8s-cli": "^2.1.67",
-    "constructs": "^10.1.180",
+    "cdk8s": "^2.5.67",
+    "cdk8s-cli": "^2.1.69",
+    "constructs": "^10.1.182",
     "jest": "^29.3.1",
     "reflect-metadata": "^0.1.13",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
+    "ts-toolbelt": "^9.6.0",
     "typescript": "^4.9.3",
     "zod": "^3.19.1"
   }

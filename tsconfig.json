@@ -4,12 +4,13 @@
     "target": "ES2022",
     "module": "CommonJS",
     "strict": true,
+    "strictNullChecks": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
   },
   "exclude": ["node_modules", "dist"]
 }
