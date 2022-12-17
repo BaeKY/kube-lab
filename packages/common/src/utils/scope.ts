@@ -1,63 +1,82 @@
 import _ from 'lodash'
-import { UnaryFunc } from '../types'
-import { alloc, prop } from './get-prop'
+import { A } from 'ts-toolbelt'
+import { alloc } from './get-prop'
 
-export interface IScope<T, O = T> {
-  readonly path: (T extends any[] ? number : keyof T)[]
-  f<K extends keyof T>(
-    key: T extends Array<any> ? number : K
-  ): T[K] extends object | undefined ? IScope<NonNullable<T[K]>, O> : ILeafScope<T[K], O>
-  merge(props?: T): UnaryFunc<O, T>
-  get(): UnaryFunc<O, T>
+type _CursorNext<T, K extends keyof T, O> = T[K] extends object | undefined
+  ? _Cursor<NonNullable<T[K]>, O>
+  : T extends Array<unknown>
+  ? _Cursor<NonNullable<T[any]>, O>
+  : _CursorLast<T[K], O>
+
+interface _Cursor<T, O = T> {
+  z: <K extends keyof T>(key: T extends Array<unknown> ? number : K) => _CursorNext<T, K, O>
+  get: () => T
+  getTarget: () => O
+  /**
+   * 현재 Scope 덮어씀
+   * @param data
+   * @returns
+   */
+  set: (data: T) => void
+  merge: (data: T) => void
+  remove: () => void
 }
 
-interface ILeafScope<T, O = T> extends Omit<IScope<T, O>, 'find'> {}
+type _CursorLast<T, O = T> = Omit<_Cursor<T, O>, 'z'>
 
-export class Scope<T, O = T> implements IScope<T, O> {
-  public static init<T, O = T>(): Omit<IScope<T, O>, 'merge'> {
-    return {
-      f(key) {
-        return new Scope(this as any, key) as any
-      },
-      get() {
-        return (props) => props as any
-      },
-      path: []
+class ObjectEditor<T, O> implements _Cursor<T, O> {
+  public static init<T, O>(target: NonNullable<O>): Omit<ObjectEditor<T, O>, 'remove'> {
+    return new ObjectEditor<T, O>(target)
+  }
+
+  private constructor(private readonly target: NonNullable<O>, private readonly keys: A.Key[] = []) {
+    this.target = target
+    this.keys = keys
+  }
+
+  public z<K extends keyof T>(key: T extends unknown[] ? number : K): _CursorNext<T, K, O> {
+    return new ObjectEditor<any, any>(this.target, [...this.keys, key]) as any
+  }
+
+  public get(): T {
+    if (this.isRoot) {
+      return this.getTarget() as any
     }
+    return _.get(this.target, this.keys)
   }
 
-  private constructor(private readonly parent: any, private readonly key: T extends any[] ? number : keyof T) {
-    this.parent = parent
-    this.key = key
+  public getTarget(): O {
+    return _.cloneDeep(this.target)
   }
 
-  public f<K extends keyof T>(
-    key: T extends any[] ? number : K
-  ): T[K] extends object | undefined ? IScope<NonNullable<T[K]>, O> : ILeafScope<T[K], O> {
-    const child = new Scope<T[K], O>(this as any, key as any)
-    return child as any
-  }
-
-  public merge(data: T): UnaryFunc<O, T> {
-    return (props) => {
-      const oldOrigin = this.get()(props)
-      const path = this.path
-
-      alloc(data, ...path)(props as any)
-
-      return oldOrigin
+  public set(data: T): void {
+    if (this.isRoot) {
+      const keys = Object.keys(this.target)
+      keys.forEach((key) => {
+        _.unset(this.target, key)
+      })
+      Object.assign(this.target, data)
+      return
     }
+    _.set(this.target, this.keys, data)
   }
 
-  public get(): UnaryFunc<O, T> {
-    const keys = this.path
-    return (props: O): T => prop(...keys)(props)
+  public merge(data: T): void {
+    if (!this.isRoot && ['string', 'number'].some((type) => type === typeof data)) {
+      this.set(data)
+      return
+    }
+    const mergeTargetParam = _.merge(this.get(), data)
+    this.set(mergeTargetParam)
   }
 
-  public get path(): typeof this.key[] {
-    const path = [this.key]
-    const parent = this.parent
-    path.unshift(...parent.path)
-    return path
+  public remove(): void {
+    _.unset(this.target, this.keys)
+  }
+
+  private get isRoot(): boolean {
+    return this.keys == null || this.keys.length === 0
   }
 }
+
+export const scope = <T>(target: NonNullable<T>) => ObjectEditor.init<T, T>(target)

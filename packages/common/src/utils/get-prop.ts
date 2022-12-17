@@ -1,7 +1,8 @@
 import _ from 'lodash'
+import { A } from 'ts-toolbelt'
 
 export const prop =
-  (...paths: (string | symbol | number)[]) =>
+  (...paths: A.Key[]) =>
   (target: any) => {
     if (target[paths[0]] == null) {
       return undefined
@@ -13,7 +14,7 @@ export const prop =
   }
 
 export const alloc =
-  (allocProp: any, ...keys: (string | symbol | number)[]) =>
+  (allocProp: any, ...keys: A.Key[]) =>
   (target: object) => {
     const result = keys.reduceRight((sub, key) => {
       if (typeof key === 'number') {

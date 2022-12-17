@@ -1,4 +1,4 @@
-import { prop, Scope } from '../src/index'
+import { prop } from '../src/index'
 import { KubeDeploymentProps } from '@package/k8s-generated'
 
 describe('Scope', () => {
