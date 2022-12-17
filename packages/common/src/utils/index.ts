@@ -1,2 +1,1 @@
-export * from './get-prop'
-export * from './scope'
+export { scope } from './scope'

@@ -1,15 +1,14 @@
 import _ from 'lodash'
 import { A } from 'ts-toolbelt'
-import { alloc } from './get-prop'
 
-type _CursorNext<T, K extends keyof T, O> = T[K] extends object | undefined
-  ? _Cursor<NonNullable<T[K]>, O>
+export type _ObjectEditorCursor<T, K extends keyof T, O> = T[K] extends object | undefined
+  ? _ObjectEditor<NonNullable<T[K]>, O>
   : T extends Array<unknown>
-  ? _Cursor<NonNullable<T[any]>, O>
-  : _CursorLast<T[K], O>
+  ? _ObjectEditor<NonNullable<T[any]>, O>
+  : _ObjectEditorCursorLast<T[K], O>
 
-interface _Cursor<T, O = T> {
-  z: <K extends keyof T>(key: T extends Array<unknown> ? number : K) => _CursorNext<T, K, O>
+export interface _ObjectEditor<T, O = T> {
+  z: <K extends keyof T>(key: T extends Array<unknown> ? number : K) => _ObjectEditorCursor<T, K, O>
   get: () => T
   getTarget: () => O
   /**
@@ -22,9 +21,9 @@ interface _Cursor<T, O = T> {
   remove: () => void
 }
 
-type _CursorLast<T, O = T> = Omit<_Cursor<T, O>, 'z'>
+export type _ObjectEditorCursorLast<T, O = T> = Omit<_ObjectEditor<T, O>, 'z'>
 
-class ObjectEditor<T, O> implements _Cursor<T, O> {
+export class ObjectEditor<T, O> implements _ObjectEditor<T, O> {
   public static init<T, O>(target: NonNullable<O>): Omit<ObjectEditor<T, O>, 'remove'> {
     return new ObjectEditor<T, O>(target)
   }
@@ -34,7 +33,7 @@ class ObjectEditor<T, O> implements _Cursor<T, O> {
     this.keys = keys
   }
 
-  public z<K extends keyof T>(key: T extends unknown[] ? number : K): _CursorNext<T, K, O> {
+  public z<K extends keyof T>(key: T extends unknown[] ? number : K): _ObjectEditorCursor<T, K, O> {
     return new ObjectEditor<any, any>(this.target, [...this.keys, key]) as any
   }
 
