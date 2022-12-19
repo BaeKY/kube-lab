@@ -1,10 +1,25 @@
-import { EnvVar, KubeConfigMap, KubeConfigMapProps } from '@package/k8s-generated'
+import { ConfigMapKeySelector, EnvVar, KubeConfigMap, KubeConfigMapProps } from '@package/k8s-generated'
 import { ComponentLoader } from '../base-loader'
 import { IEnvVarFactory, IVolumeFactory, Volume } from '../container-factory'
 
-export class ConfigMapLoader extends ComponentLoader<typeof KubeConfigMap> implements IVolumeFactory, IEnvVarFactory {
+export class ConfigMapLoader
+  extends ComponentLoader<typeof KubeConfigMap>
+  implements IVolumeFactory, IEnvVarFactory<'configMapKeyRef'>
+{
   public constructor(id: string, props: KubeConfigMapProps) {
     super(KubeConfigMap, id, props)
+  }
+
+  public createEnvVars<T extends { [key: string]: string } = Record<string, string>>(
+    params: {
+      name: keyof T
+      options?: {
+        key?: string
+        optional?: boolean
+      }
+    }[]
+  ): EnvVar[] {
+    return params.map(({ name, options }) => this.createEnvVar(name, options))
   }
 
   public createVolume<N extends string = string>(name: N): Volume<N, 'configMap'> {
@@ -15,14 +30,20 @@ export class ConfigMapLoader extends ComponentLoader<typeof KubeConfigMap> imple
     })
   }
 
-  public createEnvVar(name: string, path: string, optional?: boolean): EnvVar {
+  public createEnvVar<T extends { [key: string]: string } = Record<string, string>>(
+    name: keyof T,
+    options?: {
+      key?: string
+      optional?: boolean
+    }
+  ): EnvVar {
     return {
-      name,
+      name: name as string,
       valueFrom: {
         configMapKeyRef: {
           name: this.propScope.z('metadata').z('name').get(),
-          key: path,
-          optional
+          key: options?.key ?? (name as string),
+          optional: options?.optional
         }
       }
     }

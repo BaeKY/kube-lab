@@ -2,7 +2,10 @@ import { EnvVar, KubeSecret, KubeSecretProps } from '@package/k8s-generated'
 import { ComponentLoader } from '../base-loader'
 import { IEnvVarFactory, IVolumeFactory, Volume } from '../container-factory'
 
-export class SecretLoader extends ComponentLoader<typeof KubeSecret> implements IVolumeFactory, IEnvVarFactory {
+export class SecretLoader
+  extends ComponentLoader<typeof KubeSecret>
+  implements IVolumeFactory, IEnvVarFactory<'secretKeyRef'>
+{
   public constructor(id: string, props: KubeSecretProps) {
     super(KubeSecret, id, props)
   }
@@ -15,14 +18,32 @@ export class SecretLoader extends ComponentLoader<typeof KubeSecret> implements 
     })
   }
 
-  public createEnvVar(name: string, path: string, optional?: boolean): EnvVar {
+  public createEnvVars<T extends { [key: string]: string } = Record<string, string>>(
+    params: {
+      name: keyof T
+      options?: {
+        key?: string
+        optional?: boolean
+      }
+    }[]
+  ): EnvVar[] {
+    return params.map(({ name, options }) => this.createEnvVar(name, options))
+  }
+
+  public createEnvVar<T extends { [key: string]: string } = Record<string, string>>(
+    name: keyof T,
+    options?: {
+      key?: string
+      optional?: boolean
+    }
+  ): EnvVar {
     return {
-      name,
+      name: name as string,
       valueFrom: {
         secretKeyRef: {
           name: this.propScope.z('metadata').z('name').get(),
-          key: path,
-          optional
+          key: options?.key ?? (name as string),
+          optional: options?.optional
         }
       }
     }

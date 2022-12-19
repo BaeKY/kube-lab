@@ -1,4 +1,4 @@
-import { KubeDeployment } from '@package/k8s-generated/src'
+import { EnvVar, KubeDeployment } from '@package/k8s-generated/src'
 import { ComponentLoader, ConfigMapLoader } from '../src'
 
 describe('component-loader', () => {
@@ -61,5 +61,50 @@ describe('component-loader', () => {
 
     expect(propsData).toStrictEqual(data)
     expect(name).toEqual(cmLoader.propScope.z('metadata').z('name').get())
+
+    const envVars = [
+      cmLoader.createEnvVar<typeof data>('NODE_ENV'),
+      cmLoader.createEnvVar<typeof data>('hello', {
+        optional: true
+      })
+    ]
+
+    expect(envVars).toMatchObject([
+      {
+        name: 'NODE_ENV',
+        valueFrom: {
+          configMapKeyRef: {
+            key: 'NODE_ENV',
+            name
+          }
+        }
+      } as EnvVar,
+      {
+        name: 'hello',
+        valueFrom: {
+          configMapKeyRef: {
+            key: 'hello',
+            name,
+            optional: true
+          }
+        }
+      } as EnvVar
+    ])
+
+    const expected = cmLoader.createEnvVars<typeof data>([
+      {
+        name: 'NODE_ENV'
+      },
+      {
+        name: 'hello',
+        options: {
+          optional: true
+        }
+      }
+    ])
+
+    console.log(JSON.stringify(expected, null, 2))
+
+    expect(envVars).toMatchObject(expected)
   })
 })
