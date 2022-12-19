@@ -65,8 +65,17 @@ export class ObjectEditor<T, O> implements _ObjectEditor<T, O> {
       this.set(data)
       return
     }
-    const mergeTargetParam = _.merge(this.get(), data)
-    this.set(mergeTargetParam)
+    let currentData = this.get()
+    if (data instanceof Array<unknown>) {
+      currentData = _.concat(currentData ?? [], data) as any
+    } else {
+      _.mergeWith(currentData, data, (objValue: any, srcValue: any) => {
+        if (_.isArray(objValue)) {
+          return objValue.concat(srcValue)
+        }
+      })
+    }
+    this.set(currentData ?? data)
   }
 
   public remove(): void {
