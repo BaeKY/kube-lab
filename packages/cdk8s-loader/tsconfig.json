@@ -1,0 +1,4 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["src/**/*", "test/**/*", "../cdk8s-loader"]
+}

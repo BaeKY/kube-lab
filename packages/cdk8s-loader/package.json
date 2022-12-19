@@ -1,0 +1,19 @@
+{
+  "name": "@package/cdk8s-loader",
+  "version": "0.0.1",
+  "main": "src",
+  "repository": "https://github.com/BaeKY/k8s-lab.git",
+  "author": {
+    "name": "Bob",
+    "email": "baeky.dev@gmail.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch --passWithNoTests"
+  },
+  "dependencies": {
+    "@package/common": "workspace:^0.0.1",
+    "@package/k8s-generated": "workspace:^1.25.0"
+  }
+}
