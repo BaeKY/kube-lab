@@ -52,7 +52,7 @@ export type VolumeOptions<K extends keyof Omit<VolumeOrigin, 'name'>> = {
 }
 
 export class Volume<N extends string = string, S extends keyof Omit<VolumeOrigin, 'name'> = any> implements IVolume<N> {
-  public static create<S extends keyof Omit<VolumeOrigin, 'name'>, N extends string>(
+  public static create<S extends keyof Omit<VolumeOrigin, 'name'>, N extends string = string>(
     name: N,
     options: VolumeOptions<S>
   ): Volume<N, S> {

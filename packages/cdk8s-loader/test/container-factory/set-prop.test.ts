@@ -1,5 +1,5 @@
 import { Container, ContainerPort } from '@package/k8s-generated/src'
-import { ContainerFactory } from '../src/container-builder'
+import { ContainerFactory } from '../../src/container-factory'
 
 describe('container-factory', () => {
   let containerFactory: ContainerFactory
@@ -11,29 +11,6 @@ describe('container-factory', () => {
   })
 
   describe('setProp', () => {
-    test('Normal Case - 1', () => {
-      const ports = [
-        {
-          containerPort: 6379
-        }
-      ]
-      const livenessProbe = {
-        httpGet: {
-          port: {
-            value: 80
-          }
-        }
-      }
-      let actual = containerFactory.setProp('ports', ports).setProp('livenessProbe', livenessProbe).create()
-
-      expect(actual).toStrictEqual({
-        name,
-        image,
-        ports,
-        livenessProbe
-      } as Container)
-    })
-
     test('Overwrite', () => {
       const ports = [
         {
@@ -76,31 +53,6 @@ describe('container-factory', () => {
         image,
         ports: portsOverwrite,
         livenessProbe: livenessProbeOverwrite
-      } as Container)
-    })
-  })
-  describe('updateProp', () => {
-    test('Normal', () => {
-      const ports = [
-        {
-          containerPort: 6379
-        }
-      ]
-      const livenessProbe = {
-        httpGet: {
-          port: {
-            value: 80
-          }
-        }
-      }
-
-      const actual = containerFactory.updateProp('ports', ports).updateProp('livenessProbe', livenessProbe).create()
-
-      expect(actual).toMatchObject({
-        name,
-        image,
-        ports,
-        livenessProbe
       } as Container)
     })
   })

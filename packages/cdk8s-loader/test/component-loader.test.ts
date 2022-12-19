@@ -52,11 +52,14 @@ describe('component-loader', () => {
     }
     const cmLoader = new ConfigMapLoader('cm-loader', {
       metadata: {
-        name: 'hello'
+        name
       },
       data
     })
 
     const propsData = cmLoader.getData<typeof data>()
+
+    expect(propsData).toStrictEqual(data)
+    expect(name).toEqual(cmLoader.propScope.z('metadata').z('name').get())
   })
 })

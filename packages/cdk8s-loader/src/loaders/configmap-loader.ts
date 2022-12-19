@@ -1,6 +1,6 @@
 import { EnvVar, KubeConfigMap, KubeConfigMapProps } from '@package/k8s-generated'
 import { ComponentLoader } from '../base-loader'
-import { IEnvVarFactory, IVolumeFactory, Volume } from '../container-builder'
+import { IEnvVarFactory, IVolumeFactory, Volume } from '../container-factory'
 
 export class ConfigMapLoader extends ComponentLoader<typeof KubeConfigMap> implements IVolumeFactory, IEnvVarFactory {
   public constructor(id: string, props: KubeConfigMapProps) {
@@ -45,7 +45,3 @@ export class ConfigMapLoader extends ComponentLoader<typeof KubeConfigMap> imple
     return this
   }
 }
-
-const vol = new ConfigMapLoader('', {}).createVolume('testing')
-
-const volumeName = vol.name

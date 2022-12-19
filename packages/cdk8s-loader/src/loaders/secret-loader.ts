@@ -1,6 +1,6 @@
 import { EnvVar, KubeSecret, KubeSecretProps } from '@package/k8s-generated'
 import { ComponentLoader } from '../base-loader'
-import { IEnvVarFactory, IVolumeFactory, Volume } from '../container-builder'
+import { IEnvVarFactory, IVolumeFactory, Volume } from '../container-factory'
 
 export class SecretLoader extends ComponentLoader<typeof KubeSecret> implements IVolumeFactory, IEnvVarFactory {
   public constructor(id: string, props: KubeSecretProps) {
