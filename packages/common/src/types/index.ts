@@ -1,5 +1,5 @@
 export type PartialRecursive<T extends object> = {
-  [k in keyof T]?: T[k] extends object ? PartialRecursive<T[k]> : T
+  [k in keyof T]?: T[k] extends object ? PartialRecursive<T[k]> : T[k]
 }
 
 export type NonNullableRecursive<T> = {
