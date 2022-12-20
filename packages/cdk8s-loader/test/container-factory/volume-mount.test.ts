@@ -7,7 +7,7 @@ describe('container-factory', () => {
   const [name, image] = ['cache-container', 'redis:6.2.6']
 
   beforeEach(() => {
-    containerFactory = new ContainerFactory(name, image)
+    containerFactory = new ContainerFactory({ name, image })
   })
 
   describe('volume-mounts', () => {
@@ -44,7 +44,8 @@ describe('container-factory', () => {
       const secret = new SecretLoader('my-secret', {
         data: {
           'index.js': Buffer.from('your-logic-here').toString('base64')
-        }
+        },
+        type: 'Opaque'
       })
 
       const secretVolume = secret.createVolume('secret')

@@ -7,7 +7,7 @@ describe('container-factory', () => {
   const [name, image] = ['cache-container', 'redis:6.2.6']
 
   beforeEach(() => {
-    containerFactory = new ContainerFactory(name, image)
+    containerFactory = new ContainerFactory({ name, image })
   })
 
   describe('setProp', () => {
@@ -24,7 +24,7 @@ describe('container-factory', () => {
           }
         }
       }
-      let actual = containerFactory.setProp('ports', ports).setProp('livenessProbe', livenessProbe).create()
+      let actual = containerFactory.set('ports', ports).set('livenessProbe', livenessProbe).create()
 
       expect(actual).toStrictEqual({
         name,
@@ -43,10 +43,7 @@ describe('container-factory', () => {
         }
       }
 
-      actual = containerFactory
-        .setProp('ports', portsOverwrite)
-        .setProp('livenessProbe', livenessProbeOverwrite)
-        .create()
+      actual = containerFactory.set('ports', portsOverwrite).set('livenessProbe', livenessProbeOverwrite).create()
 
       expect(actual).toStrictEqual({
         name,

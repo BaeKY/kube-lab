@@ -2,11 +2,21 @@ import { EnvVar, KubeSecret, KubeSecretProps } from '@package/k8s-generated'
 import { ComponentLoader } from '../base-loader'
 import { IEnvVarFactory, IVolumeFactory, Volume } from '../container-factory'
 
+type KubeSecretType =
+  | 'Opaque'
+  | 'kubernetes.io/service-account-token'
+  | 'kubernetes.io/dockercfg'
+  | 'kubernetes.io/dockerconfigjson'
+  | 'kubernetes.io/basic-auth'
+  | 'kubernetes.io/ssh-auth'
+  | 'kubernetes.io/tls'
+  | 'bootstrap.kubernetes.io/token'
+
 export class SecretLoader
   extends ComponentLoader<typeof KubeSecret>
   implements IVolumeFactory, IEnvVarFactory<'secretKeyRef'>
 {
-  public constructor(id: string, props: KubeSecretProps) {
+  public constructor(id: string, props: KubeSecretProps & { type?: KubeSecretType }) {
     super(KubeSecret, id, props)
   }
 
@@ -63,6 +73,11 @@ export class SecretLoader
 
   public setData(data: Record<string, string>): this {
     this.propScope.z('data').set(data)
+    return this
+  }
+
+  public updateData(data: Record<string, string>): this {
+    this.propScope.z('data').merge(data)
     return this
   }
 }

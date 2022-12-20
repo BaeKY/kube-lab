@@ -5,34 +5,21 @@ import { IVolumeMountable, Volume } from './volume-factory'
 
 export class ContainerFactory implements IVolumeMountable {
   private readonly containerScope!: Omit<ObjectEditor<Container, Container>, 'remove'>
-  public constructor(name: string, image?: string) {
-    this.containerScope = scope({
-      name,
-      image
-    })
+  public constructor(params: Container) {
+    this.containerScope = scope(params)
   }
 
   public getContainerScope() {
     return this.containerScope
   }
 
-  public setProps(container: Container): this {
-    this.containerScope.set(container)
-    return this
-  }
-
-  public updateProps(container: Container): this {
-    this.containerScope.merge(container)
-    return this
-  }
-
-  public setProp<K extends keyof Container>(key: K, value: Container[K]): this {
+  public set<K extends keyof Container>(key: K, value: Container[K]): this {
     this.containerScope.z(key).set(value as any)
     return this
   }
 
-  public updateProp(key: keyof Container, value: Container[typeof key]): this {
-    this.containerScope.z(key).merge(value)
+  public update<K extends keyof Container>(key: K, value: Container[K]): this {
+    this.containerScope.z(key).merge(value as any)
     return this
   }
 

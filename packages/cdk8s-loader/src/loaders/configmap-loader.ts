@@ -1,4 +1,4 @@
-import { ConfigMapKeySelector, EnvVar, KubeConfigMap, KubeConfigMapProps } from '@package/k8s-generated'
+import { EnvVar, KubeConfigMap, KubeConfigMapProps } from '@package/k8s-generated'
 import { ComponentLoader } from '../base-loader'
 import { IEnvVarFactory, IVolumeFactory, Volume } from '../container-factory'
 
@@ -63,6 +63,11 @@ export class ConfigMapLoader
 
   public setData(data: Record<string, string>): this {
     this.propScope.z('data').set(data)
+    return this
+  }
+
+  public updateData(data: Record<string, string>): this {
+    this.propScope.z('data').merge(data)
     return this
   }
 }

@@ -7,7 +7,7 @@ describe('container-factory', () => {
   const [name, image] = ['cache-container', 'redis:6.2.6']
 
   beforeEach(() => {
-    containerFactory = new ContainerFactory(name, image)
+    containerFactory = new ContainerFactory({ name, image })
   })
 
   describe('updateProp', () => {
@@ -25,7 +25,7 @@ describe('container-factory', () => {
         }
       }
 
-      let actual = containerFactory.updateProp('ports', ports).updateProp('livenessProbe', livenessProbe).create()
+      let actual = containerFactory.update('ports', ports).update('livenessProbe', livenessProbe).create()
 
       expect(actual).toMatchObject({
         name,
@@ -48,10 +48,7 @@ describe('container-factory', () => {
         }
       }
 
-      actual = containerFactory
-        .updateProp('ports', portsOverwrite)
-        .updateProp('livenessProbe', livenessProbeOverwrite)
-        .create()
+      actual = containerFactory.update('ports', portsOverwrite).update('livenessProbe', livenessProbeOverwrite).create()
 
       expect(actual).toStrictEqual({
         name,

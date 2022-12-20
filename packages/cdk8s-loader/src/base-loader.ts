@@ -1,5 +1,5 @@
 import { scope } from '@package/common'
-import { ApiObject, App, Chart, ChartProps } from 'cdk8s'
+import { ApiObject, App, Chart, ChartProps, Include } from 'cdk8s'
 
 interface Component<T extends typeof ApiObject = any> {
   readonly id: string
@@ -24,7 +24,8 @@ export class ComponentLoader<T extends typeof ApiObject> implements Component<T>
 }
 
 export class ChartLoader {
-  readonly components: Map<string, Component> = new Map()
+  private readonly components: Map<string, Component> = new Map()
+  private readonly includeFactories: Array<(chart: Chart, props: ChartProps) => Include> = []
 
   public constructor(public readonly id: string, public readonly props: ChartProps) {}
 
@@ -33,7 +34,22 @@ export class ChartLoader {
     return this
   }
 
-  public load(chart: App): Chart {
-    return new Chart(chart, this.id, this.props)
+  public addInclude(includeFactory: (chart: Chart, props: typeof this.props) => Include) {
+    this.includeFactories.push(includeFactory)
+    return this
+  }
+
+  public load(app: App): Chart {
+    const chart = new Chart(app, this.id, this.props)
+    let prevApiObject: ApiObject | null = null
+    this.components.forEach((component, id) => {
+      const apiObject = component.load(chart)
+      if (prevApiObject != null) {
+        apiObject.addDependency(prevApiObject)
+      }
+      prevApiObject = apiObject
+    })
+    this.includeFactories.forEach((includeFactory) => includeFactory(chart, this.props))
+    return chart
   }
 }

@@ -1,27 +1,104 @@
-import { EnvVar, KubeDeployment } from '@package/k8s-generated/src'
-import { ComponentLoader, ConfigMapLoader } from '../src'
+import { EnvVar } from '@package/k8s-generated/src'
+import { ConfigMapLoader, DeployLoader, SecretLoader } from '../src'
+import _ from 'lodash'
 
 describe('component-loader', () => {
   test('deployment', () => {
-    const name = 'deployment'
+    const deploymentName = 'deployment'
     const labels = {
-      'kubernetes.io/component': 'app'
+      'kubernetes.io/component': 'app',
+      'kubernetes.io/name': deploymentName
     }
 
-    const dpLoader = new ComponentLoader(KubeDeployment, 'deployment-id', {
+    const cmLoader = new ConfigMapLoader('config-map-id', {
       metadata: {
-        name,
-        labels
+        name: 'my-configmap'
       },
-      spec: {} as any
+      data: {
+        NODE_ENV: 'production'
+      }
     })
 
-    const originProps = { ...dpLoader.props }
+    const secretLoader = new SecretLoader('secret-id', {
+      metadata: {
+        name: 'my-secret'
+      },
+      type: 'kubernetes.io/tls',
+      data: {
+        'ca.pem': 'ca',
+        'cert.pem': 'cert',
+        'key.pem': 'key'
+      }
+    })
+
+    const cmVolume = cmLoader.createVolume('configmap-volume')
+    const secretVolume = secretLoader.createVolume('secret-tls')
+
+    const dpLoader = new DeployLoader('deployment-id', {
+      metadata: {
+        name: deploymentName,
+        labels
+      },
+      spec: {
+        selector: {
+          matchLabels: labels
+        },
+        replicas: 1,
+        template: {
+          metadata: {
+            name: deploymentName,
+            labels
+          },
+          spec: {
+            volumes: [cmVolume, secretVolume],
+            containers: [
+              {
+                name: 'main',
+                image: 'sample-app:1.0.0',
+                volumeMounts: [
+                  cmVolume.createMount({
+                    mountPath: '/app/config'
+                  }),
+                  secretVolume.createMount({
+                    mountPath: '/tls'
+                  })
+                ],
+                env: [
+                  cmLoader.createEnvVar('NODE_ENV'),
+                  {
+                    name: 'TLS_CERT_PATH',
+                    value: '/tls/cert.pem'
+                  },
+                  {
+                    name: 'TLS_KEY_PATH',
+                    value: '/tls/key.pem'
+                  }
+                ],
+                ports: [
+                  {
+                    containerPort: 80,
+                    name: 'http'
+                  },
+                  {
+                    containerPort: 443,
+                    name: 'https'
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    })
+
+    const originProps = _.cloneDeep(dpLoader.props)
 
     const updateData = {
       metadata: {
-        name,
-        labels
+        name: 'UPDATED!!',
+        labels: {
+          is: 'UPDATED!!'
+        }
       },
       spec: {
         containers: [
@@ -39,7 +116,19 @@ describe('component-loader', () => {
       ...originProps,
       spec: {
         ...originProps.spec,
-        template: updateData
+        template: {
+          metadata: {
+            name: updateData.metadata.name,
+            labels: {
+              ...originProps.spec?.template?.metadata?.labels,
+              ...updateData.metadata.labels
+            }
+          },
+          spec: {
+            ...originProps.spec?.template?.spec,
+            containers: [...(originProps.spec?.template?.spec?.containers ?? []), ...updateData.spec.containers]
+          }
+        }
       }
     })
   })
@@ -102,8 +191,6 @@ describe('component-loader', () => {
         }
       }
     ])
-
-    console.log(JSON.stringify(expected, null, 2))
 
     expect(envVars).toMatchObject(expected)
   })
