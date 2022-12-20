@@ -42,5 +42,14 @@
     "**/node_modules/*/**": true,
     "**/.hg/store/**": true
   },
-  "explorerExclude.backup": {}
+  "explorerExclude.backup": {},
+  "cSpell.words": [
+    "cephfs",
+    "flocker",
+    "glusterfs",
+    "iscsi",
+    "portworx",
+    "quobyte",
+    "storageos"
+  ]
 }

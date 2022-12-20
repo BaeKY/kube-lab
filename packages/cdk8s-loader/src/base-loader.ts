@@ -1,6 +1,7 @@
 import { scope } from '@package/common'
 import { ApiObject, App, Chart, ChartProps, Include } from 'cdk8s'
-import { HelmLoader } from './loaders'
+import _ from 'lodash'
+import { HelmLoader } from './loaders/helm-loader'
 
 interface IComponentLoader<T extends typeof ApiObject = any> {
   readonly id: string
@@ -25,41 +26,39 @@ export class ComponentLoader<T extends typeof ApiObject> implements IComponentLo
 }
 
 export class ChartLoader {
-  private readonly components: Map<string, IComponentLoader> = new Map()
-  private readonly includeFactories: Array<(chart: Chart, props: ChartProps) => Include> = []
-  private readonly helmLoaderCreators: Array<(chartProps: ChartProps) => HelmLoader> = []
+  private readonly children: Array<
+    IComponentLoader | ((chart: Chart, props: ChartProps) => Include) | ((chartProps: ChartProps) => HelmLoader)
+  > = new Array()
 
   public constructor(public readonly id: string, public readonly props: ChartProps) {}
 
   public addComponent(component: IComponentLoader) {
-    this.components.set(component.id, component)
+    this.children.push(component)
     return this
   }
 
   public addInclude(includeFactory: (chart: Chart, props: typeof this.props) => Include) {
-    this.includeFactories.push(includeFactory)
+    this.children.push(includeFactory)
     return this
   }
 
   public addHelm(helmLoaderCreate: (chartProps: ChartProps) => HelmLoader) {
-    this.helmLoaderCreators.push(helmLoaderCreate)
+    this.children.push(helmLoaderCreate)
     return this
   }
 
   public load(app: App): Chart {
     const chart = new Chart(app, this.id, this.props)
-    let prevApiObject: ApiObject | null = null
-    this.components.forEach((componentLoader) => {
-      const apiObject = componentLoader.load(chart)
-      if (prevApiObject != null) {
-        apiObject.addDependency(prevApiObject)
+    this.children.map((child) => {
+      if (_.isFunction(child)) {
+        const temp = child(chart, this.props)
+        if (temp instanceof HelmLoader) {
+          temp.load(chart)
+        }
+      } else {
+        child.load(chart)
       }
-      prevApiObject = apiObject
     })
-    this.helmLoaderCreators.forEach((helmLoaderCreate) => {
-      helmLoaderCreate(this.props).load(chart)
-    })
-    this.includeFactories.forEach((includeFactory) => includeFactory(chart, this.props))
     return chart
   }
 }
