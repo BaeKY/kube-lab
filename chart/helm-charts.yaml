@@ -1,0 +1,19 @@
+charts:
+  - repo: metallb
+    chart: metallb
+    url: https://metallb.github.io/metallb
+  - repo: ingress-nginx
+    chart: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+  - repo: prometheus-community
+    chart: kube-prometheus-stack
+    url: https://prometheus-community.github.io/helm-charts
+  - repo: jenkins
+    chart: jenkins
+    url: https://charts.jenkins.io
+  - repo: coredns
+    chart: coredns
+    url: https://coredns.github.io/helm
+  - repo: external-dns
+    chart: external-dns
+    url: https://kubernetes-sigs.github.io/external-dns/

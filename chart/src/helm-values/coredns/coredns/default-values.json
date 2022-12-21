@@ -1,0 +1,181 @@
+{
+  "image": {
+    "repository": "coredns/coredns",
+    "tag": "1.9.4",
+    "pullPolicy": "IfNotPresent"
+  },
+  "replicaCount": 1,
+  "resources": {
+    "limits": {
+      "cpu": "100m",
+      "memory": "128Mi"
+    },
+    "requests": {
+      "cpu": "100m",
+      "memory": "128Mi"
+    }
+  },
+  "rollingUpdate": {
+    "maxUnavailable": 1,
+    "maxSurge": "25%"
+  },
+  "terminationGracePeriodSeconds": 30,
+  "podAnnotations": {},
+  "serviceType": "ClusterIP",
+  "prometheus": {
+    "service": {
+      "enabled": false,
+      "annotations": {
+        "prometheus.io/scrape": "true",
+        "prometheus.io/port": "9153"
+      }
+    },
+    "monitor": {
+      "enabled": false,
+      "additionalLabels": {},
+      "namespace": "",
+      "interval": ""
+    }
+  },
+  "service": {
+    "name": "",
+    "annotations": {}
+  },
+  "serviceAccount": {
+    "create": false,
+    "name": "",
+    "annotations": {}
+  },
+  "rbac": {
+    "create": true,
+    "pspEnable": false
+  },
+  "isClusterService": true,
+  "priorityClassName": "",
+  "servers": [
+    {
+      "zones": [
+        {
+          "zone": "."
+        }
+      ],
+      "port": 53,
+      "plugins": [
+        {
+          "name": "errors"
+        },
+        {
+          "name": "health",
+          "configBlock": "lameduck 5s"
+        },
+        {
+          "name": "ready"
+        },
+        {
+          "name": "kubernetes",
+          "parameters": "cluster.local in-addr.arpa ip6.arpa",
+          "configBlock": "pods insecure\nfallthrough in-addr.arpa ip6.arpa\nttl 30"
+        },
+        {
+          "name": "prometheus",
+          "parameters": "0.0.0.0:9153"
+        },
+        {
+          "name": "forward",
+          "parameters": ". /etc/resolv.conf"
+        },
+        {
+          "name": "cache",
+          "parameters": 30
+        },
+        {
+          "name": "loop"
+        },
+        {
+          "name": "reload"
+        },
+        {
+          "name": "loadbalance"
+        }
+      ]
+    }
+  ],
+  "extraConfig": {},
+  "livenessProbe": {
+    "enabled": true,
+    "initialDelaySeconds": 60,
+    "periodSeconds": 10,
+    "timeoutSeconds": 5,
+    "failureThreshold": 5,
+    "successThreshold": 1
+  },
+  "readinessProbe": {
+    "enabled": true,
+    "initialDelaySeconds": 30,
+    "periodSeconds": 10,
+    "timeoutSeconds": 5,
+    "failureThreshold": 5,
+    "successThreshold": 1
+  },
+  "affinity": {},
+  "topologySpreadConstraints": [],
+  "nodeSelector": {},
+  "tolerations": [],
+  "podDisruptionBudget": {},
+  "zoneFiles": [],
+  "extraVolumes": [],
+  "extraVolumeMounts": [],
+  "extraSecrets": [],
+  "customLabels": {},
+  "customAnnotations": {},
+  "hpa": {
+    "enabled": false,
+    "minReplicas": 1,
+    "maxReplicas": 2,
+    "metrics": []
+  },
+  "autoscaler": {
+    "enabled": false,
+    "coresPerReplica": 256,
+    "nodesPerReplica": 16,
+    "min": 0,
+    "max": 0,
+    "includeUnschedulableNodes": false,
+    "preventSinglePointFailure": true,
+    "image": {
+      "repository": "k8s.gcr.io/cpa/cluster-proportional-autoscaler",
+      "tag": "1.8.5",
+      "pullPolicy": "IfNotPresent"
+    },
+    "priorityClassName": "",
+    "affinity": {},
+    "nodeSelector": {},
+    "tolerations": [],
+    "resources": {
+      "requests": {
+        "cpu": "20m",
+        "memory": "10Mi"
+      },
+      "limits": {
+        "cpu": "20m",
+        "memory": "10Mi"
+      }
+    },
+    "configmap": {
+      "annotations": {}
+    },
+    "livenessProbe": {
+      "enabled": true,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 5,
+      "timeoutSeconds": 5,
+      "failureThreshold": 3,
+      "successThreshold": 1
+    }
+  },
+  "deployment": {
+    "enabled": true,
+    "name": "",
+    "annotations": {}
+  }
+}

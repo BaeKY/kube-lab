@@ -1,55 +1,48 @@
-import { ChartLoader, ComponentLoader, HelmLoader } from '@package/cdk8s-loader'
-import { PartialRecursive } from '@package/common'
+import { ChartLoader, ComponentLoader, HelmLoader, HelmProps } from '@package/cdk8s-loader'
+import { PartialRecursive, scope } from '@package/common'
 import { KubeConfigMap, KubeNamespace } from '@package/k8s-generated'
-import { ChartProps } from 'cdk8s'
-import { IngressNginx } from '../helm-values/ingress-nginx/ingress-nginx'
+import { IngressNginxHelmParam } from '../helm-values/ingress-nginx/ingress-nginx'
+import { LoadingChart } from '../types'
 
-export const ingressNginxChart = (
-  id: string,
-  chartProps: ChartProps,
-  props: {
-    tcpServices?: {
-      data?: {
-        [key: number]: string
-      }
-    }
-    helmConfig: {
-      releaseName: string
-      values?: PartialRecursive<IngressNginx>
+export const ingressNginxChart: LoadingChart<{
+  helmProps: Omit<HelmProps<PartialRecursive<IngressNginxHelmParam>>, 'chart'>
+  tcpServices?: {
+    data?: {
+      [key: number]: string
     }
   }
-) =>
-  new ChartLoader(id, chartProps)
-    .addComponent(
+}> = (id, props) => {
+  const { chartProps, helmProps, tcpServices } = props
+
+  const namespace = chartProps.namespace ?? 'default'
+  const helmOptionsScope = scope({
+    chart: 'ingress-nginx/ingress-nginx',
+    helmFlags: ['--namespace', namespace, '--create-namespace']
+  } as HelmProps<PartialRecursive<IngressNginxHelmParam>>)
+  helmOptionsScope.merge(helmProps as HelmProps<IngressNginxHelmParam>)
+
+  const tcpServicesScope = scope({
+    metadata: {
+      name: 'tcp-services'
+    },
+    data: {}
+  } as NonNullable<typeof tcpServices>)
+  tcpServicesScope.merge(tcpServices ?? {})
+
+  const chartLoader = new ChartLoader(id, chartProps)
+  if (namespace !== 'default') {
+    chartLoader.addComponent(
       new ComponentLoader(KubeNamespace, `${id}-namespace`, {
         metadata: {
-          name: chartProps.namespace
+          name: namespace
         }
       })
     )
-    .addComponent(
-      new ComponentLoader(KubeConfigMap, `${id}-tcp-services`, {
-        metadata: {
-          name: 'tcp-services'
-        },
-        data: props.tcpServices?.data ?? {}
-      })
-    )
+  }
+
+  return chartLoader
+    .addComponent(new ComponentLoader(KubeConfigMap, `${id}-tcp-services`, tcpServicesScope.get()))
     .addHelm(
-      (chartProps) =>
-        new HelmLoader<PartialRecursive<IngressNginx>>(`${id}-ingress-nginx`, {
-          chart: 'ingress-nginx/ingress-nginx',
-          releaseName: props.helmConfig.releaseName,
-          helmFlags: chartProps.namespace != null ? ['--namespace', chartProps.namespace] : undefined,
-          values: {
-            ...props.helmConfig.values,
-            controller: {
-              ...props.helmConfig.values?.controller,
-              extraArgs: {
-                'tcp-services-configmap': '$(POD_NAMESPACE)/tcp-services',
-                ...props.helmConfig.values?.controller?.extraArgs
-              }
-            }
-          }
-        })
+      () => new HelmLoader<PartialRecursive<IngressNginxHelmParam>>(`${id}-ingress-nginx`, helmOptionsScope.get())
     )
+}

@@ -1,0 +1,215 @@
+{
+  "imagePullSecrets": [],
+  "nameOverride": "",
+  "fullnameOverride": "",
+  "loadBalancerClass": "",
+  "rbac": {
+    "create": true
+  },
+  "prometheus": {
+    "scrapeAnnotations": false,
+    "metricsPort": 7472,
+    "speakerMetricsTLSSecret": "",
+    "controllerMetricsTLSSecret": "",
+    "rbacPrometheus": true,
+    "serviceAccount": "",
+    "namespace": "",
+    "rbacProxy": {
+      "repository": "gcr.io/kubebuilder/kube-rbac-proxy",
+      "tag": "v0.12.0"
+    },
+    "podMonitor": {
+      "enabled": false,
+      "additionalLabels": {},
+      "annotations": {},
+      "jobLabel": "app.kubernetes.io/name",
+      "interval": null,
+      "metricRelabelings": [],
+      "relabelings": []
+    },
+    "serviceMonitor": {
+      "enabled": false,
+      "speaker": {
+        "additionalLabels": {},
+        "annotations": {},
+        "tlsConfig": {
+          "insecureSkipVerify": true
+        }
+      },
+      "controller": {
+        "additionalLabels": {},
+        "annotations": {},
+        "tlsConfig": {
+          "insecureSkipVerify": true
+        }
+      },
+      "jobLabel": "app.kubernetes.io/name",
+      "interval": null,
+      "metricRelabelings": [],
+      "relabelings": []
+    },
+    "prometheusRule": {
+      "enabled": false,
+      "additionalLabels": {},
+      "annotations": {},
+      "staleConfig": {
+        "enabled": true,
+        "labels": {
+          "severity": "warning"
+        }
+      },
+      "configNotLoaded": {
+        "enabled": true,
+        "labels": {
+          "severity": "warning"
+        }
+      },
+      "addressPoolExhausted": {
+        "enabled": true,
+        "labels": {
+          "severity": "alert"
+        }
+      },
+      "addressPoolUsage": {
+        "enabled": true,
+        "thresholds": [
+          {
+            "percent": 75,
+            "labels": {
+              "severity": "warning"
+            }
+          },
+          {
+            "percent": 85,
+            "labels": {
+              "severity": "warning"
+            }
+          },
+          {
+            "percent": 95,
+            "labels": {
+              "severity": "alert"
+            }
+          }
+        ]
+      },
+      "bgpSessionDown": {
+        "enabled": true,
+        "labels": {
+          "severity": "alert"
+        }
+      },
+      "extraAlerts": []
+    }
+  },
+  "controller": {
+    "enabled": true,
+    "logLevel": "info",
+    "image": {
+      "repository": "quay.io/metallb/controller",
+      "tag": null,
+      "pullPolicy": null
+    },
+    "strategy": {
+      "type": "RollingUpdate"
+    },
+    "serviceAccount": {
+      "create": true,
+      "name": "",
+      "annotations": {}
+    },
+    "securityContext": {
+      "runAsNonRoot": true,
+      "runAsUser": 65534,
+      "fsGroup": 65534
+    },
+    "resources": {},
+    "nodeSelector": {},
+    "tolerations": [],
+    "priorityClassName": "",
+    "runtimeClassName": "",
+    "affinity": {},
+    "podAnnotations": {},
+    "livenessProbe": {
+      "enabled": true,
+      "failureThreshold": 3,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 10,
+      "successThreshold": 1,
+      "timeoutSeconds": 1
+    },
+    "readinessProbe": {
+      "enabled": true,
+      "failureThreshold": 3,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 10,
+      "successThreshold": 1,
+      "timeoutSeconds": 1
+    }
+  },
+  "speaker": {
+    "enabled": true,
+    "logLevel": "info",
+    "tolerateMaster": true,
+    "memberlist": {
+      "enabled": true,
+      "mlBindPort": 7946
+    },
+    "image": {
+      "repository": "quay.io/metallb/speaker",
+      "tag": null,
+      "pullPolicy": null
+    },
+    "updateStrategy": {
+      "type": "RollingUpdate"
+    },
+    "serviceAccount": {
+      "create": true,
+      "name": "",
+      "annotations": {}
+    },
+    "resources": {},
+    "nodeSelector": {},
+    "tolerations": [],
+    "priorityClassName": "",
+    "affinity": {},
+    "runtimeClassName": "",
+    "podAnnotations": {},
+    "livenessProbe": {
+      "enabled": true,
+      "failureThreshold": 3,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 10,
+      "successThreshold": 1,
+      "timeoutSeconds": 1
+    },
+    "readinessProbe": {
+      "enabled": true,
+      "failureThreshold": 3,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 10,
+      "successThreshold": 1,
+      "timeoutSeconds": 1
+    },
+    "frr": {
+      "enabled": false,
+      "image": {
+        "repository": "frrouting/frr",
+        "tag": "v7.5.1",
+        "pullPolicy": null
+      },
+      "metricsPort": 7473,
+      "resources": {}
+    },
+    "reloader": {
+      "resources": {}
+    },
+    "frrMetrics": {
+      "resources": {}
+    }
+  },
+  "crds": {
+    "enabled": true,
+    "validationFailurePolicy": "Fail"
+  }
+}

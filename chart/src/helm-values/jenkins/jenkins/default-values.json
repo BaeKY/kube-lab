@@ -1,0 +1,373 @@
+{
+  "clusterZone": "cluster.local",
+  "renderHelmLabels": true,
+  "controller": {
+    "componentName": "jenkins-controller",
+    "image": "jenkins/jenkins",
+    "tagLabel": "jdk11",
+    "imagePullPolicy": "Always",
+    "imagePullSecretName": null,
+    "lifecycle": null,
+    "disableRememberMe": false,
+    "numExecutors": 0,
+    "executorMode": "NORMAL",
+    "markupFormatter": "plainText",
+    "customJenkinsLabels": [],
+    "adminSecret": true,
+    "hostNetworking": false,
+    "adminUser": "admin",
+    "admin": {
+      "existingSecret": "",
+      "userKey": "jenkins-admin-user",
+      "passwordKey": "jenkins-admin-password"
+    },
+    "jenkinsHome": "/var/jenkins_home",
+    "jenkinsRef": "/usr/share/jenkins/ref",
+    "jenkinsWar": "/usr/share/jenkins/jenkins.war",
+    "resources": {
+      "requests": {
+        "cpu": "50m",
+        "memory": "256Mi"
+      },
+      "limits": {
+        "cpu": "2000m",
+        "memory": "4096Mi"
+      }
+    },
+    "usePodSecurityContext": true,
+    "runAsUser": 1000,
+    "fsGroup": 1000,
+    "securityContextCapabilities": {},
+    "containerSecurityContext": {
+      "runAsUser": 1000,
+      "runAsGroup": 1000,
+      "readOnlyRootFilesystem": true,
+      "allowPrivilegeEscalation": false
+    },
+    "servicePort": 8080,
+    "targetPort": 8080,
+    "serviceType": "ClusterIP",
+    "serviceExternalTrafficPolicy": null,
+    "serviceAnnotations": {},
+    "statefulSetLabels": {},
+    "serviceLabels": {},
+    "podLabels": {},
+    "healthProbes": true,
+    "probes": {
+      "startupProbe": {
+        "httpGet": {
+          "path": "{{ default \"\" .Values.controller.jenkinsUriPrefix }}/login",
+          "port": "http"
+        },
+        "periodSeconds": 10,
+        "timeoutSeconds": 5,
+        "failureThreshold": 12
+      },
+      "livenessProbe": {
+        "failureThreshold": 5,
+        "httpGet": {
+          "path": "{{ default \"\" .Values.controller.jenkinsUriPrefix }}/login",
+          "port": "http"
+        },
+        "periodSeconds": 10,
+        "timeoutSeconds": 5
+      },
+      "readinessProbe": {
+        "failureThreshold": 3,
+        "httpGet": {
+          "path": "{{ default \"\" .Values.controller.jenkinsUriPrefix }}/login",
+          "port": "http"
+        },
+        "periodSeconds": 10,
+        "timeoutSeconds": 5
+      }
+    },
+    "podDisruptionBudget": {
+      "enabled": false,
+      "apiVersion": "policy/v1beta1",
+      "annotations": {},
+      "labels": {}
+    },
+    "agentListenerEnabled": true,
+    "agentListenerPort": 50000,
+    "agentListenerHostPort": null,
+    "agentListenerNodePort": null,
+    "agentListenerExternalTrafficPolicy": null,
+    "agentListenerLoadBalancerSourceRanges": [
+      "0.0.0.0/0"
+    ],
+    "disabledAgentProtocols": [
+      "JNLP-connect",
+      "JNLP2-connect"
+    ],
+    "csrf": {
+      "defaultCrumbIssuer": {
+        "enabled": true,
+        "proxyCompatability": true
+      }
+    },
+    "agentListenerServiceType": "ClusterIP",
+    "agentListenerLoadBalancerIP": null,
+    "agentListenerServiceAnnotations": {},
+    "loadBalancerSourceRanges": [
+      "0.0.0.0/0"
+    ],
+    "extraPorts": [],
+    "installPlugins": [
+      "kubernetes:3734.v562b_b_a_627ea_c",
+      "workflow-aggregator:590.v6a_d052e5a_a_b_5",
+      "git:4.13.0",
+      "configuration-as-code:1569.vb_72405b_80249"
+    ],
+    "installLatestPlugins": true,
+    "installLatestSpecifiedPlugins": false,
+    "additionalPlugins": [],
+    "initializeOnce": false,
+    "overwritePluginsFromImage": true,
+    "projectNamingStrategy": "standard",
+    "enableRawHtmlMarkupFormatter": false,
+    "scriptApproval": [],
+    "initScripts": [],
+    "existingSecret": null,
+    "additionalExistingSecrets": [],
+    "additionalSecrets": [],
+    "secretClaims": [],
+    "cloudName": "kubernetes",
+    "JCasC": {
+      "defaultConfig": true,
+      "configUrls": [],
+      "configScripts": {},
+      "security": {
+        "apiToken": {
+          "creationOfLegacyTokenEnabled": false,
+          "tokenGenerationOnCreationEnabled": false,
+          "usageStatisticsEnabled": true
+        }
+      },
+      "securityRealm": "local:\n  allowsSignup: false\n  enableCaptcha: false\n  users:\n  - id: \"${chart-admin-username}\"\n    name: \"Jenkins Admin\"\n    password: \"${chart-admin-password}\"",
+      "authorizationStrategy": "loggedInUsersCanDoAnything:\n  allowAnonymousRead: false"
+    },
+    "customInitContainers": [],
+    "sidecars": {
+      "configAutoReload": {
+        "enabled": true,
+        "image": "kiwigrid/k8s-sidecar:1.15.0",
+        "imagePullPolicy": "IfNotPresent",
+        "resources": {},
+        "reqRetryConnect": 10,
+        "sshTcpPort": 1044,
+        "folder": "/var/jenkins_home/casc_configs",
+        "containerSecurityContext": {
+          "readOnlyRootFilesystem": true,
+          "allowPrivilegeEscalation": false
+        }
+      },
+      "other": []
+    },
+    "schedulerName": "",
+    "nodeSelector": {},
+    "terminationGracePeriodSeconds": null,
+    "terminationMessagePath": null,
+    "terminationMessagePolicy": null,
+    "tolerations": [],
+    "affinity": {},
+    "priorityClassName": null,
+    "podAnnotations": {},
+    "statefulSetAnnotations": {},
+    "updateStrategy": {},
+    "ingress": {
+      "enabled": false,
+      "paths": [],
+      "apiVersion": "extensions/v1beta1",
+      "labels": {},
+      "annotations": {},
+      "hostName": null,
+      "tls": null
+    },
+    "secondaryingress": {
+      "enabled": false,
+      "paths": [],
+      "apiVersion": "extensions/v1beta1",
+      "labels": {},
+      "annotations": {},
+      "hostName": null,
+      "tls": null
+    },
+    "backendconfig": {
+      "enabled": false,
+      "apiVersion": "extensions/v1beta1",
+      "name": null,
+      "labels": {},
+      "annotations": {},
+      "spec": {}
+    },
+    "route": {
+      "enabled": false,
+      "labels": {},
+      "annotations": {}
+    },
+    "hostAliases": [],
+    "prometheus": {
+      "enabled": false,
+      "serviceMonitorAdditionalLabels": {},
+      "scrapeInterval": "60s",
+      "scrapeEndpoint": "/prometheus",
+      "alertingRulesAdditionalLabels": {},
+      "alertingrules": [],
+      "prometheusRuleNamespace": ""
+    },
+    "googlePodMonitor": {
+      "enabled": false,
+      "scrapeInterval": "60s",
+      "scrapeEndpoint": "/prometheus"
+    },
+    "testEnabled": true,
+    "httpsKeyStore": {
+      "jenkinsHttpsJksSecretName": "",
+      "enable": false,
+      "httpPort": 8081,
+      "path": "/var/jenkins_keystore",
+      "fileName": "keystore.jks",
+      "password": "password",
+      "jenkinsKeyStoreBase64Encoded": "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\n"
+    }
+  },
+  "agent": {
+    "enabled": true,
+    "defaultsProviderTemplate": "",
+    "jenkinsUrl": null,
+    "jenkinsTunnel": null,
+    "kubernetesConnectTimeout": 5,
+    "kubernetesReadTimeout": 15,
+    "maxRequestsPerHostStr": "32",
+    "namespace": null,
+    "image": "jenkins/inbound-agent",
+    "tag": "4.11.2-4",
+    "workingDir": "/home/jenkins/agent",
+    "nodeUsageMode": "NORMAL",
+    "customJenkinsLabels": [],
+    "imagePullSecretName": null,
+    "componentName": "jenkins-agent",
+    "websocket": false,
+    "privileged": false,
+    "runAsUser": null,
+    "runAsGroup": null,
+    "hostNetworking": false,
+    "resources": {
+      "requests": {
+        "cpu": "512m",
+        "memory": "512Mi"
+      },
+      "limits": {
+        "cpu": "512m",
+        "memory": "512Mi"
+      }
+    },
+    "alwaysPullImage": false,
+    "podRetention": "Never",
+    "showRawYaml": true,
+    "volumes": [],
+    "workspaceVolume": {},
+    "envVars": [],
+    "nodeSelector": {},
+    "command": null,
+    "args": "${computer.jnlpmac} ${computer.name}",
+    "sideContainerName": "jnlp",
+    "TTYEnabled": false,
+    "containerCap": 10,
+    "podName": "default",
+    "idleMinutes": 0,
+    "yamlTemplate": "",
+    "yamlMergeStrategy": "override",
+    "connectTimeout": 100,
+    "annotations": {},
+    "additionalContainers": [],
+    "disableDefaultAgent": false,
+    "podTemplates": {}
+  },
+  "additionalAgents": {},
+  "persistence": {
+    "enabled": true,
+    "existingClaim": null,
+    "storageClass": null,
+    "annotations": {},
+    "labels": {},
+    "accessMode": "ReadWriteOnce",
+    "size": "8Gi",
+    "volumes": null,
+    "mounts": null
+  },
+  "networkPolicy": {
+    "enabled": false,
+    "apiVersion": "networking.k8s.io/v1",
+    "internalAgents": {
+      "allowed": true,
+      "podLabels": {},
+      "namespaceLabels": {}
+    },
+    "externalAgents": {}
+  },
+  "rbac": {
+    "create": true,
+    "readSecrets": false
+  },
+  "serviceAccount": {
+    "create": true,
+    "name": null,
+    "annotations": {},
+    "imagePullSecretName": null
+  },
+  "serviceAccountAgent": {
+    "create": false,
+    "name": null,
+    "annotations": {},
+    "imagePullSecretName": null
+  },
+  "backup": {
+    "enabled": false,
+    "componentName": "backup",
+    "schedule": "0 2 * * *",
+    "labels": {},
+    "serviceAccount": {
+      "create": true,
+      "name": null,
+      "annotations": {}
+    },
+    "activeDeadlineSeconds": "",
+    "image": {
+      "repository": "maorfr/kube-tasks",
+      "tag": "0.2.0"
+    },
+    "imagePullSecretName": null,
+    "extraArgs": [],
+    "existingSecret": {},
+    "env": [],
+    "resources": {
+      "requests": {
+        "memory": "1Gi",
+        "cpu": 1
+      },
+      "limits": {
+        "memory": "1Gi",
+        "cpu": 1
+      }
+    },
+    "destination": "s3://jenkins-data/backup",
+    "onlyJobs": false,
+    "usePodSecurityContext": true,
+    "runAsUser": 1000,
+    "fsGroup": 1000,
+    "securityContextCapabilities": {}
+  },
+  "checkDeprecation": true,
+  "awsSecurityGroupPolicies": {
+    "enabled": false,
+    "policies": [
+      {
+        "name": "",
+        "securityGroupIds": [],
+        "podSelector": {}
+      }
+    ]
+  }
+}

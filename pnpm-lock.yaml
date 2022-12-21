@@ -8,9 +8,9 @@ importers:
       '@types/lodash': ^4.14.191
       '@types/node': ^18.11.17
       '@types/yamljs': ^0.2.31
-      cdk8s: ^2.5.80
-      cdk8s-cli: ^2.1.81
-      constructs: ^10.1.195
+      cdk8s: ^2.5.82
+      cdk8s-cli: ^2.1.83
+      constructs: ^10.1.197
       jest: ^29.3.1
       reflect-metadata: ^0.1.13
       ts-jest: ^29.0.3
@@ -23,9 +23,9 @@ importers:
       '@types/lodash': 4.14.191
       '@types/node': 18.11.17
       '@types/yamljs': 0.2.31
-      cdk8s: 2.5.80_constructs@10.1.195
-      cdk8s-cli: 2.1.81
-      constructs: 10.1.195
+      cdk8s: 2.5.82_constructs@10.1.197
+      cdk8s-cli: 2.1.83
+      constructs: 10.1.197
       jest: 29.3.1_xgdmd3tdlagpkcvgycprrn3igm
       reflect-metadata: 0.1.13
       ts-jest: 29.0.3_p6ekqnroyms5nhqbfxosryz7rm
@@ -840,8 +840,8 @@ packages:
     resolution: {integrity: sha512-HJSUJmni4BeDHhfzn6nF0sVmd1SMezP7/4F0Lq+aXzmp2xm9O7WXrUtHW/CHlYVtZUbByEvWidHqRtcJXGF2Ng==}
     dev: false
 
-  /@types/prettier/2.7.1:
-    resolution: {integrity: sha512-ri0UmynRRvZiiUJdiz38MmIblKK+oH30MztdBVR95dv/Ubw6neWSb8u1XpRb72L4qsZOhz+L+z9JD40SJmfWow==}
+  /@types/prettier/2.7.2:
+    resolution: {integrity: sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==}
     dev: false
 
   /@types/stack-utils/2.0.1:
@@ -1041,7 +1041,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001439
+      caniuse-lite: 1.0.30001441
       electron-to-chromium: 1.4.284
       node-releases: 2.0.8
       update-browserslist-db: 1.0.10_browserslist@4.21.4
@@ -1079,8 +1079,8 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /caniuse-lite/1.0.30001439:
-    resolution: {integrity: sha512-1MgUzEkoMO6gKfXflStpYgZDlFM7M/ck/bgfVCACO5vnAf0fXoNVHdWtqGU+MYca+4bL9Z5bpOVmR33cWW9G2A==}
+  /caniuse-lite/1.0.30001441:
+    resolution: {integrity: sha512-OyxRR4Vof59I3yGWXws6i908EtGbMzVUi3ganaZQHmydk1iwDhRnvaPG2WaR0KcqrDFKrxVZHULT396LEPhXfg==}
     dev: false
 
   /case/1.6.3:
@@ -1088,22 +1088,22 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: false
 
-  /cdk8s-cli/2.1.81:
-    resolution: {integrity: sha512-YiIyOCw1fa46Jiui0HJdHmgQ27f55cJF0rbo24kf8lyWDcN0qMxwIGnSwLeBMWP/6E1TKcmwe1IqCEVGxDufcA==}
+  /cdk8s-cli/2.1.83:
+    resolution: {integrity: sha512-rJcdKP8cf0/+w0tX2pwXexY6/dj/54ZzGhfTxINEsFOpZ9Tsr3w26AtrndFkBBvMbUoCkkkJqiVlpXzX8zaUvQ==}
     engines: {node: '>= 14.17.0'}
     hasBin: true
     dependencies:
       '@types/node': 14.18.35
       ajv: 8.11.2
-      cdk8s: 2.5.80_constructs@10.1.195
-      cdk8s-plus-25: 2.2.5_tytl3ffhazsfcglizwv5qyigq4
+      cdk8s: 2.5.82_constructs@10.1.197
+      cdk8s-plus-25: 2.3.2_ad6puxhse4bdnaeqrocrzd4t7u
       codemaker: 1.72.0
       colors: 1.4.0
-      constructs: 10.1.195
+      constructs: 10.1.197
       fs-extra: 8.1.0
       jsii-pacmak: 1.72.0
-      jsii-srcmak: 0.1.768
-      json2jsii: 0.3.218
+      jsii-srcmak: 0.1.770
+      json2jsii: 0.3.220
       semver: 7.3.8
       sscaff: 1.2.274
       table: 6.8.1
@@ -1113,26 +1113,26 @@ packages:
       - supports-color
     dev: false
 
-  /cdk8s-plus-25/2.2.5_tytl3ffhazsfcglizwv5qyigq4:
-    resolution: {integrity: sha512-RMOb88IzZNKWXbeT72zMWSYzumIDCsnq9oVhOKRnSNDqiiZFuOtuWe6DcgR1DhpkeH5iNiMOnDCA2lsNiSTeCw==}
+  /cdk8s-plus-25/2.3.2_ad6puxhse4bdnaeqrocrzd4t7u:
+    resolution: {integrity: sha512-/Clm8BKPFg2DNwlb2OwsTOm9DC1eojZAecZ7bxxlTgDro+La0WYIHeNlgbO4gjEB3d+mEGCCPIUS7R71LrKrWQ==}
     engines: {node: '>= 14.17.0'}
     peerDependencies:
-      cdk8s: ^2.5.80
-      constructs: ^10.1.195
+      cdk8s: ^2.5.82
+      constructs: ^10.1.197
     dependencies:
-      cdk8s: 2.5.80_constructs@10.1.195
-      constructs: 10.1.195
+      cdk8s: 2.5.82_constructs@10.1.197
+      constructs: 10.1.197
     dev: false
     bundledDependencies:
       - minimatch
 
-  /cdk8s/2.5.80_constructs@10.1.195:
-    resolution: {integrity: sha512-ZigoXxEPDv5azAp6oTnyjpY22tq+lDN5fmfuw0NHBnsMDegky9P1UPH5wHjZHjszu6l2MXZG19DKsZIHJ+v27A==}
+  /cdk8s/2.5.82_constructs@10.1.197:
+    resolution: {integrity: sha512-MvpWgp2/xzgP6KGi6gxJE0P/lqKpFmCCvWhQdqJT7rmQ+rLcO2EN85gHkguMJB79yBGuGR4jErShLaqQyXdETA==}
     engines: {node: '>= 14.17.0'}
     peerDependencies:
       constructs: ^10
     dependencies:
-      constructs: 10.1.195
+      constructs: 10.1.197
     dev: false
     bundledDependencies:
       - fast-json-patch
@@ -1258,8 +1258,8 @@ packages:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
     dev: false
 
-  /constructs/10.1.195:
-    resolution: {integrity: sha512-xjTQqHCFECWwk8C0d8Rxl3mlVN0q7HveirupCId3ME4on3aIRTiChg71w+GAFpXsqLsVA8a76vyMH+qZTIKymA==}
+  /constructs/10.1.197:
+    resolution: {integrity: sha512-YAuSMYDXPQvNqmCrnVBGHXGL1+8WICDDJLH91BUIWfL6PpMEm+LXBXchgGETyREf96nIIGuXC/0lkUURsLSrHA==}
     engines: {node: '>= 14.17.0'}
     dev: false
 
@@ -2045,7 +2045,7 @@ packages:
       '@jest/transform': 29.3.1
       '@jest/types': 29.3.1
       '@types/babel__traverse': 7.18.3
-      '@types/prettier': 2.7.1
+      '@types/prettier': 2.7.2
       babel-preset-current-node-syntax: 1.0.1_@babel+core@7.20.5
       chalk: 4.1.2
       expect: 29.3.1
@@ -2204,8 +2204,8 @@ packages:
       - supports-color
     dev: false
 
-  /jsii-srcmak/0.1.768:
-    resolution: {integrity: sha512-YZNNOr/PnrLcJRE2b9X91zL709fCWXnY3apX+yOV5Jh7GnpUOiYw/dg2IH61Ria+ztGYPGSCOdgkzifaIPKMag==}
+  /jsii-srcmak/0.1.770:
+    resolution: {integrity: sha512-hp3W0wcbtcfU8756Ptnc7QfJvmZMtxHkMPl5OoPrJmgNeZJtMBb2C68FY3gCjOoMe+dOYhU3MORAsOf8FtMw5w==}
     hasBin: true
     dependencies:
       fs-extra: 9.1.0
@@ -2251,8 +2251,8 @@ packages:
     resolution: {integrity: sha512-es94M3nTIfsEPisRafak+HDLfHXnKBhV3vU5eqPcS3flIWqcxJWgXHXiey3YrpaNsanY5ei1VoYEbOzijuq9BA==}
     dev: false
 
-  /json2jsii/0.3.218:
-    resolution: {integrity: sha512-2i2B8IkM9NdlfBUejAFI4i5GfD+JfznCI5GccKjivhQKH0g2spXbMAX2tP1dcJ2ttz4qvcZcR5psToyeG3SlEA==}
+  /json2jsii/0.3.220:
+    resolution: {integrity: sha512-ez1FOryWRtLmbU92GwE8B6UAcd96kLiq8ENH3dhZjH3CnSrPfxaliLo5SSqnuuqcpazNwnXSEmA9laz0E4EyrQ==}
     engines: {node: '>= 14.17.0'}
     dependencies:
       camelcase: 6.3.0

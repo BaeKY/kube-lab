@@ -1,6 +1,6 @@
 import { Chart, Helm, HelmProps as HelmPropsOrigin } from 'cdk8s'
 
-interface HelmProps<V extends { [key: string]: string } = any> extends HelmPropsOrigin {
+export interface HelmProps<V extends { [key: string]: any } = any> extends HelmPropsOrigin {
   readonly values?: V
 }
 

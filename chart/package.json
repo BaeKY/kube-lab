@@ -6,7 +6,7 @@
   "version": "1.0.0",
   "scripts": {
     "synth": "./scripts/update-env.sh && cdk8s synth",
-    "load:helm": "cd ./src/helm-chart-value-types && generate_helm_value_inference $1"
+    "helm:load": "bash ./scripts/load-helm.sh"
   },
   "dependencies": {
     "@package/cdk8s-loader": "workspace:^0.0.1",

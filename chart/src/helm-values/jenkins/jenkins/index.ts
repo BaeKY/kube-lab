@@ -1,9 +1,9 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { MetallbHelmParam } from './types'
+import { JenkinsHelmParam } from './types'
 
 export * from './types'
-const defaultValues: MetallbHelmParam = JSON.parse(
+const defaultValues: JenkinsHelmParam = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, 'default-values.json')).toString()
 )
 export default defaultValues

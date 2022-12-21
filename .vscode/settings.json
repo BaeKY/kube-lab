@@ -45,8 +45,10 @@
   "explorerExclude.backup": {},
   "cSpell.words": [
     "cephfs",
+    "endpointslices",
     "flocker",
     "glusterfs",
+    "ingressclasses",
     "iscsi",
     "portworx",
     "quobyte",

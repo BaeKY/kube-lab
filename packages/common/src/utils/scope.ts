@@ -16,8 +16,8 @@ export interface _ObjectEditor<T, O = T> {
    * @param data
    * @returns
    */
-  set: (data: T) => void
-  merge: (data: T) => void
+  set: (data: T) => Pick<this, 'get' | 'getTarget'>
+  merge: (data: T) => Pick<this, 'get' | 'getTarget'>
   remove: () => void
 }
 
@@ -48,22 +48,23 @@ export class ObjectEditor<T, O> implements _ObjectEditor<T, O> {
     return _.cloneDeep(this.target)
   }
 
-  public set(data: T): void {
+  public set(data: T): Pick<this, 'get' | 'getTarget'> {
     if (this.isRoot) {
       const keys = Object.keys(this.target)
       keys.forEach((key) => {
         _.unset(this.target, key)
       })
       Object.assign(this.target, data)
-      return
+    } else {
+      _.set(this.target, this.keys, data)
     }
-    _.set(this.target, this.keys, data)
+    return this
   }
 
-  public merge(data: T): void {
+  public merge(data: T): Pick<this, 'get' | 'getTarget'> {
     if (!this.isRoot && ['string', 'number'].some((type) => type === typeof data)) {
       this.set(data)
-      return
+      return this
     }
     let currentData = this.get()
     if (data instanceof Array<unknown>) {
@@ -76,6 +77,7 @@ export class ObjectEditor<T, O> implements _ObjectEditor<T, O> {
       })
     }
     this.set(currentData ?? data)
+    return this
   }
 
   public remove(): void {
