@@ -1,6 +1,6 @@
 import { ChartLoader, HelmLoader } from '@package/cdk8s-loader/src'
 import { ChartProps } from 'cdk8s'
-import { KubePrometheusStackHelmParam } from './helm-chart-value-types/prometheus-community/kube-prometheus-stack'
+import { KubePrometheusStackHelmParam } from '../helm-values/prometheus-community/kube-prometheus-stack'
 
 export const prometheusChart = (
   id: string,

@@ -2,7 +2,7 @@ import { ChartLoader, ComponentLoader, HelmLoader } from '@package/cdk8s-loader'
 import { PartialRecursive } from '@package/common'
 import { KubeConfigMap, KubeNamespace } from '@package/k8s-generated'
 import { ChartProps } from 'cdk8s'
-import { IngressNginx } from './helm-chart-value-types/ingress-nginx/ingress-nginx'
+import { IngressNginx } from '../helm-values/ingress-nginx/ingress-nginx'
 
 export const ingressNginxChart = (
   id: string,

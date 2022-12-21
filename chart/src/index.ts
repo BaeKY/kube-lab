@@ -1,9 +1,8 @@
 import { App } from 'cdk8s'
 import * as dotenv from 'dotenv'
-import { ingressNginxChart } from './ingress-nginx.chart'
-import { metallbChart } from './metallb-chart'
 import path from 'path'
-import { prometheusChart } from './prometheus-chart'
+import { metallbChart, prometheusChart } from './charts'
+import { ingressNginxChart } from './charts/ingress-nginx.chart'
 
 dotenv.config({
   path: path.resolve(process.cwd(), '.env')

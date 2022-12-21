@@ -1,7 +1,7 @@
 import { ChartLoader, ComponentLoader, HelmLoader } from '@package/cdk8s-loader/src'
 import { PartialRecursive } from '@package/common'
-import { KubeIpAddressPool } from './custom-component'
-import { Metallb } from './helm-chart-value-types/metallb/metallb'
+import { KubeIpAddressPool } from '../custom-component'
+import { Metallb } from '../helm-values/metallb/metallb'
 import { ChartProps } from 'cdk8s'
 import { KubeNamespace } from '@package/k8s-generated/src'
 
