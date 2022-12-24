@@ -1,4 +1,6 @@
 export * from './core-dns.chart'
+export * from './etcd-cluster.chart'
+export * from './external-dns.chart'
 export * from './ingress-nginx.chart'
 export * from './metallb.chart'
 export * from './prometheus.chart'

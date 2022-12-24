@@ -1,6 +1,5 @@
-import { ChartLoader, ComponentLoader, HelmLoader, HelmProps } from '@package/cdk8s-loader/src'
+import { ChartLoader, HelmLoader, HelmProps } from '@package/cdk8s-loader/src'
 import { PartialRecursive, scope } from '@package/common/src'
-import { KubeNamespace } from '@package/k8s-generated/src'
 import { CorednsHelmParam } from '../helm-values/coredns/coredns'
 import { LoadingChart } from '../types'
 
@@ -17,16 +16,6 @@ export const coreDnsChart: LoadingChart<{ helmProps: Omit<HelmProps<PartialRecur
   }).merge(helmProps as any)
 
   const chartLoader = new ChartLoader(id, chartProps)
-
-  if (namespace !== 'default') {
-    chartLoader.addComponent(
-      new ComponentLoader(KubeNamespace, `${id}-namespace`, {
-        metadata: {
-          name: namespace
-        }
-      })
-    )
-  }
 
   return chartLoader.addHelm(() => {
     return new HelmLoader<PartialRecursive<CorednsHelmParam>>(`${id}-helm`, helmPropsScope.get())

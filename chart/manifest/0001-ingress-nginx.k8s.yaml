@@ -5,13 +5,6 @@ metadata:
   namespace: ingress-nginx
 ---
 apiVersion: v1
-kind: ConfigMap
-data: {}
-metadata:
-  name: tcp-services
-  namespace: ingress-nginx
----
-apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
@@ -25,6 +18,38 @@ metadata:
   name: default-ingress-nginx
   namespace: ingress-nginx
 automountServiceAccountToken: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.5.1
+    helm.sh/chart: ingress-nginx-4.4.0
+  name: default-ingress-nginx-tcp
+  namespace: ingress-nginx
+data:
+  "8080": default/nginx:80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.5.1
+    helm.sh/chart: ingress-nginx-4.4.0
+  name: default-ingress-nginx-udp
+  namespace: ingress-nginx
+data:
+  "8080": default/nginx:80
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -329,6 +354,14 @@ spec:
       port: 443
       protocol: TCP
       targetPort: https
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080-tcp
+    - name: 8080-udp
+      port: 8080
+      protocol: UDP
+      targetPort: 8080-udp
   selector:
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: default
@@ -372,10 +405,11 @@ spec:
             - --controller-class=k8s.io/ingress-nginx
             - --ingress-class=nginx
             - --configmap=$(POD_NAMESPACE)/default-ingress-nginx-controller
+            - --tcp-services-configmap=$(POD_NAMESPACE)/default-ingress-nginx-tcp
+            - --udp-services-configmap=$(POD_NAMESPACE)/default-ingress-nginx-udp
             - --validating-webhook=:8443
             - --validating-webhook-certificate=/usr/local/certificates/cert
             - --validating-webhook-key=/usr/local/certificates/key
-            - --tcp-services-configmap=$(POD_NAMESPACE)/tcp-services
           env:
             - name: POD_NAME
               valueFrom:
@@ -415,6 +449,12 @@ spec:
             - containerPort: 8443
               name: webhook
               protocol: TCP
+            - containerPort: 8080
+              name: 8080-tcp
+              protocol: TCP
+            - containerPort: 8080
+              name: 8080-udp
+              protocol: UDP
           readinessProbe:
             failureThreshold: 3
             httpGet:
