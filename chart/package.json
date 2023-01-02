@@ -6,7 +6,9 @@
   "version": "1.0.0",
   "scripts": {
     "synth": "./scripts/update-env.sh && cdk8s synth",
-    "helm:load": "bash ./scripts/load-helm.sh"
+    "helm:load": "bash ./scripts/load-helm.sh",
+    "ip-alias:up": "sudo bash ./scripts/ifconfig-alias.sh",
+    "ip-alias:down": "sudo bash ./scripts/ifconfig-alias-down.sh"
   },
   "dependencies": {
     "@package/cdk8s-loader": "workspace:^0.0.1",
