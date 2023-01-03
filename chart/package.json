@@ -12,7 +12,8 @@
     "ip-alias:down": "sudo bash ./scripts/ifconfig-alias-down.sh",
     "add-custom-dns": "sudo bash ./scripts/add-custom-dns-resolver.sh",
     "sample-nginx:up": "bash ./scripts/sample-nginx-up-down.sh up",
-    "sample-nginx:down": "bash ./scripts/sample-nginx-up-down.sh down"
+    "sample-nginx:down": "bash ./scripts/sample-nginx-up-down.sh down",
+    "config:network": "pnpm ip-alias:up && pnpm add-custom-dns"
   },
   "dependencies": {
     "@package/cdk8s-loader": "workspace:^0.0.1",

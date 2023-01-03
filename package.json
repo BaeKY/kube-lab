@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate": "pnpm --filter @package/k8s-generated generate"
+    "generate": "pnpm --filter @package/k8s-generated generate",
+    "synth": "pnpm --filter @kube-ops/chart synth",
+    "config:network": "pnpm --filter @kube-ops/chart config:network",
+    "deploy:all": "kubectl apply -f chart/manifest"
   },
   "private": true,
   "keywords": [
