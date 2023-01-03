@@ -1,0 +1,447 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: app
+    app.kubernetes.io/name: etcd
+  name: etcd
+  namespace: dns
+spec:
+  ports:
+    - name: etcd-client
+      port: 2379
+      protocol: TCP
+    - name: etcd-peer
+      port: 2380
+      protocol: TCP
+    - name: etcd-legacy
+      port: 4001
+      protocol: TCP
+  publishNotReadyAddresses: true
+  selector:
+    app.kubernetes.io/component: app
+    app.kubernetes.io/name: etcd
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/component: app
+    app.kubernetes.io/name: etcd
+  name: etcd
+  namespace: dns
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: app
+      app.kubernetes.io/name: etcd
+  serviceName: etcd
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: app
+        app.kubernetes.io/name: etcd
+      name: etcd
+    spec:
+      containers:
+        - command:
+            - /bin/sh
+            - -c
+            - |-
+              IP=$(hostname -i)
+              PEERS=""
+              for i in $(seq 0 $((${CLUSTER_SIZE} - 1))); do
+                PEERS="${PEERS}${PEERS:+,}${SET_NAME}-${i}=http://${SET_NAME}-${i}.${SET_NAME}:2380"
+              done
+
+              exec /usr/local/bin/etcd --name ${HOSTNAME} \
+                --listen-peer-urls http://${IP}:2380 \
+                --listen-client-urls http://${IP}:2379,http://127.0.0.1:2379,http://${IP}:4001,http://127.0.0.1:4001 \
+                --advertise-client-urls http://${HOSTNAME}.${SET_NAME}:2379,http://${HOSTNAME}.${SET_NAME}:4001 \
+                --initial-advertise-peer-urls http://${HOSTNAME}.${SET_NAME}:2380 \
+                --initial-cluster-token etcd-cluster-1 \
+                --initial-cluster ${PEERS} \
+                --initial-cluster-state new \
+                --data-dir /var/run/etcd/default.etcd
+          env:
+            - name: CLUSTER_SIZE
+              value: "3"
+            - name: SET_NAME
+              value: etcd
+          image: quay.io/coreos/etcd:latest
+          name: etcd
+          ports:
+            - containerPort: 2379
+              name: client
+            - containerPort: 2380
+              name: peer
+            - containerPort: 4001
+              name: legacy
+          volumeMounts:
+            - mountPath: /var/run/etcd
+              name: datadir
+  volumeClaimTemplates:
+    - metadata:
+        labels:
+          app.kubernetes.io/component: app
+          app.kubernetes.io/name: etcd
+        name: datadir
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1G
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: core-dns
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: coredns
+    helm.sh/chart: coredns-1.19.7
+  name: core-dns-coredns
+  namespace: dns
+data:
+  Corefile: |-
+    .:53 {
+        errors
+        health {
+            lameduck 5s
+        }
+        log
+        etcd {
+            path /skydns
+            endpoint http://etcd:2379
+            fallthrough
+        }
+        cache 30
+        prometheus 0.0.0.0:9153
+        reload
+        loadbalance
+    }
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/instance: core-dns
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: coredns
+    helm.sh/chart: coredns-1.19.7
+  name: core-dns-coredns
+  namespace: dns
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - endpoints
+      - services
+      - pods
+      - namespaces
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - discovery.k8s.io
+    resources:
+      - endpointslices
+    verbs:
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/instance: core-dns
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: coredns
+    helm.sh/chart: coredns-1.19.7
+  name: core-dns-coredns
+  namespace: dns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: core-dns-coredns
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: dns
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: core-dns
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: coredns
+    helm.sh/chart: coredns-1.19.7
+  name: core-dns-coredns
+  namespace: dns
+spec:
+  ports:
+    - name: udp-53
+      port: 53
+      protocol: UDP
+    - name: tcp-53
+      port: 53
+      protocol: TCP
+  selector:
+    app.kubernetes.io/instance: core-dns
+    app.kubernetes.io/name: coredns
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: core-dns
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: coredns
+    app.kubernetes.io/version: 1.9.4
+    helm.sh/chart: coredns-1.19.7
+  name: core-dns-coredns
+  namespace: dns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: core-dns
+      app.kubernetes.io/name: coredns
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/config: c969a43bf8545ee684ca9bacbaa5d82f0337a1543b1432e2191ff55cd4eb5a0f
+      labels:
+        app.kubernetes.io/instance: core-dns
+        app.kubernetes.io/name: coredns
+    spec:
+      containers:
+        - args:
+            - -conf
+            - /etc/coredns/Corefile
+          image: coredns/coredns:1.9.4
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: coredns
+          ports:
+            - containerPort: 53
+              name: udp-53
+              protocol: UDP
+            - containerPort: 53
+              name: tcp-53
+              protocol: TCP
+            - containerPort: 9153
+              name: tcp-9153
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          volumeMounts:
+            - mountPath: /etc/coredns
+              name: config-volume
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - configMap:
+            items:
+              - key: Corefile
+                path: Corefile
+            name: core-dns-coredns
+          name: config-volume
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/instance: external-dns
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: external-dns
+    app.kubernetes.io/version: 0.13.1
+    helm.sh/chart: external-dns-1.12.0
+  name: external-dns
+  namespace: dns
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/instance: external-dns
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: external-dns
+    app.kubernetes.io/version: 0.13.1
+    helm.sh/chart: external-dns-1.12.0
+  name: external-dns
+  namespace: dns
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - watch
+      - list
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - endpoints
+    verbs:
+      - get
+      - watch
+      - list
+  - apiGroups:
+      - extensions
+      - networking.k8s.io
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - watch
+      - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/instance: external-dns
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: external-dns
+    app.kubernetes.io/version: 0.13.1
+    helm.sh/chart: external-dns-1.12.0
+  name: external-dns-viewer
+  namespace: dns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: external-dns
+subjects:
+  - kind: ServiceAccount
+    name: external-dns
+    namespace: dns
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: external-dns
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: external-dns
+    app.kubernetes.io/version: 0.13.1
+    helm.sh/chart: external-dns-1.12.0
+  name: external-dns
+  namespace: dns
+spec:
+  ports:
+    - name: http
+      port: 7979
+      protocol: TCP
+      targetPort: http
+  selector:
+    app.kubernetes.io/instance: external-dns
+    app.kubernetes.io/name: external-dns
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: external-dns
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: external-dns
+    app.kubernetes.io/version: 0.13.1
+    helm.sh/chart: external-dns-1.12.0
+  name: external-dns
+  namespace: dns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: external-dns
+      app.kubernetes.io/name: external-dns
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: external-dns
+        app.kubernetes.io/name: external-dns
+    spec:
+      containers:
+        - args:
+            - --log-level=info
+            - --log-format=text
+            - --interval=1m
+            - --source=service
+            - --source=ingress
+            - --policy=upsert-only
+            - --registry=txt
+            - --provider=coredns
+          env:
+            - name: ETCD_URLS
+              value: http://etcd:2379
+          image: k8s.gcr.io/external-dns/external-dns:v0.13.1
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 2
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: external-dns
+          ports:
+            - containerPort: 7979
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 65534
+      securityContext:
+        fsGroup: 65534
+      serviceAccountName: external-dns
