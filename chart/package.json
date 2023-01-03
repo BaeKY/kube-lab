@@ -9,7 +9,8 @@
     "synth": "source ./scripts/export-env.sh && cdk8s synth",
     "helm:load": "bash ./scripts/load-helm.sh",
     "ip-alias:up": "sudo bash ./scripts/ifconfig-alias-up.sh",
-    "ip-alias:down": "sudo bash ./scripts/ifconfig-alias-down.sh"
+    "ip-alias:down": "sudo bash ./scripts/ifconfig-alias-down.sh",
+    "add-custom-dns": "sudo bash ./scripts/add-custom-dns-resolver.sh"
   },
   "dependencies": {
     "@package/cdk8s-loader": "workspace:^0.0.1",
