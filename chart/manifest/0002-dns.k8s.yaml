@@ -21,7 +21,6 @@ spec:
   selector:
     app.kubernetes.io/component: app
     app.kubernetes.io/name: etcd
-  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: StatefulSet

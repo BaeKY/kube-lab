@@ -120,8 +120,7 @@ const synth = () => {
       labels: {
         'app.kubernetes.io/name': etcdClusterName,
         'app.kubernetes.io/component': 'app'
-      },
-      serviceType: 'LoadBalancer'
+      }
     },
     externalDns: {
       releaseName: 'external-dns',
