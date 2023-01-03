@@ -1,0 +1,4 @@
+env:
+  LB_IP_ADDRESS_POOL: 10.0.0.1/32
+  NS_IP: 10.0.0.1
+  CUSTOM_DOMAIN: localhost

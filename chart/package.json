@@ -1,11 +1,12 @@
 {
-  "name": "@kube-lab/chart",
+  "name": "@kube-ops/chart",
   "license": "MIT",
   "private": true,
   "main": "src/",
   "version": "1.0.0",
+  "packageManager": "pnpm@7.17.0^",
   "scripts": {
-    "synth": "./scripts/update-env.sh && cdk8s synth",
+    "synth": "source ./scripts/export-env.sh && cdk8s synth",
     "helm:load": "bash ./scripts/load-helm.sh",
     "ip-alias:up": "sudo bash ./scripts/ifconfig-alias.sh",
     "ip-alias:down": "sudo bash ./scripts/ifconfig-alias-down.sh"
@@ -13,7 +14,6 @@
   "dependencies": {
     "@package/cdk8s-loader": "workspace:^0.0.1",
     "@package/common": "workspace:^0.0.1",
-    "@package/k8s-generated": "workspace:^1.25.0",
-    "dotenv": "^16.0.3"
+    "@package/k8s-generated": "workspace:^1.25.0"
   }
 }

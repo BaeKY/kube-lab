@@ -1,7 +1,5 @@
 import { PartialRecursive, scope } from '@package/common'
 import { App } from 'cdk8s'
-import * as dotenv from 'dotenv'
-import path from 'path'
 import { coreDnsChart, etcdClusterChart, externalDnsChart, ingressNginxChart, metallbChart } from './charts'
 import {
   CorednsHelmParam,
@@ -11,10 +9,6 @@ import {
   externalDnsDefaultValues,
   ingressNginxDefaultValues
 } from './helm-values'
-
-dotenv.config({
-  path: path.resolve(process.cwd(), '.env')
-})
 
 const synth = () => {
   const app: App = new App()
@@ -30,7 +24,7 @@ const synth = () => {
     },
     ipAddressPool: {
       name: 'local-ip',
-      addresses: [process.env.MY_IP_ADDRESS_POOL as string]
+      addresses: [process.env.LB_IP_ADDRESS_POOL as string]
     }
   }).load(app)
 
