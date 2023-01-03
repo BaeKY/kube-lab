@@ -10,7 +10,9 @@
     "helm:load": "bash ./scripts/load-helm.sh",
     "ip-alias:up": "sudo bash ./scripts/ifconfig-alias-up.sh",
     "ip-alias:down": "sudo bash ./scripts/ifconfig-alias-down.sh",
-    "add-custom-dns": "sudo bash ./scripts/add-custom-dns-resolver.sh"
+    "add-custom-dns": "sudo bash ./scripts/add-custom-dns-resolver.sh",
+    "sample-nginx:up": "bash ./scripts/sample-nginx-up-down.sh up",
+    "sample-nginx:down": "bash ./scripts/sample-nginx-up-down.sh down"
   },
   "dependencies": {
     "@package/cdk8s-loader": "workspace:^0.0.1",
