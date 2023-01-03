@@ -8,7 +8,7 @@
   "scripts": {
     "synth": "source ./scripts/export-env.sh && cdk8s synth",
     "helm:load": "bash ./scripts/load-helm.sh",
-    "ip-alias:up": "sudo bash ./scripts/ifconfig-alias.sh",
+    "ip-alias:up": "sudo bash ./scripts/ifconfig-alias-up.sh",
     "ip-alias:down": "sudo bash ./scripts/ifconfig-alias-down.sh"
   },
   "dependencies": {
