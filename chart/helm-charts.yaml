@@ -17,3 +17,6 @@ charts:
   - repo: external-dns
     chart: external-dns
     url: https://kubernetes-sigs.github.io/external-dns/
+  - repo: argo
+    chart: argo-cd
+    url: https://argoproj.github.io/argo-helm

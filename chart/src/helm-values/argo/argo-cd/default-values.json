@@ -1,0 +1,1043 @@
+{
+  "nameOverride": "argocd",
+  "fullnameOverride": "",
+  "kubeVersionOverride": "",
+  "apiVersionOverrides": {
+    "certmanager": "",
+    "cloudgoogle": "",
+    "autoscaling": ""
+  },
+  "createAggregateRoles": false,
+  "openshift": {
+    "enabled": false
+  },
+  "crds": {
+    "install": true,
+    "keep": true,
+    "annotations": {}
+  },
+  "global": {
+    "additionalLabels": {},
+    "revisionHistoryLimit": 3,
+    "image": {
+      "repository": "quay.io/argoproj/argocd",
+      "tag": "",
+      "imagePullPolicy": "IfNotPresent"
+    },
+    "imagePullSecrets": [],
+    "logging": {
+      "format": "text",
+      "level": "info"
+    },
+    "statefulsetAnnotations": {},
+    "deploymentAnnotations": {},
+    "podAnnotations": {},
+    "podLabels": {},
+    "securityContext": {},
+    "hostAliases": [],
+    "networkPolicy": {
+      "create": false,
+      "defaultDenyIngress": false
+    }
+  },
+  "configs": {
+    "cm": {
+      "create": true,
+      "annotations": {},
+      "url": "",
+      "application.instanceLabelKey": "argocd.argoproj.io/instance",
+      "server.rbac.log.enforce.enable": false,
+      "exec.enabled": false,
+      "admin.enabled": true,
+      "timeout.reconciliation": "180s",
+      "timeout.hard.reconciliation": "0s"
+    },
+    "params": {
+      "annotations": {},
+      "otlp.address": "",
+      "controller.status.processors": 20,
+      "controller.operation.processors": 10,
+      "controller.self.heal.timeout.seconds": 5,
+      "controller.repo.server.timeout.seconds": 60,
+      "server.insecure": false,
+      "server.basehref": "/",
+      "server.rootpath": "",
+      "server.staticassets": "/shared/app",
+      "server.disable.auth": false,
+      "server.enable.gzip": false,
+      "server.x.frame.options": "sameorigin",
+      "reposerver.parallelism.limit": 0
+    },
+    "rbac": {
+      "create": true,
+      "annotations": {},
+      "policy.default": "",
+      "policy.csv": "",
+      "scopes": "[groups]"
+    },
+    "gpg": {
+      "annotations": {},
+      "keys": {}
+    },
+    "clusterCredentials": [],
+    "knownHostsAnnotations": {},
+    "knownHosts": {
+      "data": {
+        "ssh_known_hosts": "bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==\ngithub.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=\ngithub.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl\ngithub.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==\ngitlab.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY=\ngitlab.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfuCHKVTjquxvt6CM6tdG4SLp1Btn/nOeHHE5UOzRdf\ngitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bNKTBSpIYDEGk9KxsGh3mySTRgMtXL583qmBpzeQ+jqCMRgBqB98u3z++J1sKlXHWfM9dyhSevkMwSbhoR8XIq/U0tCNyokEi/ueaBMCvbcTHhO7FcwzY92WK4Yt0aGROY5qX2UKSeOvuP4D6TPqKF1onrSzH9bx9XUf2lEdWT/ia1NEKjunUqu1xOB/StKDHMoX4/OKyIzuS0q/T1zOATthvasJFoPrAjkohTyaDUz2LN5JoH839hViyEG82yB+MjcFV5MU3N1l1QL3cVUCh93xSaua1N85qivl+siMkPGbO5xR/En4iEY6K2XPASUEMaieWVNTRCtJ4S8H+9\nssh.dev.azure.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H\nvs-ssh.visualstudio.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H\n"
+      }
+    },
+    "tlsCertsAnnotations": {},
+    "tlsCerts": {},
+    "credentialTemplates": {},
+    "credentialTemplatesAnnotations": {},
+    "repositories": {},
+    "repositoriesAnnotations": {},
+    "secret": {
+      "createSecret": true,
+      "annotations": {},
+      "githubSecret": "",
+      "gitlabSecret": "",
+      "bitbucketServerSecret": "",
+      "bitbucketUUID": "",
+      "gogsSecret": "",
+      "extra": {},
+      "argocdServerAdminPassword": "",
+      "argocdServerAdminPasswordMtime": ""
+    },
+    "styles": ""
+  },
+  "extraObjects": [],
+  "controller": {
+    "name": "application-controller",
+    "replicas": 1,
+    "pdb": {
+      "enabled": false,
+      "labels": {},
+      "annotations": {},
+      "minAvailable": "",
+      "maxUnavailable": ""
+    },
+    "image": {
+      "repository": "",
+      "tag": "",
+      "imagePullPolicy": ""
+    },
+    "imagePullSecrets": [],
+    "args": {},
+    "extraArgs": [],
+    "env": [],
+    "envFrom": [],
+    "statefulsetAnnotations": {},
+    "podAnnotations": {},
+    "podLabels": {},
+    "containerSecurityContext": {
+      "runAsNonRoot": true,
+      "readOnlyRootFilesystem": true,
+      "allowPrivilegeEscalation": false,
+      "seccompProfile": {
+        "type": "RuntimeDefault"
+      },
+      "capabilities": {
+        "drop": [
+          "ALL"
+        ]
+      }
+    },
+    "containerPort": 8082,
+    "readinessProbe": {
+      "failureThreshold": 3,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 10,
+      "successThreshold": 1,
+      "timeoutSeconds": 1
+    },
+    "volumeMounts": [],
+    "volumes": [],
+    "nodeSelector": {},
+    "tolerations": [],
+    "affinity": {},
+    "topologySpreadConstraints": [],
+    "priorityClassName": "",
+    "resources": {},
+    "serviceAccount": {
+      "create": true,
+      "name": "argocd-application-controller",
+      "annotations": {},
+      "labels": {},
+      "automountServiceAccountToken": true
+    },
+    "metrics": {
+      "enabled": false,
+      "applicationLabels": {
+        "enabled": false,
+        "labels": []
+      },
+      "service": {
+        "annotations": {},
+        "labels": {},
+        "servicePort": 8082,
+        "portName": "http-metrics"
+      },
+      "serviceMonitor": {
+        "enabled": false,
+        "interval": "30s",
+        "relabelings": [],
+        "metricRelabelings": [],
+        "selector": {},
+        "scheme": "",
+        "tlsConfig": {},
+        "namespace": "",
+        "additionalLabels": {},
+        "annotations": {}
+      },
+      "rules": {
+        "enabled": false,
+        "spec": []
+      }
+    },
+    "clusterAdminAccess": {
+      "enabled": true
+    },
+    "clusterRoleRules": {
+      "enabled": false,
+      "rules": []
+    },
+    "extraContainers": [],
+    "initContainers": []
+  },
+  "dex": {
+    "enabled": true,
+    "name": "dex-server",
+    "extraArgs": [],
+    "metrics": {
+      "enabled": false,
+      "service": {
+        "annotations": {},
+        "labels": {},
+        "portName": "http-metrics"
+      },
+      "serviceMonitor": {
+        "enabled": false,
+        "interval": "30s",
+        "relabelings": [],
+        "metricRelabelings": [],
+        "selector": {},
+        "scheme": "",
+        "tlsConfig": {},
+        "namespace": "",
+        "additionalLabels": {},
+        "annotations": {}
+      }
+    },
+    "pdb": {
+      "enabled": false,
+      "labels": {},
+      "annotations": {},
+      "minAvailable": "",
+      "maxUnavailable": ""
+    },
+    "image": {
+      "repository": "ghcr.io/dexidp/dex",
+      "tag": "v2.35.3",
+      "imagePullPolicy": ""
+    },
+    "imagePullSecrets": [],
+    "initImage": {
+      "repository": "",
+      "tag": "",
+      "imagePullPolicy": ""
+    },
+    "env": [],
+    "envFrom": [],
+    "certificateSecret": {
+      "enabled": false,
+      "labels": {},
+      "annotations": {},
+      "ca": "",
+      "key": "",
+      "crt": ""
+    },
+    "deploymentAnnotations": {},
+    "podAnnotations": {},
+    "podLabels": {},
+    "containerSecurityContext": {
+      "runAsNonRoot": true,
+      "readOnlyRootFilesystem": true,
+      "allowPrivilegeEscalation": false,
+      "seccompProfile": {
+        "type": "RuntimeDefault"
+      },
+      "capabilities": {
+        "drop": [
+          "ALL"
+        ]
+      }
+    },
+    "livenessProbe": {
+      "enabled": false,
+      "failureThreshold": 3,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 10,
+      "successThreshold": 1,
+      "timeoutSeconds": 1
+    },
+    "readinessProbe": {
+      "enabled": false,
+      "failureThreshold": 3,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 10,
+      "successThreshold": 1,
+      "timeoutSeconds": 1
+    },
+    "serviceAccount": {
+      "create": true,
+      "name": "argocd-dex-server",
+      "annotations": {},
+      "automountServiceAccountToken": true
+    },
+    "volumeMounts": [],
+    "volumes": [],
+    "containerPortHttp": 5556,
+    "servicePortHttp": 5556,
+    "servicePortHttpName": "http",
+    "containerPortGrpc": 5557,
+    "servicePortGrpc": 5557,
+    "servicePortGrpcName": "grpc",
+    "containerPortMetrics": 5558,
+    "servicePortMetrics": 5558,
+    "nodeSelector": {},
+    "tolerations": [],
+    "affinity": {},
+    "topologySpreadConstraints": [],
+    "priorityClassName": "",
+    "resources": {},
+    "extraContainers": [],
+    "initContainers": []
+  },
+  "redis": {
+    "enabled": true,
+    "name": "redis",
+    "pdb": {
+      "enabled": false,
+      "labels": {},
+      "annotations": {},
+      "minAvailable": "",
+      "maxUnavailable": ""
+    },
+    "image": {
+      "repository": "public.ecr.aws/docker/library/redis",
+      "tag": "7.0.5-alpine",
+      "imagePullPolicy": "IfNotPresent"
+    },
+    "imagePullSecrets": [],
+    "extraArgs": [],
+    "containerPort": 6379,
+    "servicePort": 6379,
+    "env": [],
+    "envFrom": [],
+    "deploymentAnnotations": {},
+    "podAnnotations": {},
+    "podLabels": {},
+    "securityContext": {
+      "runAsNonRoot": true,
+      "runAsUser": 999,
+      "seccompProfile": {
+        "type": "RuntimeDefault"
+      }
+    },
+    "containerSecurityContext": {
+      "allowPrivilegeEscalation": false,
+      "capabilities": {
+        "drop": [
+          "ALL"
+        ]
+      }
+    },
+    "nodeSelector": {},
+    "tolerations": [],
+    "affinity": {},
+    "topologySpreadConstraints": [],
+    "priorityClassName": "",
+    "serviceAccount": {
+      "create": false,
+      "name": "",
+      "annotations": {},
+      "automountServiceAccountToken": false
+    },
+    "resources": {},
+    "volumeMounts": [],
+    "volumes": [],
+    "extraContainers": [],
+    "initContainers": [],
+    "service": {
+      "annotations": {},
+      "labels": {}
+    },
+    "metrics": {
+      "enabled": false,
+      "image": {
+        "repository": "public.ecr.aws/bitnami/redis-exporter",
+        "tag": "1.26.0-debian-10-r2",
+        "imagePullPolicy": "IfNotPresent"
+      },
+      "containerPort": 9121,
+      "containerSecurityContext": {
+        "runAsNonRoot": true,
+        "readOnlyRootFilesystem": true,
+        "allowPrivilegeEscalation": false,
+        "seccompProfile": {
+          "type": "RuntimeDefault"
+        },
+        "capabilities": {
+          "drop": [
+            "ALL"
+          ]
+        }
+      },
+      "resources": {},
+      "service": {
+        "type": "ClusterIP",
+        "clusterIP": "None",
+        "annotations": {},
+        "labels": {},
+        "servicePort": 9121,
+        "portName": "http-metrics"
+      },
+      "serviceMonitor": {
+        "enabled": false,
+        "interval": "30s",
+        "relabelings": [],
+        "metricRelabelings": [],
+        "selector": {},
+        "scheme": "",
+        "tlsConfig": {},
+        "namespace": "",
+        "additionalLabels": {},
+        "annotations": {}
+      }
+    }
+  },
+  "redis-ha": {
+    "enabled": false,
+    "exporter": {
+      "enabled": true
+    },
+    "persistentVolume": {
+      "enabled": false
+    },
+    "redis": {
+      "masterGroupName": "argocd",
+      "config": {
+        "save": "\"\""
+      }
+    },
+    "haproxy": {
+      "enabled": true,
+      "metrics": {
+        "enabled": true
+      }
+    },
+    "image": {
+      "tag": "7.0.5-alpine"
+    },
+    "topologySpreadConstraints": {
+      "enabled": false,
+      "maxSkew": "",
+      "topologyKey": "",
+      "whenUnsatisfiable": ""
+    }
+  },
+  "externalRedis": {
+    "host": "",
+    "username": "",
+    "password": "",
+    "port": 6379,
+    "existingSecret": "",
+    "secretAnnotations": {}
+  },
+  "server": {
+    "name": "server",
+    "replicas": 1,
+    "autoscaling": {
+      "enabled": false,
+      "minReplicas": 1,
+      "maxReplicas": 5,
+      "targetCPUUtilizationPercentage": 50,
+      "targetMemoryUtilizationPercentage": 50,
+      "behavior": {}
+    },
+    "pdb": {
+      "enabled": false,
+      "labels": {},
+      "annotations": {},
+      "minAvailable": "",
+      "maxUnavailable": ""
+    },
+    "image": {
+      "repository": "",
+      "tag": "",
+      "imagePullPolicy": ""
+    },
+    "imagePullSecrets": [],
+    "extraArgs": [],
+    "env": [],
+    "envFrom": [],
+    "lifecycle": {},
+    "deploymentAnnotations": {},
+    "podAnnotations": {},
+    "podLabels": {},
+    "containerPort": 8080,
+    "readinessProbe": {
+      "failureThreshold": 3,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 10,
+      "successThreshold": 1,
+      "timeoutSeconds": 1
+    },
+    "livenessProbe": {
+      "failureThreshold": 3,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 10,
+      "successThreshold": 1,
+      "timeoutSeconds": 1
+    },
+    "volumeMounts": [],
+    "volumes": [],
+    "nodeSelector": {},
+    "tolerations": [],
+    "affinity": {},
+    "topologySpreadConstraints": [],
+    "priorityClassName": "",
+    "containerSecurityContext": {
+      "runAsNonRoot": true,
+      "readOnlyRootFilesystem": true,
+      "allowPrivilegeEscalation": false,
+      "seccompProfile": {
+        "type": "RuntimeDefault"
+      },
+      "capabilities": {
+        "drop": [
+          "ALL"
+        ]
+      }
+    },
+    "resources": {},
+    "certificate": {
+      "enabled": false,
+      "secretName": "argocd-server-tls",
+      "domain": "argocd.example.com",
+      "additionalHosts": [],
+      "duration": "",
+      "renewBefore": "",
+      "issuer": {
+        "group": "",
+        "kind": "",
+        "name": ""
+      },
+      "privateKey": {
+        "rotationPolicy": "Never",
+        "encoding": "PKCS1",
+        "algorithm": "RSA",
+        "size": 2048
+      }
+    },
+    "certificateSecret": {
+      "enabled": false,
+      "annotations": {},
+      "labels": {},
+      "key": "",
+      "crt": ""
+    },
+    "service": {
+      "annotations": {},
+      "labels": {},
+      "type": "ClusterIP",
+      "nodePortHttp": 30080,
+      "nodePortHttps": 30443,
+      "servicePortHttp": 80,
+      "servicePortHttps": 443,
+      "servicePortHttpName": "http",
+      "servicePortHttpsName": "https",
+      "namedTargetPort": true,
+      "loadBalancerIP": "",
+      "loadBalancerSourceRanges": [],
+      "externalIPs": [],
+      "externalTrafficPolicy": "",
+      "sessionAffinity": ""
+    },
+    "metrics": {
+      "enabled": false,
+      "service": {
+        "annotations": {},
+        "labels": {},
+        "servicePort": 8083,
+        "portName": "http-metrics"
+      },
+      "serviceMonitor": {
+        "enabled": false,
+        "interval": "30s",
+        "relabelings": [],
+        "metricRelabelings": [],
+        "selector": {},
+        "scheme": "",
+        "tlsConfig": {},
+        "namespace": "",
+        "additionalLabels": {},
+        "annotations": {}
+      }
+    },
+    "serviceAccount": {
+      "create": true,
+      "name": "argocd-server",
+      "annotations": {},
+      "labels": {},
+      "automountServiceAccountToken": true
+    },
+    "ingress": {
+      "enabled": false,
+      "annotations": {},
+      "labels": {},
+      "ingressClassName": "",
+      "hosts": [],
+      "paths": [
+        "/"
+      ],
+      "pathType": "Prefix",
+      "extraPaths": [],
+      "tls": [],
+      "https": false
+    },
+    "ingressGrpc": {
+      "enabled": false,
+      "isAWSALB": false,
+      "annotations": {},
+      "labels": {},
+      "ingressClassName": "",
+      "awsALB": {
+        "serviceType": "NodePort",
+        "backendProtocolVersion": "HTTP2"
+      },
+      "hosts": [],
+      "paths": [
+        "/"
+      ],
+      "pathType": "Prefix",
+      "extraPaths": [],
+      "tls": [],
+      "https": false
+    },
+    "route": {
+      "enabled": false,
+      "annotations": {},
+      "hostname": "",
+      "termination_type": "passthrough",
+      "termination_policy": "None"
+    },
+    "clusterAdminAccess": {
+      "enabled": true
+    },
+    "GKEbackendConfig": {
+      "enabled": false,
+      "spec": {}
+    },
+    "GKEmanagedCertificate": {
+      "enabled": false,
+      "domains": [
+        "argocd.example.com"
+      ]
+    },
+    "GKEfrontendConfig": {
+      "enabled": false,
+      "spec": {}
+    },
+    "extraContainers": [],
+    "initContainers": [],
+    "extensions": {
+      "enabled": false,
+      "image": {
+        "repository": "ghcr.io/argoproj-labs/argocd-extensions",
+        "tag": "v0.1.0",
+        "imagePullPolicy": "IfNotPresent"
+      },
+      "containerSecurityContext": {
+        "runAsNonRoot": true,
+        "readOnlyRootFilesystem": true,
+        "allowPrivilegeEscalation": false,
+        "seccompProfile": {
+          "type": "RuntimeDefault"
+        },
+        "capabilities": {
+          "drop": [
+            "ALL"
+          ]
+        }
+      },
+      "resources": {}
+    }
+  },
+  "repoServer": {
+    "name": "repo-server",
+    "replicas": 1,
+    "autoscaling": {
+      "enabled": false,
+      "minReplicas": 1,
+      "maxReplicas": 5,
+      "targetCPUUtilizationPercentage": 50,
+      "targetMemoryUtilizationPercentage": 50,
+      "behavior": {}
+    },
+    "pdb": {
+      "enabled": false,
+      "labels": {},
+      "annotations": {},
+      "minAvailable": "",
+      "maxUnavailable": ""
+    },
+    "image": {
+      "repository": "",
+      "tag": "",
+      "imagePullPolicy": ""
+    },
+    "imagePullSecrets": [],
+    "extraArgs": [],
+    "env": [],
+    "envFrom": [],
+    "deploymentAnnotations": {},
+    "podAnnotations": {},
+    "podLabels": {},
+    "containerPort": 8081,
+    "readinessProbe": {
+      "failureThreshold": 3,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 10,
+      "successThreshold": 1,
+      "timeoutSeconds": 1
+    },
+    "livenessProbe": {
+      "failureThreshold": 3,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 10,
+      "successThreshold": 1,
+      "timeoutSeconds": 1
+    },
+    "volumeMounts": [],
+    "volumes": [],
+    "nodeSelector": {},
+    "tolerations": [],
+    "affinity": {},
+    "topologySpreadConstraints": [],
+    "priorityClassName": "",
+    "containerSecurityContext": {
+      "runAsNonRoot": true,
+      "readOnlyRootFilesystem": true,
+      "allowPrivilegeEscalation": false,
+      "seccompProfile": {
+        "type": "RuntimeDefault"
+      },
+      "capabilities": {
+        "drop": [
+          "ALL"
+        ]
+      }
+    },
+    "resources": {},
+    "certificateSecret": {
+      "enabled": false,
+      "annotations": {},
+      "labels": {},
+      "ca": "",
+      "key": "",
+      "crt": ""
+    },
+    "service": {
+      "annotations": {},
+      "labels": {},
+      "port": 8081,
+      "portName": "https-repo-server"
+    },
+    "metrics": {
+      "enabled": false,
+      "service": {
+        "annotations": {},
+        "labels": {},
+        "servicePort": 8084,
+        "portName": "http-metrics"
+      },
+      "serviceMonitor": {
+        "enabled": false,
+        "interval": "30s",
+        "relabelings": [],
+        "metricRelabelings": [],
+        "selector": {},
+        "scheme": "",
+        "tlsConfig": {},
+        "namespace": "",
+        "additionalLabels": {},
+        "annotations": {}
+      }
+    },
+    "clusterAdminAccess": {
+      "enabled": false
+    },
+    "clusterRoleRules": {
+      "enabled": false,
+      "rules": []
+    },
+    "serviceAccount": {
+      "create": true,
+      "name": "",
+      "annotations": {},
+      "labels": {},
+      "automountServiceAccountToken": true
+    },
+    "extraContainers": [],
+    "rbac": [],
+    "initContainers": []
+  },
+  "applicationSet": {
+    "enabled": true,
+    "name": "applicationset-controller",
+    "replicaCount": 1,
+    "pdb": {
+      "enabled": false,
+      "labels": {},
+      "annotations": {},
+      "minAvailable": "",
+      "maxUnavailable": ""
+    },
+    "image": {
+      "repository": "",
+      "tag": "",
+      "imagePullPolicy": ""
+    },
+    "imagePullSecrets": [],
+    "args": {
+      "metricsAddr": ":8080",
+      "probeBindAddr": ":8081",
+      "policy": "sync",
+      "dryRun": false
+    },
+    "logFormat": "",
+    "logLevel": "",
+    "extraContainers": [],
+    "metrics": {
+      "enabled": false,
+      "service": {
+        "annotations": {},
+        "labels": {},
+        "servicePort": 8085,
+        "portName": "http-metrics"
+      },
+      "serviceMonitor": {
+        "enabled": false,
+        "interval": "30s",
+        "relabelings": [],
+        "metricRelabelings": [],
+        "selector": {},
+        "scheme": "",
+        "tlsConfig": {},
+        "namespace": "",
+        "additionalLabels": {},
+        "annotations": {}
+      }
+    },
+    "service": {
+      "annotations": {},
+      "labels": {},
+      "port": 7000,
+      "portName": "webhook"
+    },
+    "serviceAccount": {
+      "create": true,
+      "annotations": {},
+      "labels": {},
+      "name": ""
+    },
+    "deploymentAnnotations": {},
+    "podAnnotations": {},
+    "podLabels": {},
+    "containerSecurityContext": {
+      "runAsNonRoot": true,
+      "readOnlyRootFilesystem": true,
+      "allowPrivilegeEscalation": false,
+      "seccompProfile": {
+        "type": "RuntimeDefault"
+      },
+      "capabilities": {
+        "drop": [
+          "ALL"
+        ]
+      }
+    },
+    "readinessProbe": {
+      "enabled": false,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 10,
+      "timeoutSeconds": 1,
+      "successThreshold": 1,
+      "failureThreshold": 3
+    },
+    "livenessProbe": {
+      "enabled": false,
+      "initialDelaySeconds": 10,
+      "periodSeconds": 10,
+      "timeoutSeconds": 1,
+      "successThreshold": 1,
+      "failureThreshold": 3
+    },
+    "resources": {},
+    "nodeSelector": {},
+    "tolerations": [],
+    "affinity": {},
+    "priorityClassName": "",
+    "extraVolumeMounts": [],
+    "extraVolumes": [],
+    "extraArgs": [],
+    "extraEnv": [],
+    "extraEnvFrom": [],
+    "webhook": {
+      "ingress": {
+        "enabled": false,
+        "annotations": {},
+        "labels": {},
+        "ingressClassName": "",
+        "hosts": [],
+        "paths": [
+          "/api/webhook"
+        ],
+        "pathType": "Prefix",
+        "extraPaths": [],
+        "tls": []
+      }
+    }
+  },
+  "notifications": {
+    "enabled": true,
+    "name": "notifications-controller",
+    "affinity": {},
+    "argocdUrl": null,
+    "pdb": {
+      "enabled": false,
+      "labels": {},
+      "annotations": {},
+      "minAvailable": "",
+      "maxUnavailable": ""
+    },
+    "image": {
+      "repository": "",
+      "tag": "",
+      "imagePullPolicy": ""
+    },
+    "imagePullSecrets": [],
+    "nodeSelector": {},
+    "context": {},
+    "secret": {
+      "create": true,
+      "annotations": {},
+      "items": {}
+    },
+    "logFormat": "",
+    "logLevel": "",
+    "extraArgs": [],
+    "extraEnv": [],
+    "extraEnvFrom": [],
+    "extraVolumeMounts": [],
+    "extraVolumes": [],
+    "metrics": {
+      "enabled": false,
+      "port": 9001,
+      "service": {
+        "annotations": {},
+        "labels": {},
+        "portName": "http-metrics"
+      },
+      "serviceMonitor": {
+        "enabled": false,
+        "selector": {},
+        "additionalLabels": {},
+        "annotations": {},
+        "scheme": "",
+        "tlsConfig": {},
+        "relabelings": [],
+        "metricRelabelings": []
+      }
+    },
+    "notifiers": {},
+    "deploymentAnnotations": {},
+    "podAnnotations": {},
+    "podLabels": {},
+    "containerSecurityContext": {
+      "runAsNonRoot": true,
+      "readOnlyRootFilesystem": true,
+      "allowPrivilegeEscalation": false,
+      "seccompProfile": {
+        "type": "RuntimeDefault"
+      },
+      "capabilities": {
+        "drop": [
+          "ALL"
+        ]
+      }
+    },
+    "priorityClassName": "",
+    "resources": {},
+    "serviceAccount": {
+      "create": true,
+      "name": "argocd-notifications-controller",
+      "annotations": {},
+      "labels": {}
+    },
+    "cm": {
+      "create": true
+    },
+    "subscriptions": [],
+    "templates": {},
+    "tolerations": [],
+    "triggers": {},
+    "bots": {
+      "slack": {
+        "enabled": false,
+        "pdb": {
+          "enabled": false,
+          "labels": {},
+          "annotations": {},
+          "minAvailable": "",
+          "maxUnavailable": ""
+        },
+        "image": {
+          "repository": "",
+          "tag": "",
+          "imagePullPolicy": ""
+        },
+        "imagePullSecrets": [],
+        "service": {
+          "annotations": {},
+          "port": 80,
+          "type": "LoadBalancer"
+        },
+        "serviceAccount": {
+          "create": true,
+          "name": "argocd-notifications-bot",
+          "annotations": {}
+        },
+        "containerSecurityContext": {
+          "runAsNonRoot": true,
+          "readOnlyRootFilesystem": true,
+          "allowPrivilegeEscalation": false,
+          "seccompProfile": {
+            "type": "RuntimeDefault"
+          },
+          "capabilities": {
+            "drop": [
+              "ALL"
+            ]
+          }
+        },
+        "resources": {},
+        "affinity": {},
+        "tolerations": [],
+        "nodeSelector": {}
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import argoCdDefaultValues, { ArgoCdHelmParam } from './argo/argo-cd'
 import corednsDefaultValues, { CorednsHelmParam } from './coredns/coredns'
 import externalDnsDefaultValues, { ExternalDnsHelmParam } from './external-dns/external-dns'
 import ingressNginxDefaultValues, { IngressNginxHelmParam } from './ingress-nginx/ingress-nginx'
@@ -9,6 +10,7 @@ import kubePrometheusStackDefaultValues, {
 
 export {
   corednsDefaultValues,
+  argoCdDefaultValues,
   externalDnsDefaultValues,
   ingressNginxDefaultValues,
   jenkinsDefaultValues,
@@ -19,5 +21,6 @@ export {
   IngressNginxHelmParam,
   JenkinsHelmParam,
   MetallbHelmParam,
+  ArgoCdHelmParam,
   KubePrometheusStackHelmParam
 }

@@ -1,14 +1,16 @@
 import { PartialRecursive, scope } from '@package/common'
 import { App } from 'cdk8s'
-import { dnsChart, ingressNginxChart, metallbChart } from './charts'
+import { argocdChart, dnsChart, ingressNginxChart, metallbChart } from './charts'
 import {
+  argoCdDefaultValues,
   ExternalDnsHelmParam,
   IngressNginxHelmParam,
   externalDnsDefaultValues,
-  ingressNginxDefaultValues
+  ingressNginxDefaultValues,
+  ArgoCdHelmParam
 } from './helm-values'
 
-const synth = () => {
+const initApp = () => {
   const app: App = new App()
 
   /* -------------------------------------------------------------------------- */
@@ -138,9 +140,34 @@ const synth = () => {
         .get()
     }
   }).load(app)
-
   dns.addDependency(ingressNginx)
-  app.synth()
+
+  const argocdHost = 'argo.kube-ops.localhost'
+  const scopeArgoCdHelmParam = scope<PartialRecursive<ArgoCdHelmParam>>(argoCdDefaultValues)
+  {
+    scopeArgoCdHelmParam.z('server').z('service').z('type').set('LoadBalancer')
+    scopeArgoCdHelmParam
+      .z('server')
+      .z('ingress')
+      .merge({
+        enabled: true,
+        ingressClassName: 'nginx',
+        hosts: [argocdHost]
+      })
+    scopeArgoCdHelmParam.z('server').z('extraArgs').merge(['--insecure'])
+  }
+  const argocd = argocdChart('argo', {
+    chartProps: {
+      namespace: 'argo'
+    },
+    helmProps: {
+      releaseName: 'argo',
+      values: scopeArgoCdHelmParam.get() as any
+    }
+  }).load(app)
+  argocd.addDependency(dns)
+
+  return app
 }
 
-synth()
+initApp().synth()
