@@ -20,3 +20,6 @@ charts:
   - repo: argo
     chart: argo-cd
     url: https://argoproj.github.io/argo-helm
+  - repo: harbor
+    chart: harbor
+    url: https://helm.goharbor.io

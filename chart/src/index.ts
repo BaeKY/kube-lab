@@ -2,13 +2,16 @@ import { PartialRecursive, scope } from '@package/common'
 import { App } from 'cdk8s'
 import { argocdChart, dnsChart, ingressNginxChart, metallbChart } from './charts'
 import {
-  argoCdDefaultValues,
+  ArgoCdHelmParam,
   ExternalDnsHelmParam,
+  HarborHelmParam,
   IngressNginxHelmParam,
+  argoCdDefaultValues,
   externalDnsDefaultValues,
-  ingressNginxDefaultValues,
-  ArgoCdHelmParam
+  harborDefaultValues,
+  ingressNginxDefaultValues
 } from './helm-values'
+import { harborChart } from './charts/harbor.chart'
 
 const initApp = () => {
   const app: App = new App()
@@ -167,6 +170,31 @@ const initApp = () => {
   }).load(app)
   argocd.addDependency(dns)
 
+  const harborHost = 'harbor.kube-ops.localhost'
+  const harborNotaryHost = 'harbor-notary.kube-ops.localhost'
+  const scopeHarborHelmParam = scope<PartialRecursive<HarborHelmParam>>(harborDefaultValues)
+  {
+    scopeHarborHelmParam
+      .z('expose')
+      .z('ingress')
+      .merge({
+        className: 'nginx',
+        hosts: {
+          core: harborHost,
+          notary: harborNotaryHost
+        }
+      })
+  }
+  const harbor = harborChart('harbor', {
+    chartProps: {
+      namespace: 'harbor'
+    },
+    helmProps: {
+      releaseName: 'harbor',
+      values: scopeHarborHelmParam.get() as any
+    }
+  }).load(app)
+  harbor.addDependency(argocd)
   return app
 }
 
