@@ -23,7 +23,8 @@ const initApp = () => {
   const metalLb = metallbChart('metallb', {
     chartProps: { namespace: 'metallb-system' },
     helmProps: {
-      releaseName: 'l2-lb'
+      releaseName: 'l2-lb',
+      version: '0.13.7'
     },
     ipAddressPool: {
       name: 'local-ip',
@@ -54,7 +55,8 @@ const initApp = () => {
     },
     helmProps: {
       releaseName: 'default',
-      values: ingressNginxValues.get()
+      values: ingressNginxValues.get(),
+      version: '4.4.0'
     }
   }).load(app)
   ingressNginx.addDependency(metalLb)
@@ -69,6 +71,7 @@ const initApp = () => {
     },
     coreDns: {
       releaseName: 'core-dns',
+      version: '1.19.7',
       values: {
         isClusterService: false,
         rbac: {
@@ -129,6 +132,7 @@ const initApp = () => {
     },
     externalDns: {
       releaseName: 'external-dns',
+      version: '1.12.0',
       values: scope<PartialRecursive<ExternalDnsHelmParam>>(externalDnsDefaultValues)
         .merge({
           env: [
@@ -165,7 +169,8 @@ const initApp = () => {
     },
     helmProps: {
       releaseName: 'argo',
-      values: scopeArgoCdHelmParam.get() as any
+      values: scopeArgoCdHelmParam.get() as any,
+      version: '5.16.13'
     }
   }).load(app)
   argocd.addDependency(dns)
@@ -191,7 +196,8 @@ const initApp = () => {
     },
     helmProps: {
       releaseName: 'harbor',
-      values: scopeHarborHelmParam.get() as any
+      values: scopeHarborHelmParam.get() as any,
+      version: '1.11.0'
     }
   }).load(app)
   harbor.addDependency(argocd)

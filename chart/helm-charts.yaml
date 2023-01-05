@@ -2,24 +2,32 @@ charts:
   - repo: metallb
     chart: metallb
     url: https://metallb.github.io/metallb
+    version: 0.13.7
   - repo: ingress-nginx
     chart: ingress-nginx
     url: https://kubernetes.github.io/ingress-nginx
+    version: 4.4.0
   - repo: prometheus-community
     chart: kube-prometheus-stack
     url: https://prometheus-community.github.io/helm-charts
+    version: 43.1.1
   - repo: jenkins
     chart: jenkins
     url: https://charts.jenkins.io
+    version: 4.2.17
   - repo: coredns
     chart: coredns
     url: https://coredns.github.io/helm
+    version: 1.19.7
   - repo: external-dns
     chart: external-dns
     url: https://kubernetes-sigs.github.io/external-dns/
+    version: 1.12.0
   - repo: argo
     chart: argo-cd
     url: https://argoproj.github.io/argo-helm
+    version: 5.16.13
   - repo: harbor
     chart: harbor
     url: https://helm.goharbor.io
+    version: 1.11.0

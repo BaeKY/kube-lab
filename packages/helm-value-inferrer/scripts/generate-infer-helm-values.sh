@@ -2,7 +2,8 @@
 
 function load_helm_chart_values_as_json() {
   local chart=$1
-  echo "$(helm show values $chart | yq '.' -o json)"
+  local chart_version=$2
+  echo "$(helm show values $chart --version $chart_version | yq '.' -o json)"
 }
 
 function generate_inferrence() {
@@ -29,7 +30,12 @@ export default defaultValues
 EOF
 }
 
-CHART=$1
+CHART_WITH_VERSION=$1
+
+# <chart-name>@<version>
+CHART=$(echo $CHART_WITH_VERSION | awk -F'@' '{print $1}')
+CHART_VERSION=$(echo $CHART_WITH_VERSION | awk -F'@' '{print $2}')
+
 # 일단은 다른 Lang 지원 안함. 현재는 안쓰는 변수
 LANGUAGE=$2
 
@@ -42,7 +48,7 @@ DIR=$PWD/$CHART
 
 rm -rf $DIR
 
-HELM_VALUES_JSON=$(load_helm_chart_values_as_json $CHART)
+HELM_VALUES_JSON=$(load_helm_chart_values_as_json $CHART $CHART_VERSION)
 
 mkdir -p $DIR
 
