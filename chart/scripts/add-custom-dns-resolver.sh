@@ -14,8 +14,9 @@ search $DOMAIN
 nameserver $NS_IP
 "
 
-sudo mkdir -p /private/etc/resolver
-echo "$RESOLVER_CONTENT" | sudo tee -a $RESOLVER_NAME &>/dev/null
+RESOLVER_DIR=/private/etc/resolver
+sudo mkdir -p $RESOLVER_DIR
+echo "$RESOLVER_CONTENT" | sudo tee -a $RESOLVER_DIR/$RESOLVER_NAME &>/dev/null
 
 # https://vninja.net/2020/02/06/macos-custom-dns-resolvers/
 # 위 링크처럼 DNS Refresh
