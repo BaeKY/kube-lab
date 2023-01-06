@@ -1,4 +1,4 @@
-import { Container, ContainerPort } from '@package/k8s-generated/src'
+import { Container, ContainerPort } from '@package/k8s-generated'
 import { ContainerFactory } from '../../src/container-factory'
 
 describe('container-factory', () => {

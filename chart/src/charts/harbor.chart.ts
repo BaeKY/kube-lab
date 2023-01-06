@@ -2,7 +2,7 @@ import { ChartLoader, ComponentLoader, HelmLoader, HelmProps } from '@package/cd
 import { LoadingChart } from '../types'
 import { HarborHelmParam } from '../helm-values'
 import { scope } from '@package/common/src'
-import { KubeNamespace } from '@package/k8s-generated/src'
+import { KubeNamespace } from '@package/k8s-generated'
 
 const helmHarborName = 'harbor/harbor'
 

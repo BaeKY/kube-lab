@@ -1,4 +1,4 @@
-import { EnvVar } from '@package/k8s-generated/src'
+import { EnvVar } from '@package/k8s-generated'
 import { ConfigMapLoader, DeployLoader, SecretLoader } from '../src'
 import _ from 'lodash'
 

@@ -2,7 +2,7 @@ import { ChartLoader, ComponentLoader, HelmLoader, HelmProps } from '@package/cd
 import { LoadingChart } from '../types'
 import { ArgoCdHelmParam } from '../helm-values/argo/argo-cd'
 import { scope } from '@package/common/src'
-import { KubeNamespace } from '@package/k8s-generated/src'
+import { KubeNamespace } from '@package/k8s-generated'
 
 export const argocdChart: LoadingChart<{ helmProps: Omit<HelmProps<ArgoCdHelmParam>, 'chart'> }> = (id, props) => {
   const { chartProps, helmProps } = props
