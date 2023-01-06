@@ -1,6 +1,7 @@
 import { PartialRecursive, scope } from '@package/common'
 import { App } from 'cdk8s'
-import { argocdChart, dnsChart, ingressNginxChart, metallbChart } from './charts'
+import { argocdChart, certManagerChart, dnsChart, ingressNginxChart, metallbChart } from './charts'
+import { harborChart } from './charts/harbor.chart'
 import {
   ArgoCdHelmParam,
   ExternalDnsHelmParam,
@@ -11,7 +12,6 @@ import {
   harborDefaultValues,
   ingressNginxDefaultValues
 } from './helm-values'
-import { harborChart } from './charts/harbor.chart'
 
 const initApp = () => {
   const app: App = new App()
@@ -148,6 +148,18 @@ const initApp = () => {
     }
   }).load(app)
   dns.addDependency(ingressNginx)
+
+  const certManager = certManagerChart('cert-manager', {
+    chartProps: {
+      namespace: 'cert-manager'
+    },
+    helmProps: {
+      releaseName: 'cert-manager',
+      helmFlags: ['--set', 'installCRDs=true'],
+      version: '1.10.1'
+    }
+  }).load(app)
+  certManager.addDependency(dns)
 
   const argocdHost = 'argo.kube-ops.localhost'
   const scopeArgoCdHelmParam = scope<PartialRecursive<ArgoCdHelmParam>>(argoCdDefaultValues)

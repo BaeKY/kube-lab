@@ -1,4 +1,5 @@
 export * from './argocd.chart'
+export * from './cert-manager.chart'
 export * from './dns.chart'
 export * from './ingress-nginx.chart'
 export * from './metallb.chart'

@@ -1,0 +1,261 @@
+{
+  "global": {
+    "imagePullSecrets": [],
+    "commonLabels": {},
+    "priorityClassName": "",
+    "rbac": {
+      "create": true,
+      "aggregateClusterRoles": true
+    },
+    "podSecurityPolicy": {
+      "enabled": false,
+      "useAppArmor": true
+    },
+    "logLevel": 2,
+    "leaderElection": {
+      "namespace": "kube-system"
+    }
+  },
+  "installCRDs": false,
+  "replicaCount": 1,
+  "strategy": {},
+  "featureGates": "",
+  "image": {
+    "repository": "quay.io/jetstack/cert-manager-controller",
+    "pullPolicy": "IfNotPresent"
+  },
+  "clusterResourceNamespace": "",
+  "namespace": "",
+  "serviceAccount": {
+    "create": true,
+    "automountServiceAccountToken": true
+  },
+  "extraArgs": [],
+  "extraEnv": [],
+  "resources": {},
+  "securityContext": {
+    "runAsNonRoot": true,
+    "seccompProfile": {
+      "type": "RuntimeDefault"
+    }
+  },
+  "containerSecurityContext": {
+    "allowPrivilegeEscalation": false,
+    "capabilities": {
+      "drop": [
+        "ALL"
+      ]
+    }
+  },
+  "volumes": [],
+  "volumeMounts": [],
+  "podLabels": {},
+  "nodeSelector": {
+    "kubernetes.io/os": "linux"
+  },
+  "ingressShim": {},
+  "prometheus": {
+    "enabled": true,
+    "servicemonitor": {
+      "enabled": false,
+      "prometheusInstance": "default",
+      "targetPort": 9402,
+      "path": "/metrics",
+      "interval": "60s",
+      "scrapeTimeout": "30s",
+      "labels": {},
+      "annotations": {},
+      "honorLabels": false
+    }
+  },
+  "affinity": {},
+  "tolerations": [],
+  "topologySpreadConstraints": [],
+  "webhook": {
+    "replicaCount": 1,
+    "timeoutSeconds": 10,
+    "config": null,
+    "strategy": {},
+    "securityContext": {
+      "runAsNonRoot": true,
+      "seccompProfile": {
+        "type": "RuntimeDefault"
+      }
+    },
+    "containerSecurityContext": {
+      "allowPrivilegeEscalation": false,
+      "capabilities": {
+        "drop": [
+          "ALL"
+        ]
+      }
+    },
+    "extraArgs": [],
+    "resources": {},
+    "livenessProbe": {
+      "failureThreshold": 3,
+      "initialDelaySeconds": 60,
+      "periodSeconds": 10,
+      "successThreshold": 1,
+      "timeoutSeconds": 1
+    },
+    "readinessProbe": {
+      "failureThreshold": 3,
+      "initialDelaySeconds": 5,
+      "periodSeconds": 5,
+      "successThreshold": 1,
+      "timeoutSeconds": 1
+    },
+    "nodeSelector": {
+      "kubernetes.io/os": "linux"
+    },
+    "affinity": {},
+    "tolerations": [],
+    "topologySpreadConstraints": [],
+    "podLabels": {},
+    "serviceLabels": {},
+    "image": {
+      "repository": "quay.io/jetstack/cert-manager-webhook",
+      "pullPolicy": "IfNotPresent"
+    },
+    "serviceAccount": {
+      "create": true,
+      "automountServiceAccountToken": true
+    },
+    "securePort": 10250,
+    "hostNetwork": false,
+    "serviceType": "ClusterIP",
+    "url": {},
+    "networkPolicy": {
+      "enabled": false,
+      "ingress": [
+        {
+          "from": [
+            {
+              "ipBlock": {
+                "cidr": "0.0.0.0/0"
+              }
+            }
+          ]
+        }
+      ],
+      "egress": [
+        {
+          "ports": [
+            {
+              "port": 80,
+              "protocol": "TCP"
+            },
+            {
+              "port": 443,
+              "protocol": "TCP"
+            },
+            {
+              "port": 53,
+              "protocol": "TCP"
+            },
+            {
+              "port": 53,
+              "protocol": "UDP"
+            }
+          ],
+          "to": [
+            {
+              "ipBlock": {
+                "cidr": "0.0.0.0/0"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "cainjector": {
+    "enabled": true,
+    "replicaCount": 1,
+    "strategy": {},
+    "securityContext": {
+      "runAsNonRoot": true,
+      "seccompProfile": {
+        "type": "RuntimeDefault"
+      }
+    },
+    "containerSecurityContext": {
+      "allowPrivilegeEscalation": false,
+      "capabilities": {
+        "drop": [
+          "ALL"
+        ]
+      }
+    },
+    "extraArgs": [],
+    "resources": {},
+    "nodeSelector": {
+      "kubernetes.io/os": "linux"
+    },
+    "affinity": {},
+    "tolerations": [],
+    "topologySpreadConstraints": [],
+    "podLabels": {},
+    "image": {
+      "repository": "quay.io/jetstack/cert-manager-cainjector",
+      "pullPolicy": "IfNotPresent"
+    },
+    "serviceAccount": {
+      "create": true,
+      "automountServiceAccountToken": true
+    }
+  },
+  "startupapicheck": {
+    "enabled": true,
+    "securityContext": {
+      "runAsNonRoot": true,
+      "seccompProfile": {
+        "type": "RuntimeDefault"
+      }
+    },
+    "containerSecurityContext": {
+      "allowPrivilegeEscalation": false,
+      "capabilities": {
+        "drop": [
+          "ALL"
+        ]
+      }
+    },
+    "timeout": "1m",
+    "backoffLimit": 4,
+    "jobAnnotations": {
+      "helm.sh/hook": "post-install",
+      "helm.sh/hook-weight": "1",
+      "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+    },
+    "extraArgs": [],
+    "resources": {},
+    "nodeSelector": {
+      "kubernetes.io/os": "linux"
+    },
+    "affinity": {},
+    "tolerations": [],
+    "podLabels": {},
+    "image": {
+      "repository": "quay.io/jetstack/cert-manager-ctl",
+      "pullPolicy": "IfNotPresent"
+    },
+    "rbac": {
+      "annotations": {
+        "helm.sh/hook": "post-install",
+        "helm.sh/hook-weight": "-5",
+        "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+      }
+    },
+    "serviceAccount": {
+      "create": true,
+      "annotations": {
+        "helm.sh/hook": "post-install",
+        "helm.sh/hook-weight": "-5",
+        "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+      },
+      "automountServiceAccountToken": true
+    }
+  }
+}
