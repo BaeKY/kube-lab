@@ -6055,3 +6055,30 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       serviceAccountName: cert-manager-startupapicheck
+---
+apiVersion: v1
+kind: Secret
+data:
+  api-key: NjJjYzNlYjNjMDEwYjI5MzQyZGZkZDYyYTY1YmUyNDYyNDJiYg==
+metadata:
+  name: cloudflare-api-key
+  namespace: cert-manager
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: cert-manager-cert-manager-cluster-issuer-0-c82e973c
+  namespace: cert-manager
+spec:
+  acme:
+    email: baeky.dev@gmail.com
+    privateKeySecretRef:
+      name: acme-issuer-account-key
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+      - dns01:
+          cloudflare:
+            apiKeySecretRef:
+              key: api-key
+              name: cloudflare-api-key
+            email: baeky.dev@gmail.com

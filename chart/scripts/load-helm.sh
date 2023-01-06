@@ -35,4 +35,5 @@ helmRepoAdd $HELM_CHARTS_FILE 1>/dev/null
 
 # helm repo update
 
-helmValuesCodegenForTypescript $HELM_CHARTS_FILE $PWD/src/helm-values
+mkdir -p $PWD/src/types/helm-values
+helmValuesCodegenForTypescript $HELM_CHARTS_FILE $PWD/src/types/helm-values

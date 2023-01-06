@@ -18,6 +18,7 @@
   "dependencies": {
     "@package/cdk8s-loader": "workspace:^0.0.1",
     "@package/common": "workspace:^0.0.1",
-    "@package/k8s-generated": "workspace:^1.25.0"
+    "@package/k8s-generated": "workspace:^1.25.0",
+    "dotenv": "^16.0.3"
   }
 }

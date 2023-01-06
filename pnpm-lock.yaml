@@ -39,10 +39,12 @@ importers:
       '@package/cdk8s-loader': workspace:^0.0.1
       '@package/common': workspace:^0.0.1
       '@package/k8s-generated': workspace:^1.25.0
+      dotenv: ^16.0.3
     dependencies:
       '@package/cdk8s-loader': link:../packages/cdk8s-loader
       '@package/common': link:../packages/common
       '@package/k8s-generated': link:../packages/k8s-generated
+      dotenv: 16.0.3
 
   packages/cdk8s-loader:
     specifiers:
@@ -1339,6 +1341,11 @@ packages:
     dependencies:
       no-case: 3.0.4
       tslib: 2.4.1
+    dev: false
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
     dev: false
 
   /electron-to-chromium/1.4.284:

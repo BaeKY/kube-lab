@@ -1,9 +1,15 @@
-import { ChartLoader, ComponentLoader, HelmLoader, HelmProps } from '@package/cdk8s-loader'
+import { AbsChart, HelmProps } from '@package/cdk8s-loader'
 import { ContainerFactory } from '@package/cdk8s-loader/src/container-factory'
 import { PartialRecursive, scope } from '@package/common'
-import { KubeIngress, KubeService, KubeStatefulSet, Quantity } from '@package/k8s-generated'
-import { CorednsHelmParam, ExternalDnsHelmParam } from '../helm-values'
-import { LoadingChart } from '../types'
+import { KubeService, KubeStatefulSet, Quantity } from '@package/k8s-generated/generated'
+import { ChartProps, Helm } from 'cdk8s'
+import { CorednsHelmParam, ExternalDnsHelmParam } from '../types'
+
+interface DnsChartProps extends ChartProps {
+  coreDns: Omit<HelmProps<PartialRecursive<CorednsHelmParam>>, 'chart'>
+  externalDns: Omit<HelmProps<PartialRecursive<ExternalDnsHelmParam>>, 'chart'>
+  etcd: EtcdClusterProps
+}
 
 interface EtcdClusterProps {
   name: string
@@ -14,25 +20,14 @@ interface EtcdClusterProps {
   serviceType?: 'ClusterIP' | 'LoadBalancer' | 'NodePort'
 }
 
-export const dnsChart: LoadingChart<{
-  coreDns: Omit<HelmProps<PartialRecursive<CorednsHelmParam>>, 'chart'>
-  externalDns: Omit<HelmProps<PartialRecursive<ExternalDnsHelmParam>>, 'chart'>
-  etcd: EtcdClusterProps
-}> = (id, props) => {
-  const { chartProps, coreDns, etcd, externalDns } = props
-
-  const namespace = chartProps.namespace ?? 'dns'
-
-  const chartLoader = new ChartLoader(id, chartProps)
-
-  // Add etcd-cluster to chart
-  {
-    const { name, replicas, labels, serviceType } = etcd
-    const image = 'quay.io/coreos/etcd:latest'
-
-    chartLoader
-      .addComponent(
-        new ComponentLoader(KubeService, `${id}-etcd-service`, {
+export class DnsChart extends AbsChart<DnsChartProps> {
+  protected loadChildren(id: string, props: DnsChartProps): void {
+    const { coreDns, etcd, externalDns, namespace } = props
+    {
+      const { name, labels, replicas, serviceType } = etcd
+      const image = 'quay.io/coreos/etcd:latest'
+      const etcdComponent = {
+        service: new KubeService(this, `${id}-etcd-svc`, {
           metadata: {
             name,
             labels
@@ -59,10 +54,8 @@ export const dnsChart: LoadingChart<{
             selector: labels,
             publishNotReadyAddresses: true
           }
-        })
-      )
-      .addComponent(
-        new ComponentLoader(KubeStatefulSet, `${id}-statefulset`, {
+        }),
+        statefulset: new KubeStatefulSet(this, `${id}-etcd-sts`, {
           metadata: {
             name,
             labels
@@ -156,20 +149,19 @@ export const dnsChart: LoadingChart<{
             ]
           }
         })
-      )
+      }
+    }
+
+    const scopeCoreDnsHelmProps = scope<HelmProps<CorednsHelmParam>>({
+      chart: 'coredns/coredns',
+      namespace
+    }).merge(coreDns as any)
+    new Helm(this, `${id}-coredns`, scopeCoreDnsHelmProps.get())
+
+    const scopeExternalDnsHelmProps = scope<HelmProps<PartialRecursive<ExternalDnsHelmParam>>>({
+      chart: 'external-dns/external-dns',
+      namespace
+    }).merge(externalDns as any)
+    new Helm(this, `${id}-external-dns`, scopeExternalDnsHelmProps.get())
   }
-
-  const corednsHelmPropsScope = scope<HelmProps<CorednsHelmParam>>({
-    chart: 'coredns/coredns',
-    helmFlags: ['--namespace', namespace, '--create-namespace']
-  }).merge(coreDns as any)
-
-  const externalDnsValuesScope = scope<HelmProps<PartialRecursive<ExternalDnsHelmParam>>>({
-    chart: 'external-dns/external-dns',
-    helmFlags: ['--namespace', namespace, '--create-namespace']
-  }).merge(externalDns as any)
-
-  return chartLoader
-    .addHelm(() => new HelmLoader(`${id}-coredns`, corednsHelmPropsScope.get()))
-    .addHelm(() => new HelmLoader(`${id}-external-dns`, externalDnsValuesScope.get()))
 }

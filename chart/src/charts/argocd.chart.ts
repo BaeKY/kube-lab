@@ -1,28 +1,21 @@
-import { ChartLoader, ComponentLoader, HelmLoader, HelmProps } from '@package/cdk8s-loader'
-import { LoadingChart } from '../types'
-import { ArgoCdHelmParam } from '../helm-values/argo/argo-cd'
-import { scope } from '@package/common/src'
-import { KubeNamespace } from '@package/k8s-generated'
+import { AbsChart, HelmProps } from '@package/cdk8s-loader/src'
+import { PartialRecursive, scope } from '@package/common/src'
+import { ChartProps, Helm } from 'cdk8s'
+import { ArgoCdHelmParam } from '../types'
 
-export const argocdChart: LoadingChart<{ helmProps: Omit<HelmProps<ArgoCdHelmParam>, 'chart'> }> = (id, props) => {
-  const { chartProps, helmProps } = props
-  const chartLoader = new ChartLoader(id, chartProps)
-  const namespace = chartProps.namespace ?? 'default'
+interface ArgoCdChartProps extends ChartProps {
+  argoCd: Omit<PartialRecursive<HelmProps<ArgoCdHelmParam>>, 'chart'>
+}
 
-  const helmPropsScope = scope<HelmProps<ArgoCdHelmParam>>({
-    chart: 'argo/argo-cd',
-    helmFlags: ['--namespace', namespace, '--create-namespace']
-  }).merge(helmProps as HelmProps<ArgoCdHelmParam>)
+export class ArgoCdChart extends AbsChart<ArgoCdChartProps> {
+  protected loadChildren(id: string, props: ArgoCdChartProps): void {
+    const { argoCd, namespace } = props
 
-  if (namespace !== 'default') {
-    chartLoader.addComponent(
-      new ComponentLoader(KubeNamespace, `${id}-ns`, {
-        metadata: {
-          name: namespace
-        }
-      })
-    )
+    const scopeArgoCdProps = scope<HelmProps<ArgoCdHelmParam>>({
+      chart: 'argo/argo-cd',
+      namespace
+    }).merge(argoCd as any)
+
+    new Helm(this, `${id}-argocd`, scopeArgoCdProps.get())
   }
-
-  return chartLoader.addHelm(() => new HelmLoader(`${id}-argocd`, helmPropsScope.get()))
 }

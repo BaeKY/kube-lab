@@ -1,22 +1,42 @@
-import { ChartLoader, HelmLoader, HelmProps } from '@package/cdk8s-loader'
-import { PartialRecursive, scope } from '@package/common'
-import { CertManagerHelmParam } from '../helm-values'
-import { LoadingChart } from '../types'
+import { AbsChart, HelmProps } from '@package/cdk8s-loader/src'
+import { PartialRecursive, scope } from '@package/common/src'
+import { ClusterIssuer, ClusterIssuerProps, KubeSecret } from '@package/k8s-generated/generated'
+import { ChartProps, Helm } from 'cdk8s'
+import { CertManagerHelmParam } from '../types'
 
-const helmChartName = 'jetstack/cert-manager'
+interface CertManagerChartProps extends ChartProps {
+  certManager: Omit<HelmProps<PartialRecursive<CertManagerHelmParam>>, 'chart'>
+  clusterIssuers?: ClusterIssuerProps[]
+  apiKeySecret?: {
+    secretName: string
+    apiKey: string
+  }
+}
 
-export const certManagerChart: LoadingChart<{
-  helmProps: Omit<HelmProps<PartialRecursive<CertManagerHelmParam>>, 'chart' | 'repo'>
-}> = (id, props) => {
-  const { chartProps, helmProps } = props
-  const chartLoader = new ChartLoader(id, chartProps)
+export class CertManagerChart extends AbsChart<CertManagerChartProps> {
+  protected loadChildren(id: string, props: CertManagerChartProps): void {
+    const { apiKeySecret, certManager, namespace, clusterIssuers } = props
 
-  const namespace = chartProps.namespace ?? 'default'
+    const scopeCertManagerProps = scope<HelmProps<CertManagerHelmParam>>({
+      chart: 'jetstack/cert-manager',
+      namespace
+    }).merge(certManager as any)
+    const certManagerHelm = new Helm(this, `${id}-cert-manager`, scopeCertManagerProps.get())
 
-  const scopeHelmProps = scope<HelmProps<CertManagerHelmParam>>({
-    chart: helmChartName,
-    namespace
-  }).merge(helmProps as any)
+    if (apiKeySecret == null) {
+      return
+    }
 
-  return chartLoader.addHelm(() => new HelmLoader(`${id}-helm`, scopeHelmProps.get()))
+    new KubeSecret(this, `${id}-api-key`, {
+      metadata: {
+        name: apiKeySecret.secretName
+      },
+      data: {
+        ['api-key']: Buffer.from(apiKeySecret.apiKey).toString('base64')
+      }
+    }).addDependency(certManagerHelm)
+    ;(clusterIssuers ?? []).forEach((clusterIssuerProps, idx) => {
+      new ClusterIssuer(this, `${id}-cluster-issuer-${idx}`, clusterIssuerProps).addDependency(certManagerHelm)
+    })
+  }
 }

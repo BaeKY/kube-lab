@@ -1,30 +1,20 @@
-import { ChartLoader, ComponentLoader, HelmLoader, HelmProps } from '@package/cdk8s-loader/src'
-import { LoadingChart } from '../types'
-import { HarborHelmParam } from '../helm-values'
-import { scope } from '@package/common/src'
-import { KubeNamespace } from '@package/k8s-generated'
+import { AbsChart, HelmProps } from '@package/cdk8s-loader'
+import { PartialRecursive, scope } from '@package/common'
+import { ChartProps, Helm } from 'cdk8s'
+import { HarborHelmParam } from '../types'
 
-const helmHarborName = 'harbor/harbor'
+interface HarborChartProps extends ChartProps {
+  harbor: Omit<PartialRecursive<HelmProps<HarborHelmParam>>, 'chart'>
+}
 
-export const harborChart: LoadingChart<{ helmProps: Omit<HelmProps<HarborHelmParam>, 'chart'> }> = (id, props) => {
-  const { chartProps, helmProps } = props
-  const chartLoader = new ChartLoader(id, chartProps)
-  const namespace = chartProps.namespace ?? 'default'
+export class HarborChart extends AbsChart<HarborChartProps> {
+  protected loadChildren(id: string, props: HarborChartProps): void {
+    const { harbor, namespace } = props
 
-  const helmPropsScope = scope<HelmProps<HarborHelmParam>>({
-    chart: helmHarborName,
-    helmFlags: ['--namespace', namespace, '--create-namespace']
-  }).merge(helmProps as HelmProps<HarborHelmParam>)
-
-  if (namespace !== 'default') {
-    chartLoader.addComponent(
-      new ComponentLoader(KubeNamespace, `${id}-ns`, {
-        metadata: {
-          name: namespace
-        }
-      })
-    )
+    const scopeHarborHelmParam = scope<HelmProps<HarborHelmParam>>({
+      chart: 'harbor/harbor',
+      namespace
+    }).merge(harbor as HelmProps<HarborHelmParam>)
+    new Helm(this, `${id}-harbor`, scopeHarborHelmParam.get())
   }
-
-  return chartLoader.addHelm(() => new HelmLoader(`${id}-harbor`, helmPropsScope.get()))
 }
