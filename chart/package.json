@@ -13,7 +13,8 @@
     "add-custom-dns": "sudo bash ./scripts/add-custom-dns-resolver.sh",
     "sample-nginx:up": "bash ./scripts/sample-nginx-up-down.sh up",
     "sample-nginx:down": "bash ./scripts/sample-nginx-up-down.sh down",
-    "config:network": "pnpm ip-alias:up && pnpm add-custom-dns"
+    "config:network": "pnpm ip-alias:up && pnpm add-custom-dns",
+    "k8s:deploy": "./scripts/deploy-manifest.sh $@"
   },
   "dependencies": {
     "@package/cdk8s-loader": "workspace:^0.0.1",
