@@ -5731,6 +5731,9 @@ spec:
             - --v=2
             - --cluster-resource-namespace=$(POD_NAMESPACE)
             - --leader-election-namespace=kube-system
+            - --dns01-recursive-nameservers-only
+            - --dns01-recursive-nameservers
+            - 8.8.8.8:53,8.8.4.4:53,1.1.1.1:53
           env:
             - name: POD_NAMESPACE
               valueFrom:
@@ -6067,7 +6070,7 @@ metadata:
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: cert-manager-cert-manager-cluster-issuer-0-c82e973c
+  name: acme-issuer
   namespace: cert-manager
 spec:
   acme:

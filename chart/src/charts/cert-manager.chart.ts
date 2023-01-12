@@ -36,7 +36,7 @@ export class CertManagerChart extends AbsChart<CertManagerChartProps> {
       }
     }).addDependency(certManagerHelm)
     ;(clusterIssuers ?? []).forEach((clusterIssuerProps, idx) => {
-      new ClusterIssuer(this, `${id}-cluster-issuer-${idx}`, clusterIssuerProps).addDependency(certManagerHelm)
+      new ClusterIssuer(this, `cluster-issuer-${idx}`, clusterIssuerProps).addDependency(certManagerHelm)
     })
   }
 }

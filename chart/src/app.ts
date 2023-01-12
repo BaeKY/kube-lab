@@ -163,7 +163,14 @@ export class KubeOpsApp extends App {
       certManager: {
         releaseName: 'cert-manager',
         helmFlags: ['--set', 'installCRDs=true'],
-        version: '1.10.1'
+        version: '1.10.1',
+        values: {
+          extraArgs: [
+            '--dns01-recursive-nameservers-only',
+            '--dns01-recursive-nameservers',
+            ['8.8.8.8:53', '8.8.4.4:53', '1.1.1.1:53'].join(',')
+          ]
+        }
       },
       apiKeySecret: {
         secretName: apiKeySecretName,
@@ -171,6 +178,9 @@ export class KubeOpsApp extends App {
       },
       clusterIssuers: [
         {
+          metadata: {
+            name: 'acme-issuer'
+          },
           spec: {
             acme: {
               privateKeySecretRef: {
