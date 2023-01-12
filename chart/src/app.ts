@@ -13,11 +13,13 @@ import {
   ExternalDnsHelmParam,
   HarborHelmParam,
   IngressNginxHelmParam,
+  JenkinsHelmParam,
   argoCdDefaultValues,
   externalDnsDefaultValues,
   harborDefaultValues,
   ingressNginxDefaultValues
 } from './types'
+import { JenkinsChart } from './charts/jenkins.chart'
 
 export class KubeOpsApp extends App {
   public constructor(props?: AppProps) {
@@ -277,9 +279,10 @@ export class KubeOpsApp extends App {
         }
       })
       scopeHarborHelmParam.z('harborAdminPassword').set('admin')
-      scopeHarborHelmParam.z('externalURL').set(`https://${harborHost}`)
+      scopeHarborHelmParam.z('externalURL').set(harborHost)
     }
-    const harbor = new HarborChart(this, 'harbor', {
+
+    new HarborChart(this, 'harbor', {
       namespace: 'harbor',
       certificate: {
         metadata: {
@@ -300,6 +303,47 @@ export class KubeOpsApp extends App {
         version: '1.11.0'
       }
     })
-    harbor.addDependency(argocd)
+
+    const jenkinsHelmValues = {} as JenkinsHelmParam
+    const jenkinsHostName = 'jenkins.lab9.cloud'
+    const jenkinsTlsSecretName = 'jenkins-ingress-tls'
+    {
+      const scopeForJenkinsValues = scope(jenkinsHelmValues as PartialRecursive<JenkinsHelmParam>)
+      scopeForJenkinsValues
+        .z('controller')
+        .z('ingress')
+        .set({
+          hostName: jenkinsHostName as any,
+          enabled: true,
+          apiVersion: 'extensions/v1beta1',
+          tls: [
+            {
+              hosts: [jenkinsHostName],
+              secretName: jenkinsTlsSecretName
+            }
+          ] as any
+        })
+    }
+    new JenkinsChart(this, 'jenkins', {
+      namespace: 'jenkins',
+      jenkins: {
+        releaseName: 'jenkins',
+        version: '4.2.20',
+        values: jenkinsHelmValues
+      },
+      certificate: {
+        metadata: {
+          name: jenkinsTlsSecretName
+        },
+        spec: {
+          issuerRef: {
+            name: 'acme-issuer',
+            kind: 'ClusterIssuer'
+          },
+          secretName: jenkinsTlsSecretName,
+          dnsNames: [jenkinsHostName]
+        }
+      }
+    })
   }
 }
