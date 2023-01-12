@@ -251,22 +251,45 @@ export class KubeOpsApp extends App {
     argocd.addDependency(dnsChart)
 
     const harborHost = 'harbor.lab9.cloud'
-    const harborNotaryHost = 'harbor-notary.lab9.cloud'
+    const harborNotaryHost = 'notary.lab9.cloud'
+    const harborTlsSecretName = 'harbor-tls'
     const scopeHarborHelmParam = scope<PartialRecursive<HarborHelmParam>>(harborDefaultValues)
     {
-      scopeHarborHelmParam
-        .z('expose')
-        .z('ingress')
-        .merge({
+      scopeHarborHelmParam.z('expose').set({
+        ingress: {
           className: 'nginx',
           hosts: {
             core: harborHost,
             notary: harborNotaryHost
           }
-        })
+        },
+        tls: {
+          enabled: true,
+          secret: {
+            notarySecretName: harborTlsSecretName,
+            secretName: harborTlsSecretName
+          },
+          certSource: 'secret'
+        }
+      })
+      scopeHarborHelmParam.z('harborAdminPassword').set('admin')
+      scopeHarborHelmParam.z('externalURL').set(`https://${harborHost}`)
     }
     const harbor = new HarborChart(this, 'harbor', {
       namespace: 'harbor',
+      certificate: {
+        metadata: {
+          name: 'harbor-tls'
+        },
+        spec: {
+          issuerRef: {
+            name: 'acme-issuer',
+            kind: 'ClusterIssuer'
+          },
+          secretName: harborTlsSecretName,
+          dnsNames: [harborHost, harborNotaryHost]
+        }
+      },
       harbor: {
         releaseName: 'harbor',
         values: scopeHarborHelmParam.get() as any,
