@@ -4,6 +4,7 @@ export interface ArgoCdHelmParam {
     kubeVersionOverride:  string;
     apiVersionOverrides:  ApiVersionOverrides;
     createAggregateRoles: boolean;
+    createClusterRoles:   boolean;
     openshift:            Openshift;
     crds:                 Crds;
     global:               Global;
@@ -33,29 +34,30 @@ export interface ApplicationSet {
     pdb:                      Pdb;
     image:                    InitImageClass;
     imagePullSecrets:         any[];
-    args:                     Args;
     logFormat:                string;
     logLevel:                 string;
+    args:                     Args;
+    extraArgs:                any[];
+    extraEnv:                 any[];
+    extraEnvFrom:             any[];
     extraContainers:          any[];
+    initContainers:           any[];
+    extraVolumeMounts:        any[];
+    extraVolumes:             any[];
     metrics:                  ApplicationSetMetrics;
     service:                  ApplicationSetService;
     serviceAccount:           ServiceAccount;
     deploymentAnnotations:    Affinity;
     podAnnotations:           Affinity;
     podLabels:                Affinity;
+    resources:                Affinity;
     containerSecurityContext: ApplicationSetContainerSecurityContext;
     readinessProbe:           NessProbe;
     livenessProbe:            NessProbe;
-    resources:                Affinity;
     nodeSelector:             Affinity;
     tolerations:              any[];
     affinity:                 Affinity;
     priorityClassName:        string;
-    extraVolumeMounts:        any[];
-    extraVolumes:             any[];
-    extraArgs:                any[];
-    extraEnv:                 any[];
-    extraEnvFrom:             any[];
     webhook:                  Webhook;
 }
 
@@ -271,30 +273,25 @@ export interface Controller {
     extraArgs:                 any[];
     env:                       any[];
     envFrom:                   any[];
+    extraContainers:           any[];
+    initContainers:            any[];
+    volumeMounts:              any[];
+    volumes:                   any[];
     statefulsetAnnotations:    Affinity;
     podAnnotations:            Affinity;
     podLabels:                 Affinity;
+    resources:                 Affinity;
     containerSecurityContext:  ApplicationSetContainerSecurityContext;
     containerPort:             number;
     readinessProbe:            NessProbe;
-    volumeMounts:              any[];
-    volumes:                   any[];
     nodeSelector:              Affinity;
     tolerations:               any[];
     affinity:                  Affinity;
     topologySpreadConstraints: any[];
     priorityClassName:         string;
-    resources:                 Affinity;
     serviceAccount:            ServiceAccount;
     metrics:                   ControllerMetrics;
-    clusterAdminAccess:        Openshift;
     clusterRoleRules:          ClusterRoleRules;
-    extraContainers:           any[];
-    initContainers:            any[];
-}
-
-export interface Openshift {
-    enabled: boolean;
 }
 
 export interface ClusterRoleRules {
@@ -337,16 +334,19 @@ export interface Dex {
     initImage:                 InitImageClass;
     env:                       any[];
     envFrom:                   any[];
+    extraContainers:           any[];
+    initContainers:            any[];
+    volumeMounts:              any[];
+    volumes:                   any[];
     certificateSecret:         CertificateSecret;
     deploymentAnnotations:     Affinity;
     podAnnotations:            Affinity;
     podLabels:                 Affinity;
+    resources:                 Affinity;
     containerSecurityContext:  ApplicationSetContainerSecurityContext;
     livenessProbe:             NessProbe;
     readinessProbe:            NessProbe;
     serviceAccount:            ServiceAccount;
-    volumeMounts:              any[];
-    volumes:                   any[];
     containerPortHttp:         number;
     servicePortHttp:           number;
     servicePortHttpName:       string;
@@ -360,9 +360,6 @@ export interface Dex {
     affinity:                  Affinity;
     topologySpreadConstraints: any[];
     priorityClassName:         string;
-    resources:                 Affinity;
-    extraContainers:           any[];
-    initContainers:            any[];
 }
 
 export interface CertificateSecret {
@@ -411,34 +408,36 @@ export interface NetworkPolicy {
 export interface Notifications {
     enabled:                  boolean;
     name:                     string;
-    affinity:                 Affinity;
     argocdUrl:                null;
     pdb:                      Pdb;
     image:                    InitImageClass;
     imagePullSecrets:         any[];
-    nodeSelector:             Affinity;
-    context:                  Affinity;
-    secret:                   NotificationsSecret;
     logFormat:                string;
     logLevel:                 string;
     extraArgs:                any[];
     extraEnv:                 any[];
     extraEnvFrom:             any[];
+    extraContainers:          any[];
+    initContainers:           any[];
     extraVolumeMounts:        any[];
     extraVolumes:             any[];
+    context:                  Affinity;
+    secret:                   NotificationsSecret;
     metrics:                  NotificationsMetrics;
     notifiers:                Affinity;
     deploymentAnnotations:    Affinity;
     podAnnotations:           Affinity;
     podLabels:                Affinity;
-    containerSecurityContext: ApplicationSetContainerSecurityContext;
-    priorityClassName:        string;
     resources:                Affinity;
+    containerSecurityContext: ApplicationSetContainerSecurityContext;
+    nodeSelector:             Affinity;
+    tolerations:              any[];
+    affinity:                 Affinity;
+    priorityClassName:        string;
     serviceAccount:           ServiceAccount;
     cm:                       NotificationsCm;
     subscriptions:            any[];
     templates:                Affinity;
-    tolerations:              any[];
     triggers:                 Affinity;
     bots:                     Bots;
 }
@@ -484,6 +483,10 @@ export interface NotificationsSecret {
     items:       Affinity;
 }
 
+export interface Openshift {
+    enabled: boolean;
+}
+
 export interface ArgoCdHelmParamRedis {
     enabled:                   boolean;
     name:                      string;
@@ -491,26 +494,26 @@ export interface ArgoCdHelmParamRedis {
     image:                     InitImageClass;
     imagePullSecrets:          any[];
     extraArgs:                 any[];
-    containerPort:             number;
-    servicePort:               number;
     env:                       any[];
     envFrom:                   any[];
+    extraContainers:           any[];
+    initContainers:            any[];
+    volumeMounts:              any[];
+    volumes:                   any[];
     deploymentAnnotations:     Affinity;
     podAnnotations:            Affinity;
     podLabels:                 Affinity;
+    resources:                 Affinity;
     securityContext:           SecurityContext;
     containerSecurityContext:  RedisContainerSecurityContext;
+    containerPort:             number;
+    servicePort:               number;
     nodeSelector:              Affinity;
     tolerations:               any[];
     affinity:                  Affinity;
     topologySpreadConstraints: any[];
     priorityClassName:         string;
     serviceAccount:            ServiceAccount;
-    resources:                 Affinity;
-    volumeMounts:              any[];
-    volumes:                   any[];
-    extraContainers:           any[];
-    initContainers:            any[];
     service:                   RedisService;
     metrics:                   RedisMetrics;
 }
@@ -595,30 +598,29 @@ export interface RepoServer {
     extraArgs:                 any[];
     env:                       any[];
     envFrom:                   any[];
+    extraContainers:           any[];
+    initContainers:            any[];
+    volumeMounts:              any[];
+    volumes:                   any[];
     deploymentAnnotations:     Affinity;
     podAnnotations:            Affinity;
     podLabels:                 Affinity;
+    resources:                 Affinity;
     containerPort:             number;
     readinessProbe:            NessProbe;
     livenessProbe:             NessProbe;
-    volumeMounts:              any[];
-    volumes:                   any[];
     nodeSelector:              Affinity;
     tolerations:               any[];
     affinity:                  Affinity;
     topologySpreadConstraints: any[];
     priorityClassName:         string;
     containerSecurityContext:  ApplicationSetContainerSecurityContext;
-    resources:                 Affinity;
     certificateSecret:         CertificateSecret;
     service:                   ApplicationSetService;
     metrics:                   ApplicationSetMetrics;
-    clusterAdminAccess:        Openshift;
     clusterRoleRules:          ClusterRoleRules;
     serviceAccount:            ServiceAccount;
-    extraContainers:           any[];
     rbac:                      any[];
-    initContainers:            any[];
 }
 
 export interface Autoscaling {
@@ -641,21 +643,24 @@ export interface Server {
     env:                       any[];
     envFrom:                   any[];
     lifecycle:                 Affinity;
+    extensions:                Extensions;
+    extraContainers:           any[];
+    initContainers:            any[];
+    volumeMounts:              any[];
+    volumes:                   any[];
     deploymentAnnotations:     Affinity;
     podAnnotations:            Affinity;
     podLabels:                 Affinity;
+    resources:                 Affinity;
     containerPort:             number;
     readinessProbe:            NessProbe;
     livenessProbe:             NessProbe;
-    volumeMounts:              any[];
-    volumes:                   any[];
     nodeSelector:              Affinity;
     tolerations:               any[];
     affinity:                  Affinity;
     topologySpreadConstraints: any[];
     priorityClassName:         string;
     containerSecurityContext:  ApplicationSetContainerSecurityContext;
-    resources:                 Affinity;
     certificate:               Certificate;
     certificateSecret:         CertificateSecret;
     service:                   ServerService;
@@ -664,13 +669,9 @@ export interface Server {
     ingress:                   Ingress;
     ingressGrpc:               Ingress;
     route:                     Route;
-    clusterAdminAccess:        Openshift;
     GKEbackendConfig:          GkEendConfig;
     GKEmanagedCertificate:     GkEmanagedCertificate;
     GKEfrontendConfig:         GkEendConfig;
-    extraContainers:           any[];
-    initContainers:            any[];
-    extensions:                Extensions;
 }
 
 export interface GkEendConfig {

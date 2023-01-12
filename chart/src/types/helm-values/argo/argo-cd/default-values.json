@@ -8,6 +8,7 @@
     "autoscaling": ""
   },
   "createAggregateRoles": false,
+  "createClusterRoles": true,
   "openshift": {
     "enabled": false
   },
@@ -127,9 +128,14 @@
     "extraArgs": [],
     "env": [],
     "envFrom": [],
+    "extraContainers": [],
+    "initContainers": [],
+    "volumeMounts": [],
+    "volumes": [],
     "statefulsetAnnotations": {},
     "podAnnotations": {},
     "podLabels": {},
+    "resources": {},
     "containerSecurityContext": {
       "runAsNonRoot": true,
       "readOnlyRootFilesystem": true,
@@ -151,14 +157,11 @@
       "successThreshold": 1,
       "timeoutSeconds": 1
     },
-    "volumeMounts": [],
-    "volumes": [],
     "nodeSelector": {},
     "tolerations": [],
     "affinity": {},
     "topologySpreadConstraints": [],
     "priorityClassName": "",
-    "resources": {},
     "serviceAccount": {
       "create": true,
       "name": "argocd-application-controller",
@@ -195,15 +198,10 @@
         "spec": []
       }
     },
-    "clusterAdminAccess": {
-      "enabled": true
-    },
     "clusterRoleRules": {
       "enabled": false,
       "rules": []
-    },
-    "extraContainers": [],
-    "initContainers": []
+    }
   },
   "dex": {
     "enabled": true,
@@ -249,6 +247,10 @@
     },
     "env": [],
     "envFrom": [],
+    "extraContainers": [],
+    "initContainers": [],
+    "volumeMounts": [],
+    "volumes": [],
     "certificateSecret": {
       "enabled": false,
       "labels": {},
@@ -260,6 +262,7 @@
     "deploymentAnnotations": {},
     "podAnnotations": {},
     "podLabels": {},
+    "resources": {},
     "containerSecurityContext": {
       "runAsNonRoot": true,
       "readOnlyRootFilesystem": true,
@@ -295,8 +298,6 @@
       "annotations": {},
       "automountServiceAccountToken": true
     },
-    "volumeMounts": [],
-    "volumes": [],
     "containerPortHttp": 5556,
     "servicePortHttp": 5556,
     "servicePortHttpName": "http",
@@ -309,10 +310,7 @@
     "tolerations": [],
     "affinity": {},
     "topologySpreadConstraints": [],
-    "priorityClassName": "",
-    "resources": {},
-    "extraContainers": [],
-    "initContainers": []
+    "priorityClassName": ""
   },
   "redis": {
     "enabled": true,
@@ -331,13 +329,16 @@
     },
     "imagePullSecrets": [],
     "extraArgs": [],
-    "containerPort": 6379,
-    "servicePort": 6379,
     "env": [],
     "envFrom": [],
+    "extraContainers": [],
+    "initContainers": [],
+    "volumeMounts": [],
+    "volumes": [],
     "deploymentAnnotations": {},
     "podAnnotations": {},
     "podLabels": {},
+    "resources": {},
     "securityContext": {
       "runAsNonRoot": true,
       "runAsUser": 999,
@@ -353,6 +354,8 @@
         ]
       }
     },
+    "containerPort": 6379,
+    "servicePort": 6379,
     "nodeSelector": {},
     "tolerations": [],
     "affinity": {},
@@ -364,11 +367,6 @@
       "annotations": {},
       "automountServiceAccountToken": false
     },
-    "resources": {},
-    "volumeMounts": [],
-    "volumes": [],
-    "extraContainers": [],
-    "initContainers": [],
     "service": {
       "annotations": {},
       "labels": {}
@@ -483,9 +481,36 @@
     "env": [],
     "envFrom": [],
     "lifecycle": {},
+    "extensions": {
+      "enabled": false,
+      "image": {
+        "repository": "ghcr.io/argoproj-labs/argocd-extensions",
+        "tag": "v0.1.0",
+        "imagePullPolicy": ""
+      },
+      "containerSecurityContext": {
+        "runAsNonRoot": true,
+        "readOnlyRootFilesystem": true,
+        "allowPrivilegeEscalation": false,
+        "seccompProfile": {
+          "type": "RuntimeDefault"
+        },
+        "capabilities": {
+          "drop": [
+            "ALL"
+          ]
+        }
+      },
+      "resources": {}
+    },
+    "extraContainers": [],
+    "initContainers": [],
+    "volumeMounts": [],
+    "volumes": [],
     "deploymentAnnotations": {},
     "podAnnotations": {},
     "podLabels": {},
+    "resources": {},
     "containerPort": 8080,
     "readinessProbe": {
       "failureThreshold": 3,
@@ -501,8 +526,6 @@
       "successThreshold": 1,
       "timeoutSeconds": 1
     },
-    "volumeMounts": [],
-    "volumes": [],
     "nodeSelector": {},
     "tolerations": [],
     "affinity": {},
@@ -521,7 +544,6 @@
         ]
       }
     },
-    "resources": {},
     "certificate": {
       "enabled": false,
       "secretName": "argocd-server-tls",
@@ -633,9 +655,6 @@
       "termination_type": "passthrough",
       "termination_policy": "None"
     },
-    "clusterAdminAccess": {
-      "enabled": true
-    },
     "GKEbackendConfig": {
       "enabled": false,
       "spec": {}
@@ -649,30 +668,6 @@
     "GKEfrontendConfig": {
       "enabled": false,
       "spec": {}
-    },
-    "extraContainers": [],
-    "initContainers": [],
-    "extensions": {
-      "enabled": false,
-      "image": {
-        "repository": "ghcr.io/argoproj-labs/argocd-extensions",
-        "tag": "v0.1.0",
-        "imagePullPolicy": "IfNotPresent"
-      },
-      "containerSecurityContext": {
-        "runAsNonRoot": true,
-        "readOnlyRootFilesystem": true,
-        "allowPrivilegeEscalation": false,
-        "seccompProfile": {
-          "type": "RuntimeDefault"
-        },
-        "capabilities": {
-          "drop": [
-            "ALL"
-          ]
-        }
-      },
-      "resources": {}
     }
   },
   "repoServer": {
@@ -702,9 +697,14 @@
     "extraArgs": [],
     "env": [],
     "envFrom": [],
+    "extraContainers": [],
+    "initContainers": [],
+    "volumeMounts": [],
+    "volumes": [],
     "deploymentAnnotations": {},
     "podAnnotations": {},
     "podLabels": {},
+    "resources": {},
     "containerPort": 8081,
     "readinessProbe": {
       "failureThreshold": 3,
@@ -720,8 +720,6 @@
       "successThreshold": 1,
       "timeoutSeconds": 1
     },
-    "volumeMounts": [],
-    "volumes": [],
     "nodeSelector": {},
     "tolerations": [],
     "affinity": {},
@@ -740,7 +738,6 @@
         ]
       }
     },
-    "resources": {},
     "certificateSecret": {
       "enabled": false,
       "annotations": {},
@@ -776,9 +773,6 @@
         "annotations": {}
       }
     },
-    "clusterAdminAccess": {
-      "enabled": false
-    },
     "clusterRoleRules": {
       "enabled": false,
       "rules": []
@@ -790,9 +784,7 @@
       "labels": {},
       "automountServiceAccountToken": true
     },
-    "extraContainers": [],
-    "rbac": [],
-    "initContainers": []
+    "rbac": []
   },
   "applicationSet": {
     "enabled": true,
@@ -811,15 +803,21 @@
       "imagePullPolicy": ""
     },
     "imagePullSecrets": [],
+    "logFormat": "",
+    "logLevel": "",
     "args": {
       "metricsAddr": ":8080",
       "probeBindAddr": ":8081",
       "policy": "sync",
       "dryRun": false
     },
-    "logFormat": "",
-    "logLevel": "",
+    "extraArgs": [],
+    "extraEnv": [],
+    "extraEnvFrom": [],
     "extraContainers": [],
+    "initContainers": [],
+    "extraVolumeMounts": [],
+    "extraVolumes": [],
     "metrics": {
       "enabled": false,
       "service": {
@@ -856,6 +854,7 @@
     "deploymentAnnotations": {},
     "podAnnotations": {},
     "podLabels": {},
+    "resources": {},
     "containerSecurityContext": {
       "runAsNonRoot": true,
       "readOnlyRootFilesystem": true,
@@ -885,16 +884,10 @@
       "successThreshold": 1,
       "failureThreshold": 3
     },
-    "resources": {},
     "nodeSelector": {},
     "tolerations": [],
     "affinity": {},
     "priorityClassName": "",
-    "extraVolumeMounts": [],
-    "extraVolumes": [],
-    "extraArgs": [],
-    "extraEnv": [],
-    "extraEnvFrom": [],
     "webhook": {
       "ingress": {
         "enabled": false,
@@ -914,7 +907,6 @@
   "notifications": {
     "enabled": true,
     "name": "notifications-controller",
-    "affinity": {},
     "argocdUrl": null,
     "pdb": {
       "enabled": false,
@@ -929,20 +921,21 @@
       "imagePullPolicy": ""
     },
     "imagePullSecrets": [],
-    "nodeSelector": {},
+    "logFormat": "",
+    "logLevel": "",
+    "extraArgs": [],
+    "extraEnv": [],
+    "extraEnvFrom": [],
+    "extraContainers": [],
+    "initContainers": [],
+    "extraVolumeMounts": [],
+    "extraVolumes": [],
     "context": {},
     "secret": {
       "create": true,
       "annotations": {},
       "items": {}
     },
-    "logFormat": "",
-    "logLevel": "",
-    "extraArgs": [],
-    "extraEnv": [],
-    "extraEnvFrom": [],
-    "extraVolumeMounts": [],
-    "extraVolumes": [],
     "metrics": {
       "enabled": false,
       "port": 9001,
@@ -966,6 +959,7 @@
     "deploymentAnnotations": {},
     "podAnnotations": {},
     "podLabels": {},
+    "resources": {},
     "containerSecurityContext": {
       "runAsNonRoot": true,
       "readOnlyRootFilesystem": true,
@@ -979,8 +973,10 @@
         ]
       }
     },
+    "nodeSelector": {},
+    "tolerations": [],
+    "affinity": {},
     "priorityClassName": "",
-    "resources": {},
     "serviceAccount": {
       "create": true,
       "name": "argocd-notifications-controller",
@@ -992,7 +988,6 @@
     },
     "subscriptions": [],
     "templates": {},
-    "tolerations": [],
     "triggers": {},
     "bots": {
       "slack": {

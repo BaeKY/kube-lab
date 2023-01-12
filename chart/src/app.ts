@@ -211,22 +211,41 @@ export class KubeOpsApp extends App {
     const argocdHost = 'argocd.lab9.cloud'
     const scopeArgoCdHelmParam = scope<PartialRecursive<ArgoCdHelmParam>>(argoCdDefaultValues)
     {
-      scopeArgoCdHelmParam.z('server').z('service').z('type').set('LoadBalancer')
       scopeArgoCdHelmParam
         .z('server')
         .z('ingress')
         .merge({
           enabled: true,
           ingressClassName: 'nginx',
-          hosts: [argocdHost]
+          hosts: [argocdHost],
+          tls: [
+            {
+              hosts: [argocdHost],
+              secretName: 'argocd-server-tls'
+            }
+          ]
         })
+
+      scopeArgoCdHelmParam
+        .z('server')
+        .z('certificate')
+        .set({
+          enabled: true,
+          issuer: {
+            name: 'acme-issuer',
+            kind: 'ClusterIssuer'
+          },
+          domain: argocdHost
+        })
+      scopeArgoCdHelmParam.z('apiVersionOverrides').z('certmanager').set('cert-manager.io/v1')
+      scopeArgoCdHelmParam.z('server').z('extraArgs').merge(['--insecure'])
     }
     const argocd = new ArgoCdChart(this, 'argo', {
       namespace: 'argo',
       argoCd: {
         releaseName: 'argo',
         values: scopeArgoCdHelmParam.get() as any,
-        version: '5.16.13'
+        version: '5.17.1'
       }
     })
     argocd.addDependency(dnsChart)
