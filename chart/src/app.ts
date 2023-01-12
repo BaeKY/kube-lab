@@ -109,6 +109,10 @@ export class KubeOpsApp extends App {
                   configBlock: ['path /skydns', `endpoint ${etcdUrl}`, 'fallthrough'].join('\n')
                 },
                 {
+                  name: 'forward',
+                  configBlock: '. '.concat(['8.8.8.8', '8.8.4.4', '1.1.1.1'].join(' '))
+                },
+                {
                   name: 'cache',
                   parameters: 30
                 },

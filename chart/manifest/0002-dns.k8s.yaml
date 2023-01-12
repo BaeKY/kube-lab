@@ -117,6 +117,9 @@ data:
             endpoint http://etcd:2379
             fallthrough
         }
+        forward {
+            . 8.8.8.8 8.8.4.4 1.1.1.1
+        }
         cache 30
         prometheus 0.0.0.0:9153
         reload
@@ -219,7 +222,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: c969a43bf8545ee684ca9bacbaa5d82f0337a1543b1432e2191ff55cd4eb5a0f
+        checksum/config: c4621470c7da7e98431e7eac4f48b47a50f55ed851d251c7fd87546eb66aa384
       labels:
         app.kubernetes.io/instance: core-dns
         app.kubernetes.io/name: coredns
