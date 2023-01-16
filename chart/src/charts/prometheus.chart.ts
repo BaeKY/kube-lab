@@ -1,25 +1,20 @@
-import { ChartLoader, HelmLoader, HelmProps } from '@package/cdk8s-loader'
-import { scope } from '@package/common'
-import { KubePrometheusStackHelmParam } from '../helm-values/prometheus-community/kube-prometheus-stack'
-import { LoadingChart } from '../types'
+import { AbsChart, HelmProps } from '@package/cdk8s-loader'
+import { PartialRecursive, scope } from '@package/common'
+import { ChartProps, Helm } from 'cdk8s'
+import { KubePrometheusStackHelmParam } from '../types'
 
-export const prometheusChart: LoadingChart<{
-  helmProps: Omit<HelmProps<KubePrometheusStackHelmParam>, 'chart'>
-}> = (id, props) => {
-  const { chartProps, helmProps } = props
+interface PrometheusStackChartProps extends ChartProps {
+  prometheus: Omit<HelmProps<PartialRecursive<KubePrometheusStackHelmParam>>, 'chart'>
+}
 
-  const namespace = chartProps.namespace ?? 'default'
+export class PrometheusStackChart extends AbsChart<PrometheusStackChartProps> {
+  protected loadChildren(id: string, props: PrometheusStackChartProps): void {
+    const { prometheus, namespace } = props
+    const scopePrometheusHelmProps = scope({
+      chart: 'prometheus-community/kube-prometheus-stack',
+      namespace
+    } as HelmProps<KubePrometheusStackHelmParam>).merge(prometheus as any)
 
-  const helmOptionsScope = scope({
-    chart: 'prometheus-community/kube-prometheus-stack',
-    helmFlags: ['--namespace', namespace, '--create-namespace']
-  } as HelmProps<KubePrometheusStackHelmParam>)
-
-  return new ChartLoader(id, chartProps).addHelm(
-    () =>
-      new HelmLoader<KubePrometheusStackHelmParam>(
-        `${id}-helm`,
-        helmOptionsScope.merge(helmProps as HelmProps<KubePrometheusStackHelmParam>).get()
-      )
-  )
+    new Helm(this, `${id}-prometheus`, scopePrometheusHelmProps.get())
+  }
 }

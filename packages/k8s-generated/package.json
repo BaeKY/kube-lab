@@ -1,7 +1,7 @@
 {
   "name": "@package/k8s-generated",
   "version": "1.25.0",
-  "main": "src",
+  "main": "generated",
   "repository": "https://github.com/BaeKY/k8s-lab.git",
   "author": {
     "name": "Bob",
@@ -9,6 +9,6 @@
   },
   "license": "MIT",
   "scripts": {
-    "generate": "cdk8s import k8s --language typescript --output ./src/generated"
+    "generate": "cdk8s import --output ./generated"
   }
 }

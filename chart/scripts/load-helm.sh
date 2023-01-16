@@ -24,7 +24,7 @@ function helmRepoAdd() {
 function helmValuesCodegenForTypescript() {
   local CHART_LIST_FILE=$1
   local EXEC_DIR=$2
-  local HELM_SHOW_VALUE_PARAMS=$(yq '.charts[] | .repo + "/" + .chart' $CHART_LIST_FILE)
+  local HELM_SHOW_VALUE_PARAMS=$(yq '.charts[] | .repo + "/" + .chart + "@" + .version' $CHART_LIST_FILE)
   cd $2
   echo "$HELM_SHOW_VALUE_PARAMS" | awk '{system("generate_helm_value_inference "$1" ts")}'
 }
@@ -35,4 +35,5 @@ helmRepoAdd $HELM_CHARTS_FILE 1>/dev/null
 
 # helm repo update
 
-helmValuesCodegenForTypescript $HELM_CHARTS_FILE $PWD/src/helm-values
+mkdir -p $PWD/src/types/helm-values
+helmValuesCodegenForTypescript $HELM_CHARTS_FILE $PWD/src/types/helm-values
