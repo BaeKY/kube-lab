@@ -1,13 +1,12 @@
-# Bob's KubeOps
+# Bob's home lab
 
 ## Introduction
 
-- K8S를 활용한 로컬 테스트베드.
-- Public Cloud처럼 이런 저런 컴포넌트들을 내 로컬환경에서 직접 구성해보자.
+- Public Cloud와 비슷하게 이런 저런 컴포넌트들을 내 로컬환경에서 직접 구성해보자.
 
 ## Features
 
-- 아래와 같은것들 설치됨. (아직 k8s 클러스터까지 자동설치는 아님)
+- 아래와 같은것들 설치됨.
   ![BluePrint](docs/blud-print-transparent.png)
 - Construction
   - Networking
