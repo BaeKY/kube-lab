@@ -133,7 +133,7 @@ export interface PatchImage {
 }
 
 export interface NodeSelector {
-    "kubernetes.io/os": string;
+    'kubernetes.io/os': string;
 }
 
 export interface PatchSecurityContext {

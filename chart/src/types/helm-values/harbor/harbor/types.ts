@@ -62,7 +62,7 @@ export interface Image {
 }
 
 export enum Tag {
-    V270 = "v2.7.0",
+    V270 = 'v2.7.0',
 }
 
 export interface HarborHelmParamCore {
@@ -171,10 +171,10 @@ export interface Ingress {
 }
 
 export interface Annotations {
-    "ingress.kubernetes.io/ssl-redirect":          string;
-    "ingress.kubernetes.io/proxy-body-size":       string;
-    "nginx.ingress.kubernetes.io/ssl-redirect":    string;
-    "nginx.ingress.kubernetes.io/proxy-body-size": string;
+    'ingress.kubernetes.io/ssl-redirect':          string;
+    'ingress.kubernetes.io/proxy-body-size':       string;
+    'nginx.ingress.kubernetes.io/ssl-redirect':    string;
+    'nginx.ingress.kubernetes.io/proxy-body-size': string;
 }
 
 export interface Harbor {

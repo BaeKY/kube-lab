@@ -5,9 +5,9 @@ export interface HelmProps<V extends { [key: string]: any } = any> extends HelmP
 }
 
 export class HelmLoader<V extends { [key: string]: any } = any> {
-  public constructor(public readonly id: string, private readonly props: HelmProps<V>) {}
+    public constructor(public readonly id: string, private readonly props: HelmProps<V>) {}
 
-  public load(chart: Chart): Helm {
-    return new Helm(chart, this.id, this.props)
-  }
+    public load(chart: Chart): Helm {
+        return new Helm(chart, this.id, this.props)
+    }
 }

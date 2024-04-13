@@ -5,21 +5,21 @@ import { ChartProps, Helm } from 'cdk8s'
 import { JenkinsHelmParam } from '../types'
 
 interface JenkinsChartProps extends ChartProps {
-  jenkins: Omit<PartialRecursive<HelmProps<JenkinsHelmParam>>, 'chart'>
-  certificate?: CertificateProps
+    jenkins: Omit<PartialRecursive<HelmProps<JenkinsHelmParam>>, 'chart'>
+    certificate?: CertificateProps
 }
 
 export class JenkinsChart extends AbsChart<JenkinsChartProps> {
-  protected loadChildren(id: string, props: JenkinsChartProps): void {
-    const { jenkins, namespace, certificate: certificateProps } = props
+    protected loadChildren(id: string, props: JenkinsChartProps): void {
+        const { jenkins, namespace, certificate: certificateProps } = props
 
-    if (certificateProps != null) {
-      new Certificate(this, `${id}-certificate`, certificateProps)
+        if (certificateProps != null) {
+            new Certificate(this, `${id}-certificate`, certificateProps)
+        }
+        const scopeJenkinsProps = scope<HelmProps<JenkinsHelmParam>>({
+            chart: 'jenkins/jenkins',
+            namespace
+        }).merge(jenkins as any)
+        new Helm(this, `${id}-jenkins`, scopeJenkinsProps.get())
     }
-    const scopeJenkinsProps = scope<HelmProps<JenkinsHelmParam>>({
-      chart: 'jenkins/jenkins',
-      namespace
-    }).merge(jenkins as any)
-    new Helm(this, `${id}-jenkins`, scopeJenkinsProps.get())
-  }
 }

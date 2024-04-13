@@ -10,8 +10,8 @@
         }
     ],
     "settings": {
-        "typescript.tsdk": "root/node_modules/typescript/lib",
-        "typescript.enablePromptUseWorkspaceTsdk": true,
+        "typescript.enablePromptUseWorkspaceTsdk": false,
+        "typescript.tsdk": "./node_modules/typescript/lib",
         "typescript.preferences.importModuleSpecifier": "project-relative",
         "npm.packageManager": "pnpm",
         "files.exclude": {
@@ -29,7 +29,8 @@
             "**/dist/": true,
             "**/node_modules/": true,
             "**/node_modules": true,
-            ".pnpm-store": true
+            ".pnpm-store": true,
+            ".turbo": true
         },
         "editor.tabSize": 4,
         "eslint.format.enable": false,
@@ -85,7 +86,10 @@
             ".git/objects",
             ".vscode",
             ".vscode-insiders"
-        ]
+        ],
+        "plantuml.diagramsRoot": "docs/diagrams/src",
+        "plantuml.exportOutDir": "docs/diagrams/out",
+        "cSpell.useGitignore": true
     },
     "extensions": {
         "recommendations": [

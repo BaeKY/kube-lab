@@ -1,19 +1,25 @@
 {
-  "name": "@package/common",
-  "version": "0.0.1",
-  "main": "src",
-  "repository": "https://github.com/BaeKY/k8s-lab.git",
-  "author": {
-    "name": "Bob",
-    "email": "baeky.dev@gmail.com"
-  },
-  "license": "MIT",
-  "scripts": {
-    "test": "jest --passWithNoTests",
-    "test:watch": "jest --watch --passWithNoTests"
-  },
-  "dependencies": {
-    "@package/k8s-generated": "workspace:^1.25.0",
-    "lodash": "^4.17.21"
-  }
+    "name": "@package/common",
+    "version": "0.0.1",
+    "main": "src",
+    "repository": "https://github.com/BaeKY/k8s-lab.git",
+    "author": {
+        "name": "Bob",
+        "email": "baeky.dev@gmail.com"
+    },
+    "license": "MIT",
+    "scripts": {
+        "lint": "eslint '**/*.{ts,tsx}' --fix",
+        "test": "jest --passWithNoTests",
+        "test:watch": "jest --watch --passWithNoTests"
+    },
+    "dependencies": {
+        "@package/k8s-generated": "workspace:^1.25.0",
+        "lodash": "^4.17.21",
+        "ts-toolbelt": "^9.6.0"
+    },
+    "devDependencies": {
+        "@package/eslint-config": "workspace:^",
+        "@types/lodash": "^4.17.0"
+    }
 }

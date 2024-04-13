@@ -4,17 +4,17 @@ import { ChartProps, Helm } from 'cdk8s'
 import { IngressNginxHelmParam } from '../types'
 
 interface IngressControllerChartProps extends ChartProps {
-  ingressNginxController: Omit<HelmProps<PartialRecursive<IngressNginxHelmParam>>, 'chart'>
+    ingressNginxController: Omit<HelmProps<PartialRecursive<IngressNginxHelmParam>>, 'chart'>
 }
 
 export class IngressControllerChart extends AbsChart<IngressControllerChartProps> {
-  protected loadChildren(id: string, props: IngressControllerChartProps): void {
-    const { ingressNginxController, labels, namespace } = props
-    const scopeIngressNginxControllerProps = scope<HelmProps<PartialRecursive<IngressNginxHelmParam>>>({
-      chart: 'ingress-nginx/ingress-nginx',
-      namespace
-    }).merge(ingressNginxController as any)
+    protected loadChildren(id: string, props: IngressControllerChartProps): void {
+        const { ingressNginxController, labels: _labels, namespace } = props
+        const scopeIngressNginxControllerProps = scope<HelmProps<PartialRecursive<IngressNginxHelmParam>>>({
+            chart: 'ingress-nginx/ingress-nginx',
+            namespace
+        }).merge(ingressNginxController as any)
 
-    new Helm(this, `${id}-ingress-nginx`, scopeIngressNginxControllerProps.get())
-  }
+        new Helm(this, `${id}-ingress-nginx`, scopeIngressNginxControllerProps.get())
+    }
 }

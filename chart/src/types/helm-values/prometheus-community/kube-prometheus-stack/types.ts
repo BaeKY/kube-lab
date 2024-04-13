@@ -19,9 +19,9 @@ export interface KubePrometheusStackHelmParam {
     kubeScheduler:                      Kube;
     kubeProxy:                          Kube;
     kubeStateMetrics:                   KubeStateMetrics;
-    "kube-state-metrics":               KubeStateMetricsClass;
+    'kube-state-metrics':               KubeStateMetricsClass;
     nodeExporter:                       KubeStateMetrics;
-    "prometheus-node-exporter":         PrometheusNodeExporter;
+    'prometheus-node-exporter':         PrometheusNodeExporter;
     prometheusOperator:                 PrometheusOperator;
     prometheus:                         KubePrometheusStackHelmParamPrometheus;
     thanosRuler:                        ThanosRuler;

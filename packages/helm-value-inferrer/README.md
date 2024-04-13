@@ -2,8 +2,8 @@
 
 ## Introduction
 
-- Generate schema type of Helm Chart's `value.yaml` to other languages.(typescript, golang, swift, etc...)
-  - Internally use `helm show values <chart-name>`.
+- Generate schema type of Helm Chart's `value.yaml` for other languages.(typescript, golang, swift, etc...)
+- Internally use `helm show values <chart-name>`.
 
 ## How to use?
 

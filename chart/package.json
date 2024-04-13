@@ -1,25 +1,37 @@
 {
-  "name": "@kube-ops/chart",
-  "license": "MIT",
-  "private": true,
-  "main": "src/",
-  "version": "1.0.0",
-  "packageManager": "pnpm@7.17.0^",
-  "scripts": {
-    "synth": "source ./scripts/export-env.sh && cdk8s synth",
-    "helm:load": "bash ./scripts/load-helm.sh",
-    "ip-alias:up": "sudo bash ./scripts/ifconfig-alias-up.sh",
-    "ip-alias:down": "sudo bash ./scripts/ifconfig-alias-down.sh",
-    "add-custom-dns": "sudo bash ./scripts/add-custom-dns-resolver.sh",
-    "sample-nginx:up": "bash ./scripts/sample-nginx-up-down.sh up",
-    "sample-nginx:down": "bash ./scripts/sample-nginx-up-down.sh down",
-    "config:network": "pnpm ip-alias:up && pnpm add-custom-dns",
-    "k8s:deploy": "./scripts/deploy-manifest.sh $@"
-  },
-  "dependencies": {
-    "@package/cdk8s-loader": "workspace:^0.0.1",
-    "@package/common": "workspace:^0.0.1",
-    "@package/k8s-generated": "workspace:^1.25.0",
-    "dotenv": "^16.0.3"
-  }
+    "name": "@kube-ops/chart",
+    "license": "MIT",
+    "private": true,
+    "main": "src/",
+    "version": "1.0.0",
+    "scripts": {
+        "lint": "eslint '**/*.{ts,tsx}' --fix",
+        "synth": "source ./scripts/export-env.sh && cdk8s synth",
+        "helm:load": "bash ./scripts/load-helm.sh",
+        "ip-alias:up": "sudo bash ./scripts/ifconfig-alias-up.sh",
+        "ip-alias:down": "sudo bash ./scripts/ifconfig-alias-down.sh",
+        "add-custom-dns": "sudo bash ./scripts/add-custom-dns-resolver.sh",
+        "sample-nginx:up": "bash ./scripts/sample-nginx-up-down.sh up",
+        "sample-nginx:down": "bash ./scripts/sample-nginx-up-down.sh down",
+        "config:network": "pnpm ip-alias:up && pnpm add-custom-dns",
+        "k8s:deploy": "./scripts/deploy-manifest.sh $@"
+    },
+    "dependencies": {
+        "@package/cdk8s-loader": "workspace:^0.0.1",
+        "@package/common": "workspace:^0.0.1",
+        "@package/k8s-generated": "workspace:^1.25.0",
+        "cdk8s": "^2.68.59",
+        "cdk8s-cli": "^2.198.98",
+        "constructs": "^10.3.0",
+        "dotenv": "^16.4.5",
+        "reflect-metadata": "^0.2.2",
+        "ts-toolbelt": "^9.6.0",
+        "zod": "^3.22.4"
+    },
+    "devDependencies": {
+        "@package/eslint-config": "workspace:^",
+        "jest": "^29.7.0",
+        "ts-jest": "^29.1.2",
+        "ts-node": "^10.9.2"
+    }
 }

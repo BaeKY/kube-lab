@@ -4,18 +4,18 @@ import { ChartProps, Helm } from 'cdk8s'
 import { ArgoCdHelmParam } from '../types'
 
 interface ArgoCdChartProps extends ChartProps {
-  argoCd: Omit<PartialRecursive<HelmProps<ArgoCdHelmParam>>, 'chart'>
+    argoCd: Omit<PartialRecursive<HelmProps<ArgoCdHelmParam>>, 'chart'>
 }
 
 export class ArgoCdChart extends AbsChart<ArgoCdChartProps> {
-  protected loadChildren(id: string, props: ArgoCdChartProps): void {
-    const { argoCd, namespace } = props
+    protected loadChildren(id: string, props: ArgoCdChartProps): void {
+        const { argoCd, namespace } = props
 
-    const scopeArgoCdProps = scope<HelmProps<ArgoCdHelmParam>>({
-      chart: 'argo/argo-cd',
-      namespace
-    }).merge(argoCd as any)
+        const scopeArgoCdProps = scope<HelmProps<ArgoCdHelmParam>>({
+            chart: 'argo/argo-cd',
+            namespace
+        }).merge(argoCd as any)
 
-    new Helm(this, `${id}-argocd`, scopeArgoCdProps.get())
-  }
+        new Helm(this, `${id}-argocd`, scopeArgoCdProps.get())
+    }
 }

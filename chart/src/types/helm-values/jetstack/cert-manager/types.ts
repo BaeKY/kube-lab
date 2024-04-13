@@ -62,7 +62,7 @@ export interface Image {
 }
 
 export interface NodeSelector {
-    "kubernetes.io/os": string;
+    'kubernetes.io/os': string;
 }
 
 export interface SecurityContext {
@@ -139,9 +139,9 @@ export interface Startupapicheck {
 }
 
 export interface Annotations {
-    "helm.sh/hook":               string;
-    "helm.sh/hook-weight":        string;
-    "helm.sh/hook-delete-policy": string;
+    'helm.sh/hook':               string;
+    'helm.sh/hook-weight':        string;
+    'helm.sh/hook-delete-policy': string;
 }
 
 export interface StartupapicheckRbac {

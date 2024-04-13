@@ -113,8 +113,8 @@ export interface PrometheusService {
 }
 
 export interface Annotations {
-    "prometheus.io/scrape": string;
-    "prometheus.io/port":   string;
+    'prometheus.io/scrape': string;
+    'prometheus.io/port':   string;
 }
 
 export interface Rbac {

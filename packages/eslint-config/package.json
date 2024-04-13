@@ -1,0 +1,29 @@
+{
+    "name": "@package/eslint-config",
+    "version": "0.0.1",
+    "description": "ESLint configuration for my projects",
+    "main": "index.js",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "exports": {
+        ".": {
+            "import": "./index.js",
+            "default": "./index.js",
+            "require": "./index.js"
+        },
+        "./react": {
+            "import": "./react.js",
+            "default": "./react.js",
+            "require": "./react.js"
+        }
+    },
+    "dependencies": {
+        "@typescript-eslint/eslint-plugin": "^7.6.0",
+        "@typescript-eslint/parser": "^7.6.0",
+        "eslint": "^8.57.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.1.3",
+        "prettier": "^3.2.5"
+    }
+}

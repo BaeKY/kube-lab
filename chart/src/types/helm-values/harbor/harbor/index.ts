@@ -4,6 +4,6 @@ import { HarborHelmParam } from './types'
 
 export * from './types'
 const defaultValues: HarborHelmParam = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, 'default-values.json')).toString()
+    fs.readFileSync(path.resolve(__dirname, 'default-values.json')).toString()
 )
 export default defaultValues
