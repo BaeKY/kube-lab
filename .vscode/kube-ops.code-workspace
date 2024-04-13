@@ -1,0 +1,121 @@
+{
+    "folders": [
+        {
+            "path": "../",
+            "name": "root"
+        },
+        {
+            "path": "../chart",
+            "name": "chart"
+        }
+    ],
+    "settings": {
+        "typescript.tsdk": "root/node_modules/typescript/lib",
+        "typescript.enablePromptUseWorkspaceTsdk": true,
+        "typescript.preferences.importModuleSpecifier": "project-relative",
+        "npm.packageManager": "pnpm",
+        "files.exclude": {
+            "**/.git": true,
+            "**/.svn": true,
+            "**/.hg": true,
+            "**/CVS": true,
+            "**/.DS_Store": true,
+            "**/Thumbs.db": true,
+            "**/.classpath": true,
+            "**/.DS_STORE": true,
+            "**/.factorypath": true,
+            "**/.project": true,
+            "**/.settings": true,
+            "**/dist/": true,
+            "**/node_modules/": true,
+            "**/node_modules": true,
+            ".pnpm-store": true
+        },
+        "editor.tabSize": 4,
+        "eslint.format.enable": false,
+        "jest.disabledWorkspaceFolders": [
+            "**/dist/**",
+            "**/node_modules/**",
+            "root"
+        ],
+        "[typescript]": {
+            "editor.formatOnSave": true,
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[json]": {
+            "editor.quickSuggestions": {
+                "strings": true
+            },
+            "editor.suggest.insertMode": "replace",
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "yaml.customTags": [],
+        "yaml.schemas": {
+            "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json": "docker-compose"
+        },
+        "files.watcherExclude": {
+            "**/.git/objects/**": true,
+            "**/.git/subtree-cache/**": true,
+            "**/node_modules/*/**": true,
+            "**/.hg/store/**": true
+        },
+        "explorerExclude.backup": {},
+        "cSpell.words": [
+            "cephfs",
+            "coredns",
+            "datadir",
+            "endpointslices",
+            "flocker",
+            "glusterfs",
+            "healthz",
+            "ingressclasses",
+            "iscsi",
+            "loadbalance",
+            "portworx",
+            "quobyte",
+            "skydns",
+            "storageos"
+        ],
+        "cSpell.ignorePaths": [
+            "package-lock.json",
+            "pnpm-lock.yaml",
+            "**/generated/**/*",
+            "node_modules",
+            "vscode-extension",
+            ".git/objects",
+            ".vscode",
+            ".vscode-insiders"
+        ]
+    },
+    "extensions": {
+        "recommendations": [
+            "aaron-bond.better-comments",
+            "bufbuild.vscode-buf",
+            "codeandstuff.package-json-upgrade",
+            "eamodio.gitlens",
+            "graphql.vscode-graphql",
+            "gruntfuggly.todo-tree",
+            "jebbs.plantuml",
+            "ms-azuretools.vscode-docker",
+            "mhutchie.git-graph",
+            "pkief.material-icon-theme",
+            "redhat.vscode-yaml",
+            "stackbreak.comment-divider",
+            "yzhang.markdown-all-in-one",
+            "dbaeumer.vscode-eslint",
+            "esbenp.prettier-vscode",
+            "usernamehw.errorlens",
+            "clysto.plantuml",
+            "AlexShen.classdiagram-ts",
+            "cweijan.vscode-postgresql-client2",
+            "rangav.vscode-thunder-client",
+            "github.vscode-github-actions",
+            "GitHub.vscode-pull-request-github",
+            "DavidAnson.vscode-markdownlint",
+            "quicktype.quicktype",
+            "yoavbls.pretty-ts-errors",
+            "eliostruyf.vscode-typescript-exportallmodules",
+            "sissel.shopify-liquid"
+        ]
+    }
+}
