@@ -14,9 +14,9 @@
         }
     ],
     "settings": {
-        "typescript.enablePromptUseWorkspaceTsdk": false,
-        "typescript.tsdk": "./node_modules/typescript/lib",
+        "typescript.enablePromptUseWorkspaceTsdk": true,
         "typescript.preferences.importModuleSpecifier": "project-relative",
+        "typescript.tsdk": "node_modules/typescript/lib",
         "npm.packageManager": "pnpm",
         "files.exclude": {
             "**/.git": true,

@@ -5,7 +5,7 @@ UP_DOWN=$1
 NAME=sample-nginx
 PORT=80
 TARGET_PORT=$PORT
-DOMAIN=nginx-test.kube-ops.localhost
+DOMAIN=nginx-test.kube-lab.localhost
 NAMESPACE=default
 
 if [ $UP_DOWN = "up" ]; then

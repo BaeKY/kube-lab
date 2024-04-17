@@ -1,7 +1,6 @@
-import { AbsChart, HelmProps } from '@package/cdk8s-loader'
-import { ContainerFactory } from '@package/cdk8s-loader/src/container-factory'
+import { AbsChart, ContainerFactory, HelmProps } from '@package/cdk8s-loader'
 import { PartialRecursive, scope } from '@package/common'
-import { KubeService, KubeStatefulSet, Quantity } from '@package/k8s-generated/generated'
+import { KubeService, KubeStatefulSet, Quantity } from '@package/k8s-generated'
 import { ChartProps, Helm } from 'cdk8s'
 import { CorednsHelmParam, ExternalDnsHelmParam } from '../types'
 

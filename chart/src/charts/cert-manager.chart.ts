@@ -1,6 +1,6 @@
 import { AbsChart, HelmProps } from '@package/cdk8s-loader'
 import { PartialRecursive, scope } from '@package/common'
-import { ClusterIssuer, ClusterIssuerProps, KubeSecret } from '@package/k8s-generated/generated'
+import { ClusterIssuer, ClusterIssuerProps, KubeSecret } from '@package/k8s-generated'
 import { ChartProps, Helm } from 'cdk8s'
 import { CertManagerHelmParam } from '../types'
 

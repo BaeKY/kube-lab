@@ -2,7 +2,7 @@
 
 ## Introduction
 
-- Generate schema type of Helm Chart's `value.yaml` for other languages.(typescript, golang, swift, etc...)
+- Helm Chart의 `value.yaml`을 참조하여 typescript의 type으로 만들어주기 위한 패키지다.
 - Internally use `helm show values <chart-name>`.
 
 ## How to use?

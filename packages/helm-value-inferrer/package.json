@@ -5,8 +5,8 @@
         "generate_helm_value_inference": "./scripts/generate-infer-helm-values.sh"
     },
     "scripts": {
-        "link:global": "pnpm link --global",
-        "unlink:global": "pnpm unlink --global && pnpm remove -g @package/helm-loader",
+        "link:global": "pnpm link --global @package/helm-value-inferrer",
+        "unlink:global": "pnpm unlink --global && pnpm remove -g @package/helm-value-inferrer",
         "check-dependency": "bash ./scripts/check-dependency.sh"
     },
     "author": {

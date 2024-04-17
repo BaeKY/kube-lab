@@ -8,7 +8,7 @@ DOMAIN=$(cat chart-config.yaml | yq '.env.CUSTOM_DOMAIN')
 NS_IP=$(cat chart-config.yaml | yq '.env.NS_IP')
 
 RESOLVER_NAME=$DOMAIN
-RESOLVER_CONTENT="# bobs-lab/kube-ops에 의해 작성되었습니다.
+RESOLVER_CONTENT="# bobs-lab/kube-lab에 의해 작성되었습니다.
 domain $DOMAIN
 search $DOMAIN
 nameserver $NS_IP

@@ -2,7 +2,7 @@ import { AbsChart, HelmProps } from '@package/cdk8s-loader'
 import { PartialRecursive, scope } from '@package/common'
 import { ChartProps, Helm } from 'cdk8s'
 import { HarborHelmParam } from '../types'
-import { Certificate, CertificateProps } from '@package/k8s-generated/generated'
+import { Certificate, CertificateProps } from '@package/k8s-generated'
 
 interface HarborChartProps extends ChartProps {
     harbor: Omit<PartialRecursive<HelmProps<HarborHelmParam>>, 'chart'>

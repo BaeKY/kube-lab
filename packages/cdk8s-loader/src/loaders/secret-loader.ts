@@ -3,14 +3,14 @@ import { ComponentLoader } from '../base-loader'
 import { IEnvVarFactory, IVolumeFactory, Volume } from '../container-factory'
 
 type KubeSecretType =
-  | 'Opaque'
-  | 'kubernetes.io/service-account-token'
-  | 'kubernetes.io/dockercfg'
-  | 'kubernetes.io/dockerconfigjson'
-  | 'kubernetes.io/basic-auth'
-  | 'kubernetes.io/ssh-auth'
-  | 'kubernetes.io/tls'
-  | 'bootstrap.kubernetes.io/token'
+    | 'Opaque'
+    | 'kubernetes.io/service-account-token'
+    | 'kubernetes.io/dockercfg'
+    | 'kubernetes.io/dockerconfigjson'
+    | 'kubernetes.io/basic-auth'
+    | 'kubernetes.io/ssh-auth'
+    | 'kubernetes.io/tls'
+    | 'bootstrap.kubernetes.io/token'
 
 export class SecretLoader
     extends ComponentLoader<typeof KubeSecret>
@@ -30,12 +30,12 @@ export class SecretLoader
 
     public createEnvVars<T extends { [key: string]: string } = Record<string, string>>(
         params: {
-      name: keyof T
-      options?: {
-        key?: string
-        optional?: boolean
-      }
-    }[]
+            name: keyof T
+            options?: {
+                key?: string
+                optional?: boolean
+            }
+        }[]
     ): EnvVar[] {
         return params.map(({ name, options }) => this.createEnvVar(name, options))
     }
@@ -43,9 +43,9 @@ export class SecretLoader
     public createEnvVar<T extends { [key: string]: string } = Record<string, string>>(
         name: keyof T,
         options?: {
-      key?: string
-      optional?: boolean
-    }
+            key?: string
+            optional?: boolean
+        }
     ): EnvVar {
         return {
             name: name as string,

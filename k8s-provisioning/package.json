@@ -1,5 +1,5 @@
 {
-    "name": "@kube-ops/k8s-provisioning",
+    "name": "@kube-lab/k8s-provisioning",
     "version": "1.0.0",
     "scripts": {
         "vm:up": "cd vagrant && vagrant up --provider=vmware_desktop",

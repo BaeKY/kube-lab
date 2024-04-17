@@ -1,12 +1,13 @@
 {
-    "name": "kube-ops",
+    "name": "kube-lab",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
     "scripts": {
+        "postinstall": "./postinstall.sh",
+        "build": "turbo build",
         "generate": "pnpm --filter @package/k8s-generated generate",
-        "synth": "pnpm --filter @kube-ops/chart synth",
-        "config:network": "pnpm --filter @kube-ops/chart config:network",
+        "synth": "pnpm --filter @kube-lab/chart synth",
+        "config:network": "pnpm --filter @kube-lab/chart config:network",
         "deploy:all": "kubectl apply -f chart/manifest",
         "lint": "turbo lint"
     },
@@ -20,9 +21,7 @@
         "name": "BaeKY"
     },
     "license": "ISC",
-    "packageManager": "pnpm@8.15.6^",
-    "dependencies": {
-        "@types/jest": "^29.5.12",
+    "devDependencies": {
         "@types/node": "^20.12.7",
         "prettier": "^3.2.5",
         "turbo": "^1.13.2",

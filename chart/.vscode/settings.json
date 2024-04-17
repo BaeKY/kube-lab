@@ -1,0 +1,7 @@
+{
+  "cSpell.ignorePaths": [
+    "./src/types/helm-values/*",
+    "./dist",
+    "node_modules"
+  ]
+}

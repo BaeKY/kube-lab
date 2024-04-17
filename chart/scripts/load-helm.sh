@@ -13,9 +13,6 @@ function checkDependencyAndExit() {
   fi
 }
 
-checkDependencyAndExit helm
-checkDependencyAndExit yq
-
 function helmRepoAdd() {
   local CHART_LIST_FILE=$1
   yq '.charts[] | .repo + " " + .url' $CHART_LIST_FILE | awk '{system("helm repo add "$1" "$2)}'
@@ -28,6 +25,9 @@ function helmValuesCodegenForTypescript() {
   cd $2
   echo "$HELM_SHOW_VALUE_PARAMS" | awk '{system("generate_helm_value_inference "$1" ts")}'
 }
+
+checkDependencyAndExit helm
+checkDependencyAndExit yq
 
 HELM_CHARTS_FILE=$PWD/helm-charts.yaml
 

@@ -10,6 +10,7 @@ export interface JenkinsHelmParam {
     serviceAccount:           ServiceAccount;
     serviceAccountAgent:      ServiceAccount;
     backup:                   Backup;
+    cronJob:                  CronJob;
     checkDeprecation:         boolean;
     awsSecurityGroupPolicies: AwsSecurityGroupPolicies;
 }
@@ -45,6 +46,7 @@ export interface Agent {
     volumes:                  any[];
     workspaceVolume:          AdditionalAgents;
     envVars:                  any[];
+    secretEnvVars:            any[];
     nodeSelector:             AdditionalAgents;
     command:                  null;
     args:                     string;
@@ -324,6 +326,8 @@ export interface Prometheus {
     alertingRulesAdditionalLabels:  AdditionalAgents;
     alertingrules:                  any[];
     prometheusRuleNamespace:        string;
+    relabelings:                    any[];
+    metricRelabelings:              any[];
 }
 
 export interface Sidecars {
@@ -345,6 +349,10 @@ export interface ConfigAutoReload {
 export interface ConfigAutoReloadContainerSecurityContext {
     readOnlyRootFilesystem:   boolean;
     allowPrivilegeEscalation: boolean;
+}
+
+export interface CronJob {
+    apiVersion: string;
 }
 
 export interface NetworkPolicy {

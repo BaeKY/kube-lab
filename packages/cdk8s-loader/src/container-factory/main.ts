@@ -1,5 +1,4 @@
-import { scope } from '@package/common/src'
-import { ObjectEditor } from '@package/common/src/utils/scope'
+import { ObjectEditor, scope } from '@package/common'
 import { Container, VolumeMount } from '@package/k8s-generated'
 import { IVolumeMountable, Volume } from './volume-factory'
 

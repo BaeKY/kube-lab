@@ -1,17 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
+    "target": "ES2022",
+    "module": "CommonJS",
     "strict": true,
     "strictNullChecks": true,
-    "moduleResolution": "Node",
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "sourceMap": true,
-    "declaration": true
+    "forceConsistentCasingInFileNames": true
   },
   "exclude": [
     "node_modules",

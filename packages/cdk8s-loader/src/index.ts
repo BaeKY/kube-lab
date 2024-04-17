@@ -1,4 +1,5 @@
 export * from './abs-app'
 export * from './abs-chart'
 export * from './base-loader'
+export * from './container-factory'
 export * from './loaders'

@@ -1,11 +1,15 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./generated",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "declaration": true,
+    "sourceMap": true
   },
   "exclude": [
     "./dist",
     "./.eslintrc.js"
+  ],
+  "include": [
+    "generated/**/*.ts"
   ]
 }

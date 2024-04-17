@@ -1,17 +1,21 @@
 {
     "name": "@package/common",
     "version": "0.0.1",
-    "main": "src",
+    "main": "dist/index.js",
     "repository": "https://github.com/BaeKY/k8s-lab.git",
     "author": {
         "name": "Bob",
         "email": "baeky.dev@gmail.com"
     },
     "license": "MIT",
+    "exports": {
+        ".": "./dist/index.js"
+    },
     "scripts": {
         "lint": "eslint '**/*.{ts,tsx}' --fix",
         "test": "jest --passWithNoTests",
-        "test:watch": "jest --watch --passWithNoTests"
+        "test:watch": "jest --watch --passWithNoTests",
+        "build": "rm -rf ./dist && tsc --project ./tsconfig.build.json"
     },
     "dependencies": {
         "@package/k8s-generated": "workspace:^1.25.0",

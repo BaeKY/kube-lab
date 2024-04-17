@@ -6062,7 +6062,7 @@ spec:
 apiVersion: v1
 kind: Secret
 data:
-  api-key: NjJjYzNlYjNjMDEwYjI5MzQyZGZkZDYyYTY1YmUyNDYyNDJiYg==
+  api-key: ""
 metadata:
   name: cloudflare-api-key
   namespace: cert-manager
@@ -6074,7 +6074,7 @@ metadata:
   namespace: cert-manager
 spec:
   acme:
-    email: baeky.dev@gmail.com
+    email: ""
     privateKeySecretRef:
       name: acme-issuer-account-key
     server: https://acme-v02.api.letsencrypt.org/directory
@@ -6084,4 +6084,4 @@ spec:
             apiKeySecretRef:
               key: api-key
               name: cloudflare-api-key
-            email: baeky.dev@gmail.com
+            email: ""

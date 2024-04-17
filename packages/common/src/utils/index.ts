@@ -1,1 +1,1 @@
-export { scope } from './scope'
+export { scope, ObjectEditor } from './scope'

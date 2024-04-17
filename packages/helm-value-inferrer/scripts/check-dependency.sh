@@ -4,7 +4,8 @@ function checkInstallation() {
   local cmd=$1
   if ( ! command -v $cmd >/dev/null ); then 
     local result=$?
-    echo "'$cmd' is needed"
+    echo "'$cmd' is needed. Install the requirement with following command:"
+    echo "  brew install $cmd"
   fi
 }
 

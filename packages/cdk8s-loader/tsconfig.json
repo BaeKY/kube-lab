@@ -1,11 +1,15 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./src",
     "outDir": "./dist"
   },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+  ],
   "exclude": [
     "./dist",
-    "./.eslintrc.js"
+    "./.eslintrc.js",
+    "*.test.ts"
   ]
 }

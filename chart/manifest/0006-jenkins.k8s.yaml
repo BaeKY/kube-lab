@@ -35,7 +35,7 @@ metadata:
   name: jenkins
   namespace: jenkins
 data:
-  jenkins-admin-password: UWZOdFBxcnFNcDZIR0lXY0l4RzZpcQ==
+  jenkins-admin-password: djQ5QTFBeklleTlFZGlGRFgzdXR6Tw==
   jenkins-admin-user: YWRtaW4=
 type: Opaque
 ---
@@ -570,7 +570,7 @@ kind: Pod
 metadata:
   annotations:
     helm.sh/hook: test-success
-  name: jenkins-ui-test-0h17r
+  name: jenkins-ui-test-kllqh
   namespace: jenkins
 spec:
   containers:

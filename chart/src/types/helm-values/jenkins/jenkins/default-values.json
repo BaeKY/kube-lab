@@ -214,7 +214,9 @@
       "scrapeEndpoint": "/prometheus",
       "alertingRulesAdditionalLabels": {},
       "alertingrules": [],
-      "prometheusRuleNamespace": ""
+      "prometheusRuleNamespace": "",
+      "relabelings": [],
+      "metricRelabelings": []
     },
     "googlePodMonitor": {
       "enabled": false,
@@ -269,6 +271,7 @@
     "volumes": [],
     "workspaceVolume": {},
     "envVars": [],
+    "secretEnvVars": [],
     "nodeSelector": {},
     "command": null,
     "args": "${computer.jnlpmac} ${computer.name}",
@@ -358,6 +361,9 @@
     "runAsUser": 1000,
     "fsGroup": 1000,
     "securityContextCapabilities": {}
+  },
+  "cronJob": {
+    "apiVersion": "batch/v1"
   },
   "checkDeprecation": true,
   "awsSecurityGroupPolicies": {
