@@ -1,0 +1,13 @@
+{
+    "name": "@kube-ops/k8s-provisioning",
+    "version": "1.0.0",
+    "scripts": {
+        "vm:up": "cd vagrant && vagrant up --provider=vmware_desktop",
+        "vm:down": "cd vagrant && vagrant destroy -f"
+    },
+    "author": {
+        "email": "baeky.dev@gmail.com",
+        "name": "baeky"
+    },
+    "license": "ISC"
+}

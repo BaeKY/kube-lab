@@ -7,6 +7,10 @@
         {
             "path": "../chart",
             "name": "chart"
+        },
+        {
+            "path": "../k8s-provisioning",
+            "name": "k8s-provisioning"
         }
     ],
     "settings": {
