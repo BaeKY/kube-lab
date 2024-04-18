@@ -2,12 +2,12 @@
 
 > [[Github] Just me and open-source - kubernetes](https://github.com/justmeandopensource/kubernetes/tree/master/vagrant-provisioning)에서 가져왔다.
 >
-> CNI, MetalLB 세팅은 [chart](../chart)에 있으므로 가져오지 않았다.
+> 설치를 완료하면 [chart/manifest](../chart/manifest)의 manifest들을 설치한다.
 
 ## Requirements
 
 - [Vagrant](https://www.vagrantup.com/)
-- [VMware Fusion](https://www.vmware.com/products/fusion.html): 개인 라인선스로 등록한다.
+- [VMware Fusion](https://www.vmware.com/products/fusion.html) - 방문하여 설치 & 개인 라인선스로 등록한다.
 
 ```Bash
 brew install vagrant vagrant-vmware-utility
@@ -28,6 +28,7 @@ vagrant up --provider=vmware_desktop
 # 호스트 머신에서 수행
 mkdir ~/.kube
 scp root@172.16.16.100:/etc/kubernetes/admin.conf ~/.kube/config
+# password: kubeadmin
 ```
 
 ## 클러스터 삭제

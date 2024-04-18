@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "scripts": {
         "vm:up": "cd vagrant && vagrant up --provider=vmware_desktop",
-        "vm:down": "cd vagrant && vagrant destroy -f"
+        "vm:down": "cd vagrant && vagrant destroy -f",
+        "cp-k8sconfig": "mkdir -p ~/.kube && scp root@172.16.16.100:/etc/kubernetes/admin.conf ~/.kube/config"
     },
     "author": {
         "email": "baeky.dev@gmail.com",
